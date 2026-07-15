@@ -180,31 +180,31 @@ function OpportunityDetailPage() {
           <WhatsAppBanner className="mt-8 mb-4" />
 
           {/* Action Buttons */}
-          <div className="mt-14 flex flex-col sm:flex-row items-start gap-4">
+          <div className="mt-14 flex flex-col sm:flex-row items-stretch sm:items-start gap-4">
             {days !== null && days < 0 ? (
-               <Button disabled className="rounded-none px-8 py-7 text-[15px] font-bold uppercase tracking-wider">
+               <Button disabled className="w-full sm:w-auto rounded-none px-8 py-7 text-[15px] font-bold uppercase tracking-wider">
                   Applications Closed
                </Button>
             ) : o.application_link ? (
-               <Button asChild className="rounded-none bg-[#1d6b20] hover:bg-[#154e17] px-8 py-7 text-[15px] font-bold shadow-sm transition-transform hover:scale-[1.02] text-white uppercase tracking-wider">
+               <Button asChild className="w-full sm:w-auto rounded-none bg-[#1d6b20] hover:bg-[#154e17] px-8 py-7 text-[15px] font-bold shadow-sm transition-transform hover:scale-[1.02] text-white uppercase tracking-wider">
                   <a href={o.application_link} target="_blank" rel="noopener noreferrer">
                     Click Here to Apply <ExternalLink className="ml-2 h-4 w-4" />
                   </a>
                </Button>
             ) : o.official_website ? (
-               <Button asChild className="rounded-none bg-[#1d6b20] hover:bg-[#154e17] px-8 py-7 text-[15px] font-bold shadow-sm transition-transform hover:scale-[1.02] text-white uppercase tracking-wider">
+               <Button asChild className="w-full sm:w-auto rounded-none bg-[#1d6b20] hover:bg-[#154e17] px-8 py-7 text-[15px] font-bold shadow-sm transition-transform hover:scale-[1.02] text-white uppercase tracking-wider">
                   <a href={o.official_website} target="_blank" rel="noopener noreferrer">
                     Click Here to Apply <ExternalLink className="ml-2 h-4 w-4" />
                   </a>
                </Button>
             ) : (
-               <Button disabled className="rounded-none px-8 py-7 text-[15px] font-bold uppercase tracking-wider">
+               <Button disabled className="w-full sm:w-auto rounded-none px-8 py-7 text-[15px] font-bold uppercase tracking-wider">
                   Apply Link Not Available
                </Button>
             )}
 
             <Button 
-              className="rounded-none bg-navy hover:bg-navy/90 px-8 py-7 text-[15px] font-bold shadow-sm transition-transform hover:scale-[1.02] text-white uppercase tracking-wider"
+              className="w-full sm:w-auto rounded-none bg-navy hover:bg-navy/90 px-8 py-7 text-[15px] font-bold shadow-sm transition-transform hover:scale-[1.02] text-white uppercase tracking-wider"
               onClick={() => {
                 if (navigator.share) {
                   navigator.share({ title: o.title, url: window.location.href });

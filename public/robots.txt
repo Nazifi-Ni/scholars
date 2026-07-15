@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://scholarsconnect.page.gd/sitemap.xml

@@ -5,13 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const mockChartData = [
-  { name: 'Mon', views: 400 },
-  { name: 'Tue', views: 300 },
-  { name: 'Wed', views: 550 },
-  { name: 'Thu', views: 420 },
-  { name: 'Fri', views: 700 },
-  { name: 'Sat', views: 890 },
-  { name: 'Sun', views: 1050 },
+  { name: 'Mon', views: 0 },
+  { name: 'Tue', views: 0 },
+  { name: 'Wed', views: 0 },
+  { name: 'Thu', views: 0 },
+  { name: 'Fri', views: 0 },
+  { name: 'Sat', views: 0 },
+  { name: 'Sun', views: 0 },
 ];
 
 export const Route = createFileRoute('/admin/')({
@@ -60,21 +60,44 @@ function AdminDashboard() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Categories</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.categories_count || 0}</div>
+            <div className="text-2xl font-bold">{stats?.users_count || 0}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Blog Posts</CardTitle>
+            <CardTitle className="text-sm font-medium">Subscribers</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.blogs_count || 0}</div>
+            <div className="text-2xl font-bold">{stats?.subscribers_count || 0}</div>
           </CardContent>
         </Card>
       </div>
+      
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>Daily Views (Last 7 Days)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={stats?.chart_data || mockChartData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#64748B', fontSize: 12}} />
+                  <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748B', fontSize: 12}} />
+                  <Tooltip 
+                    contentStyle={{ borderRadius: '8px', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                    itemStyle={{ color: '#0D1B3D', fontWeight: 'bold' }}
+                  />
+                  <Line type="monotone" dataKey="views" stroke="#2563EB" strokeWidth={3} dot={{r: 4, fill: '#2563EB', strokeWidth: 2, stroke: '#fff'}} activeDot={{r: 6}} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
 
         <Card className="lg:col-span-2">
           <CardHeader>
@@ -112,6 +135,7 @@ function AdminDashboard() {
             </div>
           </CardContent>
         </Card>
+      </div>
     </div>
   );
 }

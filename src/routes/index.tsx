@@ -47,20 +47,27 @@ function HomePage() {
     <SiteLayout>
       <div className="bg-white">
         {/* Refined Search Header blending with the Nav */}
-        <div className="bg-navy border-b border-navy-light pb-8 pt-4 shadow-inner">
-          <div className="mx-auto max-w-7xl px-4 lg:px-8">
-            <h1 className="text-2xl font-bold text-white mb-4">Find Your Next Opportunity</h1>
-            <form onSubmit={submitSearch} className="flex max-w-2xl gap-2 rounded-md bg-white p-1.5 shadow-md">
-              <div className="flex flex-1 items-center gap-2 pl-3">
-                <Search className="h-5 w-5 shrink-0 text-navy-light" />
+        {/* Refined Search Header blending with the Nav */}
+        <div className="bg-gradient-hero border-b border-navy-light pb-12 pt-8 shadow-inner relative overflow-hidden">
+          {/* Subtle background decoration */}
+          <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10 mix-blend-overlay"></div>
+          
+          <div className="mx-auto max-w-7xl px-4 lg:px-8 relative z-10">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-6 font-heading tracking-tight animate-fade-up">
+              Find Your Next <span className="text-transparent bg-clip-text bg-gradient-to-r from-highlight to-secondary">Opportunity</span>
+            </h1>
+            
+            <form onSubmit={submitSearch} className="flex flex-col sm:flex-row max-w-3xl gap-3 rounded-xl glass-dark p-2 sm:p-2.5 shadow-glow animate-fade-up" style={{ animationDelay: '100ms' }}>
+              <div className="flex flex-1 items-center gap-3 pl-3 pr-2 py-2 sm:py-0 bg-white/10 rounded-lg border border-white/20">
+                <Search className="h-5 w-5 shrink-0 text-white/70" />
                 <input
                   value={q}
                   onChange={(e) => setQ(e.target.value)}
                   placeholder="Search scholarships, internships, countries…"
-                  className="w-full bg-transparent text-sm text-navy outline-none placeholder:text-muted-foreground"
+                  className="w-full bg-transparent text-base text-white outline-none placeholder:text-white/60 placeholder:font-light"
                 />
               </div>
-              <Button type="submit" className="rounded-md bg-secondary px-6 font-semibold text-white shadow-sm hover:bg-green-600 transition-colors">
+              <Button type="submit" className="w-full sm:w-auto h-12 sm:h-auto rounded-lg bg-secondary px-8 text-base font-bold text-white shadow-sm hover:bg-green-600 transition-all hover:scale-[1.02]">
                 Search
               </Button>
             </form>

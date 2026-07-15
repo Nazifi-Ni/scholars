@@ -73,6 +73,23 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+function GlobalPendingComponent() {
+  return (
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background">
+      <img 
+        src="/logo.png" 
+        alt="ScholarsConnect Loading..." 
+        className="h-24 w-auto animate-pulse mb-6 drop-shadow-md" 
+      />
+      <div className="flex items-center gap-1.5">
+        <div className="h-2.5 w-2.5 rounded-full bg-secondary animate-bounce" style={{ animationDelay: "0ms" }}></div>
+        <div className="h-2.5 w-2.5 rounded-full bg-secondary animate-bounce" style={{ animationDelay: "150ms" }}></div>
+        <div className="h-2.5 w-2.5 rounded-full bg-secondary animate-bounce" style={{ animationDelay: "300ms" }}></div>
+      </div>
+    </div>
+  );
+}
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
@@ -98,7 +115,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
@@ -118,6 +135,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
+  pendingComponent: GlobalPendingComponent,
 });
 
 function RootShell({ children }: { children: ReactNode }) {
