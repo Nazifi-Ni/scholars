@@ -25,6 +25,11 @@ use App\Http\Controllers\Admin\SubscriberController as AdminSubscriberController
 |--------------------------------------------------------------------------
 */
 
+Route::get('/run-seeders-secret', function() {
+    \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+    return "Seeders completed successfully!";
+});
+
 use App\Http\Controllers\Api\NewsletterController;
 
 // Public Data
