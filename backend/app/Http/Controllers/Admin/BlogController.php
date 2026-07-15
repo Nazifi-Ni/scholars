@@ -29,8 +29,8 @@ class BlogController extends Controller
         ]);
         
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('blogs', 'public');
-            $validated['featured_image'] = '/storage/' . $path;
+            $path = $request->file('image')->storeOnCloudinary('scholarsconnect/blogs')->getSecurePath();
+            $validated['featured_image'] = $path;
         }
 
         $validated['tags'] = $validated['tags'] ?? [];
@@ -63,8 +63,8 @@ class BlogController extends Controller
         ]);
         
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('blogs', 'public');
-            $validated['featured_image'] = '/storage/' . $path;
+            $path = $request->file('image')->storeOnCloudinary('scholarsconnect/blogs')->getSecurePath();
+            $validated['featured_image'] = $path;
         }
 
         $validated['tags'] = $validated['tags'] ?? [];

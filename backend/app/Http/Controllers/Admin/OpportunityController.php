@@ -53,8 +53,8 @@ class OpportunityController extends Controller
         $data['is_featured'] = filter_var($request->input('is_featured', false), FILTER_VALIDATE_BOOLEAN);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('opportunities', 'public');
-            $data['featured_image'] = '/storage/' . $path; // DB column is featured_image, not image_url
+            $path = $request->file('image')->storeOnCloudinary('scholarsconnect/opportunities')->getSecurePath();
+            $data['featured_image'] = $path;
             unset($data['image']);
         }
 
@@ -100,8 +100,8 @@ class OpportunityController extends Controller
         $data['is_featured'] = filter_var($request->input('is_featured', false), FILTER_VALIDATE_BOOLEAN);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('opportunities', 'public');
-            $data['featured_image'] = '/storage/' . $path; // DB column is featured_image
+            $path = $request->file('image')->storeOnCloudinary('scholarsconnect/opportunities')->getSecurePath();
+            $data['featured_image'] = $path;
             unset($data['image']);
         }
 
