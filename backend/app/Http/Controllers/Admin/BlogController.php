@@ -29,8 +29,13 @@ class BlogController extends Controller
         ]);
         
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->storeOnCloudinary('scholarsconnect/blogs')->getSecurePath();
-            $validated['featured_image'] = $path;
+            if (env('CLOUDINARY_URL')) {
+                $path = $request->file('image')->store('scholarsconnect/blogs', 'cloudinary');
+                $validated['featured_image'] = \Illuminate\Support\Facades\Storage::disk('cloudinary')->url($path);
+            } else {
+                $path = $request->file('image')->store('blogs', 'public');
+                $validated['featured_image'] = '/storage/' . $path;
+            }
         }
 
         $validated['tags'] = $validated['tags'] ?? [];
@@ -63,8 +68,13 @@ class BlogController extends Controller
         ]);
         
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->storeOnCloudinary('scholarsconnect/blogs')->getSecurePath();
-            $validated['featured_image'] = $path;
+            if (env('CLOUDINARY_URL')) {
+                $path = $request->file('image')->store('scholarsconnect/blogs', 'cloudinary');
+                $validated['featured_image'] = \Illuminate\Support\Facades\Storage::disk('cloudinary')->url($path);
+            } else {
+                $path = $request->file('image')->store('blogs', 'public');
+                $validated['featured_image'] = '/storage/' . $path;
+            }
         }
 
         $validated['tags'] = $validated['tags'] ?? [];

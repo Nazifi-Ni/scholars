@@ -53,8 +53,13 @@ class OpportunityController extends Controller
         $data['is_featured'] = filter_var($request->input('is_featured', false), FILTER_VALIDATE_BOOLEAN);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->storeOnCloudinary('scholarsconnect/opportunities')->getSecurePath();
-            $data['featured_image'] = $path;
+            if (env('CLOUDINARY_URL')) {
+                $path = $request->file('image')->store('scholarsconnect/opportunities', 'cloudinary');
+                $data['featured_image'] = \Illuminate\Support\Facades\Storage::disk('cloudinary')->url($path);
+            } else {
+                $path = $request->file('image')->store('opportunities', 'public');
+                $data['featured_image'] = '/storage/' . $path;
+            }
             unset($data['image']);
         }
 
@@ -100,8 +105,13 @@ class OpportunityController extends Controller
         $data['is_featured'] = filter_var($request->input('is_featured', false), FILTER_VALIDATE_BOOLEAN);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->storeOnCloudinary('scholarsconnect/opportunities')->getSecurePath();
-            $data['featured_image'] = $path;
+            if (env('CLOUDINARY_URL')) {
+                $path = $request->file('image')->store('scholarsconnect/opportunities', 'cloudinary');
+                $data['featured_image'] = \Illuminate\Support\Facades\Storage::disk('cloudinary')->url($path);
+            } else {
+                $path = $request->file('image')->store('opportunities', 'public');
+                $data['featured_image'] = '/storage/' . $path;
+            }
             unset($data['image']);
         }
 
