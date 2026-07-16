@@ -31,11 +31,16 @@ class BlogController extends Controller
         
         if ($request->hasFile('image')) {
             if (env('CLOUDINARY_URL')) {
-                $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
-                $uploadResult = $cloudinary->uploadApi()->upload($request->file('image')->getRealPath(), [
-                    'folder' => 'scholarsconnect/blogs'
-                ]);
-                $validated['featured_image'] = $uploadResult['secure_url'];
+                try {
+                    $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+                    $uploadResult = $cloudinary->uploadApi()->upload($request->file('image')->getRealPath(), [
+                        'folder' => 'scholarsconnect/blogs'
+                    ]);
+                    $validated['featured_image'] = $uploadResult['secure_url'];
+                } catch (\Exception $e) {
+                    $path = $request->file('image')->store('blogs', 'public');
+                    $validated['featured_image'] = '/storage/' . $path;
+                }
             } else {
                 $path = $request->file('image')->store('blogs', 'public');
                 $validated['featured_image'] = '/storage/' . $path;
@@ -73,11 +78,16 @@ class BlogController extends Controller
         
         if ($request->hasFile('image')) {
             if (env('CLOUDINARY_URL')) {
-                $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
-                $uploadResult = $cloudinary->uploadApi()->upload($request->file('image')->getRealPath(), [
-                    'folder' => 'scholarsconnect/blogs'
-                ]);
-                $validated['featured_image'] = $uploadResult['secure_url'];
+                try {
+                    $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+                    $uploadResult = $cloudinary->uploadApi()->upload($request->file('image')->getRealPath(), [
+                        'folder' => 'scholarsconnect/blogs'
+                    ]);
+                    $validated['featured_image'] = $uploadResult['secure_url'];
+                } catch (\Exception $e) {
+                    $path = $request->file('image')->store('blogs', 'public');
+                    $validated['featured_image'] = '/storage/' . $path;
+                }
             } else {
                 $path = $request->file('image')->store('blogs', 'public');
                 $validated['featured_image'] = '/storage/' . $path;

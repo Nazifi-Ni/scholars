@@ -116,11 +116,16 @@ class OpportunityController extends Controller
 
         if ($request->hasFile('image')) {
             if (env('CLOUDINARY_URL')) {
-                $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
-                $uploadResult = $cloudinary->uploadApi()->upload($request->file('image')->getRealPath(), [
-                    'folder' => 'scholarsconnect/opportunities'
-                ]);
-                $data['featured_image'] = $uploadResult['secure_url'];
+                try {
+                    $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+                    $uploadResult = $cloudinary->uploadApi()->upload($request->file('image')->getRealPath(), [
+                        'folder' => 'scholarsconnect/opportunities'
+                    ]);
+                    $data['featured_image'] = $uploadResult['secure_url'];
+                } catch (\Exception $e) {
+                    $path = $request->file('image')->store('opportunities', 'public');
+                    $data['featured_image'] = '/storage/' . $path;
+                }
             } else {
                 $path = $request->file('image')->store('opportunities', 'public');
                 $data['featured_image'] = '/storage/' . $path;
