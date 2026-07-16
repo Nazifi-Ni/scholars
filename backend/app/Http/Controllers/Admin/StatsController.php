@@ -23,6 +23,7 @@ class StatsController extends Controller
             return [
                 'name' => $date->format('D'), // e.g., 'Mon', 'Tue'
                 'views' => $metric ? $metric->views_count : 0,
+                'visitors' => $metric ? $metric->visitors_count : 0,
             ];
         })->values();
 
