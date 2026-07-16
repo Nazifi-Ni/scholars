@@ -72,7 +72,7 @@ class OpportunityController extends Controller
             return response()->json($opportunity, 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['message' => 'Validation error', 'errors' => $e->errors()], 422);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json(['message' => 'Exception: ' . $e->getMessage() . ' at ' . basename($e->getFile()) . ':' . $e->getLine()], 500);
         }
     }
