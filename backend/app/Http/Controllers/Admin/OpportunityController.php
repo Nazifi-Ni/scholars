@@ -25,50 +25,56 @@ class OpportunityController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|unique:opportunities,slug',
-            'summary' => 'nullable|string',
-            'eligibility' => 'nullable|string',
-            'benefits' => 'nullable|string',
-            'category_id' => 'nullable|exists:categories,id',
-            'country_id' => 'nullable|exists:countries,id',
-            'opportunity_type' => 'required|string',
-            'funding_type' => 'required|string',
-            'degree_levels' => 'required', // Can be string or array
-            'eligible_countries' => 'nullable', // Can be string or array
-            'deadline' => 'nullable|date',
-            'status' => 'required|string',
-            'is_featured' => 'boolean',
-            'image' => 'nullable|image|max:2048', // 2MB Max
-            'application_link' => 'nullable|url',
-            'official_website' => 'nullable|url',
-            'required_documents' => 'nullable|string',
-            'application_procedure' => 'nullable|string'
-        ]);
+        try {
+            $data = $request->validate([
+                'title' => 'required|string|max:255',
+                'slug' => 'required|string|unique:opportunities,slug',
+                'summary' => 'nullable|string',
+                'eligibility' => 'nullable|string',
+                'benefits' => 'nullable|string',
+                'category_id' => 'nullable|exists:categories,id',
+                'country_id' => 'nullable|exists:countries,id',
+                'opportunity_type' => 'required|string',
+                'funding_type' => 'required|string',
+                'degree_levels' => 'required', // Can be string or array
+                'eligible_countries' => 'nullable', // Can be string or array
+                'deadline' => 'nullable|date',
+                'status' => 'required|string',
+                'is_featured' => 'boolean',
+                'image' => 'nullable|image|max:2048', // 2MB Max
+                'application_link' => 'nullable|url',
+                'official_website' => 'nullable|url',
+                'required_documents' => 'nullable|string',
+                'application_procedure' => 'nullable|string'
+            ]);
 
-        $data['degree_levels'] = $this->handleJsonInput($data['degree_levels']);
-        if (isset($data['eligible_countries'])) {
-            $data['eligible_countries'] = $this->handleJsonInput($data['eligible_countries']);
-        }
-        $data['is_featured'] = filter_var($request->input('is_featured', false), FILTER_VALIDATE_BOOLEAN);
-
-        if ($request->hasFile('image')) {
-            if (env('CLOUDINARY_URL')) {
-                $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
-                $uploadResult = $cloudinary->uploadApi()->upload($request->file('image')->getRealPath(), [
-                    'folder' => 'scholarsconnect/opportunities'
-                ]);
-                $data['featured_image'] = $uploadResult['secure_url'];
-            } else {
-                $path = $request->file('image')->store('opportunities', 'public');
-                $data['featured_image'] = '/storage/' . $path;
+            $data['degree_levels'] = $this->handleJsonInput($data['degree_levels']);
+            if (isset($data['eligible_countries'])) {
+                $data['eligible_countries'] = $this->handleJsonInput($data['eligible_countries']);
             }
-            unset($data['image']);
-        }
+            $data['is_featured'] = filter_var($request->input('is_featured', false), FILTER_VALIDATE_BOOLEAN);
 
-        $opportunity = Opportunity::create($data);
-        return response()->json($opportunity, 201);
+            if ($request->hasFile('image')) {
+                if (env('CLOUDINARY_URL')) {
+                    $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+                    $uploadResult = $cloudinary->uploadApi()->upload($request->file('image')->getRealPath(), [
+                        'folder' => 'scholarsconnect/opportunities'
+                    ]);
+                    $data['featured_image'] = $uploadResult['secure_url'];
+                } else {
+                    $path = $request->file('image')->store('opportunities', 'public');
+                    $data['featured_image'] = '/storage/' . $path;
+                }
+                unset($data['image']);
+            }
+
+            $opportunity = Opportunity::create($data);
+            return response()->json($opportunity, 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['message' => 'Validation error', 'errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Exception: ' . $e->getMessage() . ' at ' . basename($e->getFile()) . ':' . $e->getLine()], 500);
+        }
     }
 
     public function show($id)
