@@ -33,7 +33,7 @@ class StatsController extends Controller
             'subscribers_count' => NewsletterSubscriber::count(),
             'categories_count' => Category::count(),
             'blogs_count' => BlogPost::count(),
-            'total_views' => Opportunity::sum('views_count'),
+            'total_views' => DailyMetric::sum('views_count'),
             'popular_opportunities' => Opportunity::orderBy('views_count', 'desc')->take(5)->get(['id', 'title', 'views_count', 'status']),
             'chart_data' => $chartData
         ]);
