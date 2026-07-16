@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Opportunity;
+use Cloudinary\Cloudinary;
 
 class OpportunityController extends Controller
 {
@@ -54,8 +55,11 @@ class OpportunityController extends Controller
 
         if ($request->hasFile('image')) {
             if (env('CLOUDINARY_URL')) {
-                $path = $request->file('image')->store('scholarsconnect/opportunities', 'cloudinary');
-                $data['featured_image'] = \Illuminate\Support\Facades\Storage::disk('cloudinary')->url($path);
+                $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+                $uploadResult = $cloudinary->uploadApi()->upload($request->file('image')->getRealPath(), [
+                    'folder' => 'scholarsconnect/opportunities'
+                ]);
+                $data['featured_image'] = $uploadResult['secure_url'];
             } else {
                 $path = $request->file('image')->store('opportunities', 'public');
                 $data['featured_image'] = '/storage/' . $path;
@@ -106,8 +110,11 @@ class OpportunityController extends Controller
 
         if ($request->hasFile('image')) {
             if (env('CLOUDINARY_URL')) {
-                $path = $request->file('image')->store('scholarsconnect/opportunities', 'cloudinary');
-                $data['featured_image'] = \Illuminate\Support\Facades\Storage::disk('cloudinary')->url($path);
+                $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+                $uploadResult = $cloudinary->uploadApi()->upload($request->file('image')->getRealPath(), [
+                    'folder' => 'scholarsconnect/opportunities'
+                ]);
+                $data['featured_image'] = $uploadResult['secure_url'];
             } else {
                 $path = $request->file('image')->store('opportunities', 'public');
                 $data['featured_image'] = '/storage/' . $path;

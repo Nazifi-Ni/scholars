@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\BlogPost;
+use Cloudinary\Cloudinary;
 
 class BlogController extends Controller
 {
@@ -30,8 +31,11 @@ class BlogController extends Controller
         
         if ($request->hasFile('image')) {
             if (env('CLOUDINARY_URL')) {
-                $path = $request->file('image')->store('scholarsconnect/blogs', 'cloudinary');
-                $validated['featured_image'] = \Illuminate\Support\Facades\Storage::disk('cloudinary')->url($path);
+                $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+                $uploadResult = $cloudinary->uploadApi()->upload($request->file('image')->getRealPath(), [
+                    'folder' => 'scholarsconnect/blogs'
+                ]);
+                $validated['featured_image'] = $uploadResult['secure_url'];
             } else {
                 $path = $request->file('image')->store('blogs', 'public');
                 $validated['featured_image'] = '/storage/' . $path;
@@ -69,8 +73,11 @@ class BlogController extends Controller
         
         if ($request->hasFile('image')) {
             if (env('CLOUDINARY_URL')) {
-                $path = $request->file('image')->store('scholarsconnect/blogs', 'cloudinary');
-                $validated['featured_image'] = \Illuminate\Support\Facades\Storage::disk('cloudinary')->url($path);
+                $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+                $uploadResult = $cloudinary->uploadApi()->upload($request->file('image')->getRealPath(), [
+                    'folder' => 'scholarsconnect/blogs'
+                ]);
+                $validated['featured_image'] = $uploadResult['secure_url'];
             } else {
                 $path = $request->file('image')->store('blogs', 'public');
                 $validated['featured_image'] = '/storage/' . $path;
