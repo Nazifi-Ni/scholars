@@ -11,8 +11,8 @@ export function Footer() {
       <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:grid-cols-2 lg:grid-cols-12 lg:px-8">
         
         <div className="lg:col-span-4 pr-4">
-          <div className="flex items-center">
-            <img src="/logo.png" alt="ScholarsConnect Logo" className="h-12 w-auto drop-shadow-md brightness-0 invert" />
+          <div className="flex items-center bg-white/5 p-3 rounded-lg border border-white/10 w-fit">
+            <img src="/logo.png" alt="ScholarsConnect Logo" className="h-10 w-auto" />
           </div>
           <p className="mt-6 text-[15px] leading-relaxed text-white/70 font-sans">
             Connecting Dreams to Opportunities. Discover verified scholarships,

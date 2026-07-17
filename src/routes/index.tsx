@@ -208,6 +208,36 @@ function HomePage() {
                 </div>
               </section>
 
+              {/* Community CTA Section */}
+              <section className="pt-10">
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-navy via-navy/95 to-highlight p-8 md:p-10 shadow-card border border-border">
+                  {/* Decorative Elements */}
+                  <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-secondary/20 blur-3xl"></div>
+                  <div className="absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-highlight/20 blur-3xl"></div>
+                  
+                  <div className="relative z-10 flex flex-col items-center text-center">
+                    <h2 className="text-2xl md:text-3xl font-extrabold text-white font-heading mb-4">
+                      Supercharge Your Academic Journey
+                    </h2>
+                    <p className="text-white/80 font-sans max-w-lg mb-8">
+                      Create a free account to track your applications, save your favorite opportunities, and get personalized recommendations.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                      <Link to="/register">
+                        <Button className="w-full sm:w-auto bg-secondary hover:bg-green-600 text-white font-bold py-6 px-8 rounded-full shadow-lg hover:scale-105 transition-transform text-base uppercase tracking-wider">
+                          Create Free Account
+                        </Button>
+                      </Link>
+                      <Link to="/about">
+                        <Button variant="outline" className="w-full sm:w-auto bg-transparent border-white/20 text-white hover:bg-white/10 font-bold py-6 px-8 rounded-full shadow-lg transition-colors text-base uppercase tracking-wider">
+                          Learn More
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
             </div>
 
             {/* Right Column (33%) - Sidebar */}
