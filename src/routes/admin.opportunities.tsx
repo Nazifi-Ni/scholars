@@ -124,7 +124,7 @@ function AdminOpportunities() {
 
     if (res.ok) {
       setIsModalOpen(false);
-      fetchOpps();
+      fetchData();
     } else {
       const error = await res.json();
       alert("Error saving: " + JSON.stringify(error.errors || error.message));
