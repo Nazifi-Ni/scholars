@@ -29,11 +29,16 @@ function PrivacyPage() {
             <p className="mt-2">Your data is used to deliver opportunity alerts, personalize recommendations, and operate account features such as bookmarks and application tracking. We never sell your personal information.</p>
           </section>
           <section>
-            <h2 className="text-lg font-semibold text-foreground">3. Data Security</h2>
+            <h2 className="text-lg font-semibold text-foreground">3. Advertising and Cookies</h2>
+            <p className="mt-2">We use third-party advertising companies, including Google AdSense, to serve ads when you visit our website. Google, as a third-party vendor, uses cookies to serve ads on ScholarsConnect.</p>
+            <p className="mt-2">Google's use of the DoubleClick cookie enables it and its partners to serve ads to our users based on their visit to ScholarsConnect and/or other sites on the Internet. You may opt out of the use of the DoubleClick cookie for interest-based advertising by visiting the <a href="https://myadcenter.google.com/" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">Google Ads Settings</a>.</p>
+          </section>
+          <section>
+            <h2 className="text-lg font-semibold text-foreground">4. Data Security</h2>
             <p className="mt-2">All data is stored securely with encryption in transit and at rest. Access to personal data is restricted and role-based.</p>
           </section>
           <section>
-            <h2 className="text-lg font-semibold text-foreground">4. Your Rights</h2>
+            <h2 className="text-lg font-semibold text-foreground">5. Your Rights</h2>
             <p className="mt-2">You may request access to, correction of, or deletion of your personal data at any time by contacting hello@scholarsconnect.africa.</p>
           </section>
         </div>
