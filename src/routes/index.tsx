@@ -7,6 +7,7 @@ import { SiteLayout } from "@/components/layout/SiteLayout";
 import { OpportunityCard } from "@/components/OpportunityCard";
 import { ScholarshipQuiz } from "@/components/ScholarshipQuiz";
 import { homeQuery, blogListQuery } from "@/lib/queries";
+import { Loader2 } from "lucide-react";
 import { getImageUrl, daysUntil, type OpportunityCardData } from "@/lib/sc-shared";
 
 export const Route = createFileRoute("/")({
@@ -18,6 +19,22 @@ export const Route = createFileRoute("/")({
     ]);
   },
   component: HomePage,
+  pendingComponent: () => (
+    <SiteLayout>
+      <div className="min-h-[80vh] flex flex-col items-center justify-center space-y-5 px-4 text-center">
+        <div className="relative">
+          <div className="absolute inset-0 bg-secondary/20 rounded-full blur-xl animate-pulse"></div>
+          <Loader2 className="h-16 w-16 animate-spin text-secondary relative z-10" />
+        </div>
+        <h2 className="text-2xl md:text-3xl font-extrabold text-navy tracking-tight font-heading">
+          Waking up the server...
+        </h2>
+        <p className="text-muted-foreground text-sm md:text-base max-w-md mx-auto leading-relaxed">
+          Our free servers go to sleep after inactivity. Please give it 30-60 seconds to boot up and fetch the latest opportunities for you!
+        </p>
+      </div>
+    </SiteLayout>
+  ),
 });
 
 function HomePage() {
@@ -339,7 +356,7 @@ function HomePage() {
             </div>
 
             {/* Right Column (33%) - Sidebar */}
-            <aside className="lg:col-span-4 space-y-8">
+            <aside className="lg:col-span-4 space-y-8 lg:sticky lg:top-24 h-fit pb-10">
               
               {/* Sidebar Newsletter Widget */}
               <div className="rounded-lg bg-navy p-6 shadow-card text-center relative overflow-hidden">
