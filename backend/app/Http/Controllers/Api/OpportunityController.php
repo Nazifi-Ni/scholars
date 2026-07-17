@@ -40,7 +40,12 @@ class OpportunityController extends Controller
 
         if ($request->has('category') && !empty($request->category)) {
             $cat = Category::where('slug', $request->category)->first();
-            if ($cat) $query->where('category_id', $cat->id);
+            if ($cat) {
+                $query->where('category_id', $cat->id);
+            } else {
+                // If category is provided but not found, return 0 results
+                $query->whereRaw('1 = 0');
+            }
         }
 
         if ($request->has('country') && !empty($request->country)) {

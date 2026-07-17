@@ -14,21 +14,30 @@ export const Route = createFileRoute('/admin/opportunities')({
 function AdminOpportunities() {
   const { token } = useAuth();
   const [opportunities, setOpportunities] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   
   const formRef = useRef<HTMLFormElement>(null);
 
-  const fetchOpps = async () => {
+  const fetchData = async () => {
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api';
-    const res = await fetch(`${API_BASE_URL}/admin/opportunities`, {
+    
+    // Fetch opportunities
+    const resOpps = await fetch(`${API_BASE_URL}/admin/opportunities`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
-    if (res.ok) setOpportunities(await res.json());
+    if (resOpps.ok) setOpportunities(await resOpps.json());
+
+    // Fetch categories for dropdown
+    const resCats = await fetch(`${API_BASE_URL}/admin/categories`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (resCats.ok) setCategories(await resCats.json());
   };
 
   useEffect(() => {
-    if (token) fetchOpps();
+    if (token) fetchData();
   }, [token]);
 
   const handleDelete = async (id: number) => {
@@ -54,6 +63,7 @@ function AdminOpportunities() {
       (form.elements.namedItem('eligibility') as HTMLTextAreaElement).value = opp.eligibility || '';
       (form.elements.namedItem('benefits') as HTMLTextAreaElement).value = opp.benefits || '';
       (form.elements.namedItem('opportunity_type') as HTMLSelectElement).value = opp.opportunity_type;
+      (form.elements.namedItem('category_id') as HTMLSelectElement).value = opp.category_id || '';
       (form.elements.namedItem('funding_type') as HTMLSelectElement).value = opp.funding_type;
       (form.elements.namedItem('status') as HTMLSelectElement).value = opp.status;
       (form.elements.namedItem('degree_levels') as HTMLInputElement).value = opp.degree_levels ? JSON.stringify(opp.degree_levels) : '["Bachelors"]';
@@ -214,6 +224,18 @@ function AdminOpportunities() {
                 </select>
               </div>
               <div className="space-y-2">
+                <Label htmlFor="category_id">Category</Label>
+                <select id="category_id" name="category_id" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background">
+                  <option value="">No Category</option>
+                  {categories.map((c: any) => (
+                    <option key={c.id} value={c.id}>{c.name}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
                 <Label htmlFor="funding_type">Funding</Label>
                 <select id="funding_type" name="funding_type" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background" required>
                   <option value="fully_funded">Fully Funded</option>
@@ -222,13 +244,13 @@ function AdminOpportunities() {
                   <option value="paid">Paid</option>
                 </select>
               </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="degree_levels">Degree Levels (JSON Array)</Label>
                 <Input id="degree_levels" name="degree_levels" defaultValue='["Bachelors", "Masters"]' required />
               </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="status">Status</Label>
                 <select id="status" name="status" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background" required>
@@ -236,13 +258,11 @@ function AdminOpportunities() {
                   <option value="draft">Draft</option>
                 </select>
               </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="application_link">Apply Link (URL)</Label>
                 <Input id="application_link" name="application_link" type="url" />
               </div>
+            </div>
               <div className="space-y-2">
                 <Label htmlFor="official_website">Official Website (URL)</Label>
                 <Input id="official_website" name="official_website" type="url" />

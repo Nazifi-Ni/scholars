@@ -64,10 +64,14 @@ export const Route = createFileRoute("/opportunities/$slug")({
 function DetailSection({ title, content }: { title: string; content: string | null }) {
   if (!content) return null;
   return (
-    <section className="mb-10">
-      <h2 className="text-2xl font-bold text-navy font-heading mb-5">{title}</h2>
-      <div className="whitespace-pre-line text-[16px] leading-relaxed text-foreground/90 font-sans">
-        {content}
+    <section className="mb-8">
+      <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
+        <div className="bg-muted/30 border-b border-border px-6 py-4">
+          <h2 className="text-xl font-bold text-navy font-heading">{title}</h2>
+        </div>
+        <div className="px-6 py-6 whitespace-pre-line text-[16px] leading-relaxed text-foreground/80 font-sans">
+          {content}
+        </div>
       </div>
     </section>
   );
@@ -83,54 +87,69 @@ function OpportunityDetailPage() {
 
   return (
     <SiteLayout>
-      {/* Header Meta Info Card */}
-      <section className="bg-gradient-to-b from-muted/50 to-transparent border-b border-border pt-8 pb-12 px-4 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <nav className="text-[10px] md:text-xs font-bold tracking-wider uppercase text-muted-foreground font-sans mb-6">
-            <Link to="/" className="hover:text-secondary transition-colors">Home</Link>
+      {/* Immersive Header Meta Info Card */}
+      <section className="relative overflow-hidden pt-8 pb-16 px-4 lg:px-8 bg-navy text-white border-b border-border">
+        {/* Blurred Background Image Overlay */}
+        {(o.featured_image || o.image_url) && (
+          <>
+            <div 
+              className="absolute inset-0 z-0 opacity-20 scale-105 blur-2xl"
+              style={{
+                backgroundImage: `url('${getImageUrl(o.featured_image ?? o.image_url)}')`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
+            <div className="absolute inset-0 z-0 bg-gradient-to-t from-navy via-navy/80 to-transparent" />
+          </>
+        )}
+
+        <div className="relative z-10 mx-auto max-w-7xl">
+          <nav className="text-[10px] md:text-xs font-bold tracking-wider uppercase text-white/60 font-sans mb-8">
+            <Link to="/" className="hover:text-white transition-colors">Home</Link>
             {" / "}
-            <Link to="/opportunities" className="hover:text-secondary transition-colors">Opportunities</Link>
+            <Link to="/opportunities" className="hover:text-white transition-colors">Opportunities</Link>
             {" / "}
-            <span className="text-navy">{typeLabel(o.opportunity_type)}</span>
+            <span className="text-secondary">{typeLabel(o.opportunity_type)}</span>
           </nav>
           
-          <div className="flex flex-col md:flex-row gap-8 items-start">
-            {/* Featured Image */}
+          <div className="flex flex-col md:flex-row gap-10 items-start">
+            {/* Featured Image - Beautiful floating card */}
             {(o.featured_image || o.image_url) && (
-              <div className="shrink-0 w-full md:w-[320px] lg:w-[400px] aspect-video rounded-2xl overflow-hidden border border-border shadow-sm bg-white">
+              <div className="shrink-0 w-full md:w-[320px] lg:w-[420px] aspect-video rounded-2xl overflow-hidden shadow-2xl ring-4 ring-white/10 bg-white group">
                 <img 
                   src={getImageUrl(o.featured_image ?? o.image_url)} 
                   alt={o.title} 
-                  className="w-full h-full object-cover" 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                 />
               </div>
             )}
             
             {/* Meta Information */}
-            <div className="flex-1 w-full">
-              <h1 className="text-3xl font-bold leading-tight text-navy md:text-4xl lg:text-5xl font-heading mb-4">
+            <div className="flex-1 w-full pt-2">
+              <h1 className="text-3xl font-bold leading-tight text-white md:text-4xl lg:text-5xl font-heading mb-5 drop-shadow-md">
                 {o.title}
               </h1>
               
-              {o.summary && <p className="text-base md:text-lg text-foreground/75 font-sans mb-6 max-w-3xl leading-relaxed">{o.summary}</p>}
+              {o.summary && <p className="text-base md:text-lg text-white/80 font-sans mb-8 max-w-3xl leading-relaxed">{o.summary}</p>}
               
-              <div className="flex flex-wrap items-center gap-3 font-sans pt-2">
-                <span className="rounded-full bg-secondary/10 border border-secondary/20 px-3 py-1.5 text-xs font-bold text-secondary uppercase tracking-wider shadow-sm">
+              <div className="flex flex-wrap items-center gap-4 font-sans">
+                <span className="rounded-full bg-secondary text-navy px-4 py-2 text-xs font-bold uppercase tracking-wider shadow-md">
                   {typeLabel(o.opportunity_type)}
                 </span>
-                <span className="rounded-full bg-highlight/20 border border-highlight/30 px-3 py-1.5 text-xs font-bold text-highlight-foreground uppercase tracking-wider shadow-sm">
+                <span className="rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-2 text-xs font-bold uppercase tracking-wider shadow-md">
                   {fundingLabel(o.funding_type)}
                 </span>
                 {o.is_verified && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 border border-blue-200 px-3 py-1.5 text-xs font-bold text-blue-600 uppercase tracking-wider shadow-sm">
-                    <BadgeCheck className="h-4 w-4" /> Verified
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-500/20 backdrop-blur-md border border-blue-400/30 px-4 py-2 text-xs font-bold text-blue-100 uppercase tracking-wider shadow-md">
+                    <BadgeCheck className="h-4 w-4 text-blue-300" /> Verified
                   </span>
                 )}
                 
-                <div className="ml-auto flex items-center gap-4 text-xs text-muted-foreground font-semibold bg-white px-4 py-2 rounded-full shadow-sm border border-border mt-4 sm:mt-0 w-full sm:w-auto justify-center">
-                  <span className="inline-flex items-center gap-1.5"><Eye className="h-4 w-4 text-navy/40" />{o.views_count.toLocaleString()} Views</span>
-                  <div className="w-px h-4 bg-border"></div>
-                  <span className="inline-flex items-center gap-1.5"><Bookmark className="h-4 w-4 text-navy/40" />{o.bookmarks_count.toLocaleString()} Saved</span>
+                <div className="ml-auto flex items-center gap-5 text-xs text-white/60 font-semibold bg-white/5 backdrop-blur-sm px-5 py-3 rounded-full shadow-inner border border-white/10 mt-6 sm:mt-0 w-full sm:w-auto justify-center">
+                  <span className="inline-flex items-center gap-2"><Eye className="h-4 w-4 text-white/40" />{o.views_count.toLocaleString()} Views</span>
+                  <div className="w-px h-4 bg-white/20"></div>
+                  <span className="inline-flex items-center gap-2"><Bookmark className="h-4 w-4 text-white/40" />{o.bookmarks_count.toLocaleString()} Saved</span>
                 </div>
               </div>
             </div>
@@ -138,7 +157,7 @@ function OpportunityDetailPage() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-12 px-4 py-12 lg:grid-cols-12 lg:px-8">
+      <section className="mx-auto grid max-w-7xl gap-12 px-4 py-16 lg:grid-cols-12 lg:px-8">
         
         {/* Main Content Area (67%) */}
         <div className="lg:col-span-8">

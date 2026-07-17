@@ -82,9 +82,9 @@ function BrowsePage() {
               e.preventDefault();
               update({ q: keyword.trim() || undefined, page: undefined });
             }}
-            className="mt-6 flex max-w-2xl gap-2 rounded-full glass p-2 shadow-card"
+            className="mt-6 flex flex-col sm:flex-row max-w-2xl gap-2 rounded-2xl sm:rounded-full glass p-2 shadow-card"
           >
-            <div className="flex flex-1 items-center gap-2 pl-4">
+            <div className="flex flex-1 items-center gap-2 pl-4 py-2 sm:py-0">
               <Search className="h-5 w-5 shrink-0 text-muted-foreground" />
               <input
                 value={keyword}
@@ -93,7 +93,7 @@ function BrowsePage() {
                 className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
               />
             </div>
-            <Button type="submit" className="rounded-full bg-gradient-cta px-6 font-semibold">Search</Button>
+            <Button type="submit" className="w-full sm:w-auto rounded-xl sm:rounded-full bg-gradient-cta px-8 py-6 sm:py-2 font-bold uppercase tracking-wider text-white shadow-md">Search</Button>
           </form>
         </div>
       </section>
