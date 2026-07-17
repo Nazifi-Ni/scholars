@@ -52,36 +52,42 @@ function AdminOpportunities() {
 
   const handleEdit = (opp: any) => {
     setEditingId(opp.id);
-    setIsModalOpen(true);
-    // Populate form next tick
+    // Defer modal opening to next tick to fix INP (Interaction to Next Paint) issue
     setTimeout(() => {
-      if (!formRef.current) return;
-      const form = formRef.current;
-      (form.elements.namedItem('title') as HTMLInputElement).value = opp.title;
-      (form.elements.namedItem('slug') as HTMLInputElement).value = opp.slug;
-      (form.elements.namedItem('summary') as HTMLTextAreaElement).value = opp.summary || '';
-      (form.elements.namedItem('eligibility') as HTMLTextAreaElement).value = opp.eligibility || '';
-      (form.elements.namedItem('benefits') as HTMLTextAreaElement).value = opp.benefits || '';
-      (form.elements.namedItem('opportunity_type') as HTMLSelectElement).value = opp.opportunity_type;
-      (form.elements.namedItem('category_id') as HTMLSelectElement).value = opp.category_id || '';
-      (form.elements.namedItem('funding_type') as HTMLSelectElement).value = opp.funding_type;
-      (form.elements.namedItem('status') as HTMLSelectElement).value = opp.status;
-      (form.elements.namedItem('degree_levels') as HTMLInputElement).value = opp.degree_levels ? JSON.stringify(opp.degree_levels) : '["Bachelors"]';
-      (form.elements.namedItem('is_featured') as HTMLInputElement).checked = !!opp.is_featured;
-      (form.elements.namedItem('application_link') as HTMLInputElement).value = opp.application_link || '';
-      (form.elements.namedItem('official_website') as HTMLInputElement).value = opp.official_website || '';
-      (form.elements.namedItem('required_documents') as HTMLTextAreaElement).value = opp.required_documents || '';
-      (form.elements.namedItem('application_procedure') as HTMLTextAreaElement).value = opp.application_procedure || '';
-      (form.elements.namedItem('deadline') as HTMLInputElement).value = opp.deadline ? opp.deadline.split('T')[0] : '';
-    }, 100);
+      setIsModalOpen(true);
+      // Populate form next tick after modal mounts
+      setTimeout(() => {
+        if (!formRef.current) return;
+        const form = formRef.current;
+        (form.elements.namedItem('title') as HTMLInputElement).value = opp.title;
+        (form.elements.namedItem('slug') as HTMLInputElement).value = opp.slug;
+        (form.elements.namedItem('summary') as HTMLTextAreaElement).value = opp.summary || '';
+        (form.elements.namedItem('eligibility') as HTMLTextAreaElement).value = opp.eligibility || '';
+        (form.elements.namedItem('benefits') as HTMLTextAreaElement).value = opp.benefits || '';
+        (form.elements.namedItem('opportunity_type') as HTMLSelectElement).value = opp.opportunity_type;
+        (form.elements.namedItem('category_id') as HTMLSelectElement).value = opp.category_id || '';
+        (form.elements.namedItem('funding_type') as HTMLSelectElement).value = opp.funding_type;
+        (form.elements.namedItem('status') as HTMLSelectElement).value = opp.status;
+        (form.elements.namedItem('degree_levels') as HTMLInputElement).value = opp.degree_levels ? JSON.stringify(opp.degree_levels) : '["Bachelors"]';
+        (form.elements.namedItem('is_featured') as HTMLInputElement).checked = !!opp.is_featured;
+        (form.elements.namedItem('application_link') as HTMLInputElement).value = opp.application_link || '';
+        (form.elements.namedItem('official_website') as HTMLInputElement).value = opp.official_website || '';
+        (form.elements.namedItem('required_documents') as HTMLTextAreaElement).value = opp.required_documents || '';
+        (form.elements.namedItem('application_procedure') as HTMLTextAreaElement).value = opp.application_procedure || '';
+        (form.elements.namedItem('deadline') as HTMLInputElement).value = opp.deadline ? opp.deadline.split('T')[0] : '';
+      }, 100);
+    }, 10);
   };
 
   const handleCreate = () => {
     setEditingId(null);
-    setIsModalOpen(true);
+    // Defer modal opening to next tick to fix INP issue
     setTimeout(() => {
-      if (formRef.current) formRef.current.reset();
-    }, 50);
+      setIsModalOpen(true);
+      setTimeout(() => {
+        if (formRef.current) formRef.current.reset();
+      }, 50);
+    }, 10);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
