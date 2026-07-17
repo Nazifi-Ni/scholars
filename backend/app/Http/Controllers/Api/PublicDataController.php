@@ -44,6 +44,7 @@ class PublicDataController extends Controller
 
         $categories = Category::orderBy('sort_order')->get();
         $countries = Country::orderBy('name')->get();
+        $featured_countries = Country::where('is_featured', true)->orderBy('name')->get();
         $universities = University::with('country')->orderBy('world_ranking', 'asc')->take(8)->get();
         
         $testimonials = Testimonial::where('is_published', true)->orderBy('sort_order')->take(4)->get();
@@ -58,6 +59,7 @@ class PublicDataController extends Controller
             'closingSoon' => $closingSoon,
             'categories' => $categories,
             'countries' => $countries,
+            'featured_countries' => $featured_countries,
             'universities' => $universities,
             'testimonials' => $testimonials,
             'faqs' => $faqs,

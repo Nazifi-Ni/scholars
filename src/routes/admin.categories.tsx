@@ -50,6 +50,7 @@ function AdminCategories() {
       (form.elements.namedItem('name') as HTMLInputElement).value = cat.name;
       (form.elements.namedItem('slug') as HTMLInputElement).value = cat.slug;
       (form.elements.namedItem('description') as HTMLTextAreaElement).value = cat.description || '';
+      (form.elements.namedItem('icon') as HTMLInputElement).value = cat.icon || '';
       (form.elements.namedItem('sort_order') as HTMLInputElement).value = cat.sort_order;
     }, 100);
   };
@@ -61,6 +62,7 @@ function AdminCategories() {
       if (formRef.current) {
         formRef.current.reset();
         (formRef.current.elements.namedItem('sort_order') as HTMLInputElement).value = '0';
+        (formRef.current.elements.namedItem('icon') as HTMLInputElement).value = '';
       }
     }, 50);
   };
@@ -107,6 +109,7 @@ function AdminCategories() {
         <table className="w-full text-sm text-left">
           <thead className="border-b bg-gray-50 text-gray-700">
             <tr>
+              <th className="px-6 py-3 font-semibold">Icon</th>
               <th className="px-6 py-3 font-semibold">Name</th>
               <th className="px-6 py-3 font-semibold">Slug</th>
               <th className="px-6 py-3 font-semibold">Sort Order</th>
@@ -116,6 +119,7 @@ function AdminCategories() {
           <tbody className="divide-y divide-gray-200">
             {categories.map((cat) => (
               <tr key={cat.id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 text-2xl">{cat.icon}</td>
                 <td className="px-6 py-4 font-medium text-gray-900">{cat.name}</td>
                 <td className="px-6 py-4 text-gray-500">{cat.slug}</td>
                 <td className="px-6 py-4">{cat.sort_order}</td>
@@ -127,7 +131,7 @@ function AdminCategories() {
             ))}
             {categories.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
+                <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
                   No categories found. Click "Create Category" to add one.
                 </td>
               </tr>
@@ -158,9 +162,15 @@ function AdminCategories() {
               <Textarea id="description" name="description" />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="sort_order">Sort Order</Label>
-              <Input id="sort_order" name="sort_order" type="number" defaultValue="0" required />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="icon">Icon (Emoji or URL)</Label>
+                <Input id="icon" name="icon" placeholder="e.g. 🎓" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="sort_order">Sort Order</Label>
+                <Input id="sort_order" name="sort_order" type="number" defaultValue="0" required />
+              </div>
             </div>
 
             <div className="flex justify-end space-x-2 pt-4 border-t">

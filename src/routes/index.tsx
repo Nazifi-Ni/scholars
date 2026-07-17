@@ -84,6 +84,15 @@ function HomePage() {
           </div>
         </div>
 
+        {/* Global Ad Banner Placeholder */}
+        <div className="mx-auto max-w-7xl px-4 mt-8 lg:px-8">
+          <div className="w-full h-[90px] md:h-[120px] bg-muted/30 border border-border/50 rounded-xl flex items-center justify-center relative overflow-hidden shadow-sm">
+            {/* You can drop your Google AdSense or similar script here later */}
+            <span className="text-muted-foreground/50 font-bold uppercase tracking-widest text-sm md:text-base">Advertisement Space</span>
+            <div className="absolute top-2 right-2 px-2 py-0.5 bg-white/50 rounded text-[9px] uppercase tracking-wider text-muted-foreground/70">Ad</div>
+          </div>
+        </div>
+
         {/* 70/30 Main Grid */}
         <div className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-12">
@@ -200,45 +209,53 @@ function HomePage() {
               </section>
 
               {/* Browse By Country Section */}
-              <section className="pt-4">
-                <div className="mb-5 border-b-2 border-border pb-1">
-                  <h2 className="inline-block text-xl font-bold text-navy uppercase tracking-wide border-b-4 border-highlight -mb-[3px] pb-1 font-heading">Browse By Country</h2>
-                </div>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5">
-                  {[
-                    { name: 'UK', code: 'GB', flag: '🇬🇧' },
-                    { name: 'USA', code: 'US', flag: '🇺🇸' },
-                    { name: 'Canada', code: 'CA', flag: '🇨🇦' },
-                    { name: 'Germany', code: 'DE', flag: '🇩🇪' },
-                    { name: 'Australia', code: 'AU', flag: '🇦🇺' },
-                  ].map((country) => (
-                    <Link
-                      key={country.name}
-                      to="/opportunities"
-                      search={{ country: country.name.toLowerCase() }}
-                      className="group flex flex-col items-center justify-center rounded-lg border border-border bg-white py-4 px-2 shadow-sm hover:border-secondary hover:shadow-card transition-all"
-                    >
-                      <span className="text-3xl mb-2 group-hover:scale-110 transition-transform">{country.flag}</span>
-                      <p className="font-bold text-navy text-center group-hover:text-secondary font-heading text-sm">{country.name}</p>
-                    </Link>
-                  ))}
-                </div>
-              </section>
+              {data.featured_countries && data.featured_countries.length > 0 && (
+                <section className="pt-4">
+                  <div className="mb-5 border-b-2 border-border pb-1 flex justify-between items-end">
+                    <h2 className="inline-block text-xl font-bold text-navy uppercase tracking-wide border-b-4 border-highlight -mb-[3px] pb-1 font-heading">Study Destinations</h2>
+                  </div>
+                  <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+                    {data.featured_countries.map((country) => (
+                      <Link
+                        key={country.id}
+                        to="/opportunities"
+                        search={{ country: country.slug }}
+                        className="group flex flex-col items-center justify-center rounded-2xl border border-border bg-white py-4 px-2 shadow-sm hover:border-secondary hover:shadow-card hover:bg-secondary/5 transition-all"
+                      >
+                        <div className="h-12 w-12 rounded-full bg-muted/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-inner overflow-hidden border border-border/50">
+                          {country.code ? (
+                            <img src={`https://flagsapi.com/${country.code.toUpperCase()}/flat/64.png`} alt={country.name} className="h-full w-full object-cover" />
+                          ) : (
+                            <span className="text-2xl">{country.flag_emoji || '🌍'}</span>
+                          )}
+                        </div>
+                        <p className="font-bold text-navy text-center group-hover:text-secondary font-heading text-xs uppercase tracking-wider">{country.name}</p>
+                      </Link>
+                    ))}
+                  </div>
+                </section>
+              )}
 
               {/* Browse By Category Section */}
               <section className="pt-4">
                 <div className="mb-5 border-b-2 border-border pb-1">
-                  <h2 className="inline-block text-xl font-bold text-navy uppercase tracking-wide border-b-4 border-highlight -mb-[3px] pb-1 font-heading">Browse By Category</h2>
+                  <h2 className="inline-block text-xl font-bold text-navy uppercase tracking-wide border-b-4 border-highlight -mb-[3px] pb-1 font-heading">Categories</h2>
                 </div>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                   {data.categories.map((cat) => (
                     <Link
                       key={cat.slug}
                       to="/opportunities"
                       search={{ category: cat.slug }}
-                      className="group flex flex-col items-center justify-center rounded-lg border border-border bg-white p-5 shadow-sm hover:border-secondary hover:shadow-card transition-all"
+                      className="group flex flex-col items-center justify-center rounded-2xl bg-white p-5 hover:bg-secondary/5 transition-all relative overflow-hidden"
                     >
-                      <p className="font-bold text-navy text-center group-hover:text-secondary font-heading text-sm">{cat.name}</p>
+                      {/* Interactive background glow effect */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-highlight/0 to-highlight/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      
+                      <div className="h-16 w-16 mb-3 rounded-full bg-gradient-to-br from-navy/5 to-navy/10 flex items-center justify-center shadow-inner group-hover:scale-110 group-hover:shadow-md transition-all duration-300">
+                        <span className="text-3xl drop-shadow-sm">{cat.icon || '🎓'}</span>
+                      </div>
+                      <p className="font-bold text-navy text-center group-hover:text-secondary font-heading text-sm relative z-10">{cat.name}</p>
                     </Link>
                   ))}
                 </div>

@@ -8,6 +8,29 @@ export const OPP_CARD_SELECT =
 export const OPP_FULL_SELECT =
   "*, category:categories(name,slug), country:countries(name,slug,flag_emoji), university:universities(name,slug,website), organization:organizations(name,slug,website)";
 
+export interface CountryData {
+  id: number;
+  name: string;
+  slug: string;
+  code: string;
+  flag_emoji: string;
+  is_featured?: boolean;
+}
+
+export interface HomeData {
+  featured: OpportunityCardData[];
+  latest: OpportunityCardData[];
+  trending: OpportunityCardData[];
+  closingSoon: OpportunityCardData[];
+  categories: CategoryData[];
+  countries: CountryData[];
+  featured_countries: CountryData[];
+  universities: UniversityData[];
+  testimonials: any[];
+  faqs: any[];
+  settings: Record<string, string>;
+}
+
 export interface OpportunityCardData {
   id: string;
   title: string;

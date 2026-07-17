@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialControll
 use App\Http\Controllers\Admin\StatsController as AdminStatsController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\SubscriberController as AdminSubscriberController;
+use App\Http\Controllers\Admin\CountryController as AdminCountryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,4 +73,8 @@ Route::middleware(['auth:sanctum', \App\Http\Middleware\IsAdmin::class])->prefix
     Route::apiResource('blogs', AdminBlogController::class);
     Route::apiResource('faqs', AdminFaqController::class);
     Route::apiResource('testimonials', AdminTestimonialController::class);
+    
+    // Countries
+    Route::get('countries', [AdminCountryController::class, 'index']);
+    Route::post('countries/{country}/toggle-featured', [AdminCountryController::class, 'toggleFeatured']);
 });

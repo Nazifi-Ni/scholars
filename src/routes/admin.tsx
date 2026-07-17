@@ -1,7 +1,7 @@
 import { Outlet, createFileRoute, redirect, useLocation, Link } from '@tanstack/react-router';
 import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
-import { LayoutDashboard, Users, FileText, Settings, LogOut, Tags, Mail } from 'lucide-react';
+import { LayoutDashboard, Users, FileText, Settings, LogOut, Tags, Mail, Globe } from 'lucide-react';
 
 export const Route = createFileRoute('/admin')({
   beforeLoad: ({ location }) => {
@@ -41,41 +41,70 @@ function AdminLayout() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex h-screen bg-muted/30 font-sans">
       {/* Sidebar */}
-      <div className="w-64 bg-white shadow-md">
-        <div className="p-6">
-          <h2 className="text-xl font-bold text-gray-800">Admin Panel</h2>
-          <p className="text-sm text-gray-500">{user?.email}</p>
+      <aside className="w-64 bg-navy text-white flex flex-col shadow-xl z-20 hidden md:flex">
+        <div className="p-6 border-b border-white/10 flex items-center gap-3">
+          <div className="bg-white/10 p-2 rounded-lg">
+            <LayoutDashboard size={24} className="text-secondary" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold tracking-tight font-heading">Admin Hub</h2>
+            <p className="text-xs text-white/60">{user?.email}</p>
+          </div>
         </div>
-        <nav className="mt-6 space-y-1 px-4">
-          <Link to="/admin" className="flex items-center space-x-2 rounded-md px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 [&.active]:bg-blue-50 [&.active]:text-blue-600">
-            <LayoutDashboard size={20} /> <span>Dashboard</span>
+        
+        <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-1">
+          <div className="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-3 px-2">Core Data</div>
+          
+          <Link to="/admin" className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-colors [&.active]:bg-secondary [&.active]:text-white [&.active]:font-semibold">
+            <LayoutDashboard size={18} /> <span className="text-sm">Overview</span>
           </Link>
-          <Link to="/admin/opportunities" className="flex items-center space-x-2 rounded-md px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 [&.active]:bg-blue-50 [&.active]:text-blue-600">
-            <FileText size={20} /> <span>Opportunities</span>
+          <Link to="/admin/opportunities" className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-colors [&.active]:bg-secondary [&.active]:text-white [&.active]:font-semibold">
+            <FileText size={18} /> <span className="text-sm">Opportunities</span>
           </Link>
-          <Link to="/admin/categories" className="flex items-center space-x-2 rounded-md px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 [&.active]:bg-blue-50 [&.active]:text-blue-600">
-            <Tags size={20} /> <span>Categories</span>
+          <Link to="/admin/blogs" className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-colors [&.active]:bg-secondary [&.active]:text-white [&.active]:font-semibold">
+            <FileText size={18} /> <span className="text-sm">Blog Posts</span>
           </Link>
-          <Link to="/admin/blogs" className="flex items-center space-x-2 rounded-md px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 [&.active]:bg-blue-50 [&.active]:text-blue-600">
-            <FileText size={20} /> <span>Blog Posts</span>
+
+          <div className="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-3 mt-6 px-2">Configuration</div>
+
+          <Link to="/admin/categories" className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-colors [&.active]:bg-secondary [&.active]:text-white [&.active]:font-semibold">
+            <Tags size={18} /> <span className="text-sm">Categories</span>
           </Link>
-          <Link to="/admin/subscribers" className="flex items-center space-x-2 rounded-md px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 [&.active]:bg-blue-50 [&.active]:text-blue-600">
-            <Mail size={20} /> <span>Subscribers</span>
+          <Link to="/admin/countries" className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-colors [&.active]:bg-secondary [&.active]:text-white [&.active]:font-semibold">
+            <Globe size={18} /> <span className="text-sm">Countries</span>
+          </Link>
+
+          <div className="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-3 mt-6 px-2">Community</div>
+
+          <Link to="/admin/subscribers" className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-colors [&.active]:bg-secondary [&.active]:text-white [&.active]:font-semibold">
+            <Mail size={18} /> <span className="text-sm">Subscribers</span>
           </Link>
         </nav>
-        <div className="absolute bottom-0 w-64 p-4 border-t">
-          <Button variant="ghost" className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50" onClick={handleLogout}>
-            <LogOut size={20} className="mr-2" /> Logout
+
+        <div className="p-4 border-t border-white/10">
+          <Button variant="ghost" className="w-full justify-start text-white/70 hover:text-white hover:bg-white/10 h-12 rounded-xl" onClick={handleLogout}>
+            <LogOut size={18} className="mr-3" /> <span className="text-sm font-semibold">Sign Out</span>
           </Button>
         </div>
-      </div>
+      </aside>
 
-      {/* Main Content */}
-      <div className="flex-1 overflow-auto p-8">
-        <Outlet />
-      </div>
+      {/* Main Content Area */}
+      <main className="flex-1 flex flex-col h-screen overflow-hidden">
+        {/* Mobile Header */}
+        <header className="md:hidden bg-navy text-white p-4 flex justify-between items-center shadow-md">
+          <h2 className="text-lg font-bold font-heading">Admin Hub</h2>
+          <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={handleLogout}>
+            <LogOut size={20} />
+          </Button>
+        </header>
+
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto p-4 md:p-8 relative">
+          <Outlet />
+        </div>
+      </main>
     </div>
   );
 }
