@@ -263,12 +263,11 @@ function AdminOpportunities() {
                 <Input id="application_link" name="application_link" type="url" />
               </div>
             </div>
-              <div className="space-y-2">
-                <Label htmlFor="official_website">Official Website (URL)</Label>
-                <Input id="official_website" name="official_website" type="url" />
-              </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="official_website">Official Website (URL)</Label>
+              <Input id="official_website" name="official_website" type="url" />
             </div>
-
             <div className="grid grid-cols-2 gap-4 items-center">
               <div className="space-y-2">
                 <Label htmlFor="deadline">Application Deadline</Label>
