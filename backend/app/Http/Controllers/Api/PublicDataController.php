@@ -52,6 +52,24 @@ class PublicDataController extends Controller
         
         $settings = SiteSetting::all()->pluck('value', 'key')->toArray();
 
+        // Featured Categories on Home
+        $featured_categories = Category::where('is_featured_on_home', true)->orderBy('sort_order')->get();
+        $featured_category_sections = [];
+        foreach ($featured_categories as $cat) {
+            $catOps = Opportunity::with(['country', 'university', 'organization'])
+                ->where('status', 'published')
+                ->where('category_id', $cat->id)
+                ->orderBy('created_at', 'desc')
+                ->take(6)
+                ->get();
+            if ($catOps->count() > 0) {
+                $featured_category_sections[] = [
+                    'category' => $cat,
+                    'opportunities' => $catOps
+                ];
+            }
+        }
+
         return response()->json([
             'featured' => $featured,
             'latest' => $latest,
@@ -64,6 +82,7 @@ class PublicDataController extends Controller
             'testimonials' => $testimonials,
             'faqs' => $faqs,
             'settings' => $settings,
+            'featured_category_sections' => $featured_category_sections,
         ]);
     }
 

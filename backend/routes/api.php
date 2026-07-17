@@ -70,6 +70,7 @@ Route::middleware(['auth:sanctum', \App\Http\Middleware\IsAdmin::class])->prefix
     
     Route::apiResource('opportunities', AdminOpportunityController::class);
     Route::apiResource('categories', AdminCategoryController::class);
+    Route::post('categories/{category}/toggle-featured', [AdminCategoryController::class, 'toggleFeatured']);
     Route::apiResource('blogs', AdminBlogController::class);
     Route::apiResource('faqs', AdminFaqController::class);
     Route::apiResource('testimonials', AdminTestimonialController::class);

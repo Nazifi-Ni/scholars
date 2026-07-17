@@ -98,6 +98,15 @@ function AdminCategories() {
     }
   };
 
+  const handleToggleFeatured = async (id: number) => {
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api';
+    const res = await fetch(`${API_BASE_URL}/admin/categories/${id}/toggle-featured`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (res.ok) fetchCategories();
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -111,7 +120,7 @@ function AdminCategories() {
             <tr>
               <th className="px-6 py-3 font-semibold">Icon</th>
               <th className="px-6 py-3 font-semibold">Name</th>
-              <th className="px-6 py-3 font-semibold">Slug</th>
+              <th className="px-6 py-3 font-semibold">Featured on Home</th>
               <th className="px-6 py-3 font-semibold">Sort Order</th>
               <th className="px-6 py-3 font-semibold text-right">Actions</th>
             </tr>
@@ -121,7 +130,19 @@ function AdminCategories() {
               <tr key={cat.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 text-2xl">{cat.icon}</td>
                 <td className="px-6 py-4 font-medium text-gray-900">{cat.name}</td>
-                <td className="px-6 py-4 text-gray-500">{cat.slug}</td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-2">
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        className="sr-only peer" 
+                        checked={!!cat.is_featured_on_home}
+                        onChange={() => handleToggleFeatured(cat.id)}
+                      />
+                      <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
+                  </div>
+                </td>
                 <td className="px-6 py-4">{cat.sort_order}</td>
                 <td className="px-6 py-4 text-right space-x-3">
                   <button onClick={() => handleEdit(cat)} className="text-blue-600 hover:text-blue-900 font-medium">Edit</button>

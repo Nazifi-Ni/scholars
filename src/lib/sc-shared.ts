@@ -29,6 +29,10 @@ export interface HomeData {
   testimonials: any[];
   faqs: any[];
   settings: Record<string, string>;
+  featured_category_sections?: {
+    category: CategoryData;
+    opportunities: OpportunityCardData[];
+  }[];
 }
 
 export interface OpportunityCardData {

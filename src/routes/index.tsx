@@ -266,22 +266,75 @@ function HomePage() {
                 <ScholarshipQuiz />
               </section>
 
-              {/* More Opportunities */}
-              {latestOpportunities.length > 8 && (
-                <section className="pt-10">
-                  <div className="mb-5 border-b-2 border-border pb-1 flex justify-between items-end">
-                    <h2 className="inline-block text-xl font-bold text-navy uppercase tracking-wide border-b-4 border-highlight -mb-[3px] pb-1 font-heading">More Opportunities</h2>
-                    <Link to="/opportunities" className="text-sm font-semibold text-secondary hover:text-navy transition-colors flex items-center">
-                      View All <ChevronRight className="h-4 w-4 ml-1" />
+              {/* Featured Category Sections */}
+              {data.featured_category_sections?.map((section) => (
+                <section key={section.category.id} className="pt-10">
+                  <div className="mb-6 flex items-center gap-4">
+                    <h2 className="text-xl font-bold text-navy uppercase tracking-wide font-heading">{section.category.name}</h2>
+                    <div className="flex-1 border-t-2 border-secondary/50"></div>
+                  </div>
+                  
+                  {/* Top Row: 2 Large Hero Cards */}
+                  {section.opportunities.length > 0 && (
+                    <div className="grid gap-4 sm:grid-cols-2 mb-4">
+                      {section.opportunities.slice(0, 2).map(opp => (
+                        <Link key={opp.id} to="/opportunities/$slug" params={{ slug: opp.slug }} className="relative group h-[220px] sm:h-[280px] bg-muted overflow-hidden rounded-lg">
+                          <img 
+                            src={getImageUrl(opp.featured_image ?? opp.image_url)} 
+                            alt={opp.title}
+                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/40 to-transparent" />
+                          <div className="absolute bottom-0 left-0 p-4 w-full">
+                            <h3 className="text-lg sm:text-xl font-bold leading-tight text-white group-hover:underline font-heading line-clamp-3">
+                              {opp.title}
+                            </h3>
+                            <div className="mt-2 text-[11px] text-gray-300 font-sans flex items-center gap-1.5">
+                              <span className="font-bold text-white">ScholarsConnect</span>
+                              <span>•</span>
+                              <span>{new Date(opp.created_at).toLocaleDateString()}</span>
+                            </div>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Bottom Rows: 4 Small Cards */}
+                  {section.opportunities.length > 2 && (
+                    <div className="grid gap-x-4 gap-y-6 sm:grid-cols-2 mt-6">
+                      {section.opportunities.slice(2, 6).map(opp => (
+                        <div key={opp.id} className="flex gap-3 group items-start">
+                          <Link to="/opportunities/$slug" params={{ slug: opp.slug }} className="shrink-0">
+                            <div className="h-16 w-24 overflow-hidden rounded border border-border group-hover:border-secondary transition-colors bg-muted">
+                              <img 
+                                src={getImageUrl(opp.featured_image ?? opp.image_url)} 
+                                alt={opp.title} 
+                                loading="lazy"
+                                className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+                              />
+                            </div>
+                          </Link>
+                          <div className="flex flex-col flex-1">
+                            <h4 className="text-[13px] font-bold leading-snug text-navy group-hover:text-secondary line-clamp-2 font-heading">
+                              <Link to="/opportunities/$slug" params={{ slug: opp.slug }}>{opp.title}</Link>
+                            </h4>
+                            <span className="text-[11px] text-muted-foreground mt-1 font-sans">{new Date(opp.created_at).toLocaleDateString()}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="flex justify-center mt-8">
+                    <Link to="/opportunities" search={{ category: section.category.slug }}>
+                      <Button variant="outline" className="text-muted-foreground hover:text-navy hover:border-navy transition-all h-9 text-xs px-6">
+                        Load more <ChevronRight className="h-3 w-3 ml-1" />
+                      </Button>
                     </Link>
                   </div>
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    {latestOpportunities.slice(8).map((opp) => (
-                      <OpportunityCard key={opp.id} data={opp} />
-                    ))}
-                  </div>
                 </section>
-              )}
+              ))}
 
             </div>
 

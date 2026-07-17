@@ -51,4 +51,11 @@ class CategoryController extends Controller
         $category->delete();
         return response()->json(null, 204);
     }
+
+    public function toggleFeatured(Category $category)
+    {
+        $category->is_featured_on_home = !$category->is_featured_on_home;
+        $category->save();
+        return response()->json($category);
+    }
 }
