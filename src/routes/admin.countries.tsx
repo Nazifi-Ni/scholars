@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "@/lib/api";
+import { useAuth } from "@/hooks/use-auth";
 import { CountryData } from "@/lib/sc-shared";
 import { Switch } from "@/components/ui/switch";
 import { Loader2, Globe } from "lucide-react";
@@ -13,19 +13,30 @@ export const Route = createFileRoute("/admin/countries")({
 function AdminCountries() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
+  const { token } = useAuth();
+  
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api';
 
   const { data: countries = [], isLoading } = useQuery<CountryData[]>({
     queryKey: ["admin", "countries"],
     queryFn: async () => {
-      const res = await api.get("/admin/countries");
-      return res.data;
+      const res = await fetch(`${API_BASE_URL}/admin/countries`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error('Failed to fetch countries');
+      return res.json();
     },
+    enabled: !!token,
   });
 
   const toggleMutation = useMutation({
     mutationFn: async (id: number) => {
-      const res = await api.post(`/admin/countries/${id}/toggle-featured`);
-      return res.data;
+      const res = await fetch(`${API_BASE_URL}/admin/countries/${id}/toggle-featured`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error('Failed to toggle featured status');
+      return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "countries"] });
