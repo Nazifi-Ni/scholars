@@ -266,6 +266,23 @@ function HomePage() {
                 <ScholarshipQuiz />
               </section>
 
+              {/* More Opportunities */}
+              {latestOpportunities.length > 8 && (
+                <section className="pt-10">
+                  <div className="mb-5 border-b-2 border-border pb-1 flex justify-between items-end">
+                    <h2 className="inline-block text-xl font-bold text-navy uppercase tracking-wide border-b-4 border-highlight -mb-[3px] pb-1 font-heading">More Opportunities</h2>
+                    <Link to="/opportunities" className="text-sm font-semibold text-secondary hover:text-navy transition-colors flex items-center">
+                      View All <ChevronRight className="h-4 w-4 ml-1" />
+                    </Link>
+                  </div>
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    {latestOpportunities.slice(8).map((opp) => (
+                      <OpportunityCard key={opp.id} data={opp} />
+                    ))}
+                  </div>
+                </section>
+              )}
+
             </div>
 
             {/* Right Column (33%) - Sidebar */}
