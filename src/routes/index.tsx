@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Search, ChevronRight, Mail } from "lucide-react";
+import { Search, ChevronRight, Mail, Download, Clock, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { OpportunityCard } from "@/components/OpportunityCard";
+import { ScholarshipQuiz } from "@/components/ScholarshipQuiz";
 import { homeQuery, blogListQuery } from "@/lib/queries";
-import { getImageUrl, type OpportunityCardData } from "@/lib/sc-shared";
+import { getImageUrl, daysUntil, type OpportunityCardData } from "@/lib/sc-shared";
 
 export const Route = createFileRoute("/")({
   loader: async ({ context }) => {
@@ -34,6 +35,15 @@ function HomePage() {
   const featuredOpportunity = data.featured?.[0] as OpportunityCardData | undefined;
   const remainingLatest = latestOpportunities.slice(0, 6);
   
+  const closingSoon = [...latestOpportunities]
+    .filter(o => o.deadline && daysUntil(o.deadline) !== null && daysUntil(o.deadline)! >= 0)
+    .sort((a, b) => new Date(a.deadline!).getTime() - new Date(b.deadline!).getTime())
+    .slice(0, 4);
+
+  const trending = [...latestOpportunities]
+    .sort((a, b) => (b.views_count + b.bookmarks_count) - (a.views_count + a.bookmarks_count))
+    .slice(0, 4);
+
   // Fake tabs for styling purposes, linking to actual filters
   const TABS = [
     { label: "All", search: {} },
@@ -189,6 +199,32 @@ function HomePage() {
                 )}
               </section>
 
+              {/* Browse By Country Section */}
+              <section className="pt-4">
+                <div className="mb-5 border-b-2 border-border pb-1">
+                  <h2 className="inline-block text-xl font-bold text-navy uppercase tracking-wide border-b-4 border-highlight -mb-[3px] pb-1 font-heading">Browse By Country</h2>
+                </div>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5">
+                  {[
+                    { name: 'UK', code: 'GB', flag: '🇬🇧' },
+                    { name: 'USA', code: 'US', flag: '🇺🇸' },
+                    { name: 'Canada', code: 'CA', flag: '🇨🇦' },
+                    { name: 'Germany', code: 'DE', flag: '🇩🇪' },
+                    { name: 'Australia', code: 'AU', flag: '🇦🇺' },
+                  ].map((country) => (
+                    <Link
+                      key={country.name}
+                      to="/opportunities"
+                      search={{ country: country.name.toLowerCase() }}
+                      className="group flex flex-col items-center justify-center rounded-lg border border-border bg-white py-4 px-2 shadow-sm hover:border-secondary hover:shadow-card transition-all"
+                    >
+                      <span className="text-3xl mb-2 group-hover:scale-110 transition-transform">{country.flag}</span>
+                      <p className="font-bold text-navy text-center group-hover:text-secondary font-heading text-sm">{country.name}</p>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+
               {/* Browse By Category Section */}
               <section className="pt-4">
                 <div className="mb-5 border-b-2 border-border pb-1">
@@ -208,34 +244,9 @@ function HomePage() {
                 </div>
               </section>
 
-              {/* Community CTA Section */}
-              <section className="pt-10">
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-navy via-navy/95 to-highlight p-8 md:p-10 shadow-card border border-border">
-                  {/* Decorative Elements */}
-                  <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-secondary/20 blur-3xl"></div>
-                  <div className="absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-highlight/20 blur-3xl"></div>
-                  
-                  <div className="relative z-10 flex flex-col items-center text-center">
-                    <h2 className="text-2xl md:text-3xl font-extrabold text-white font-heading mb-4">
-                      Supercharge Your Academic Journey
-                    </h2>
-                    <p className="text-white/80 font-sans max-w-lg mb-8">
-                      Create a free account to track your applications, save your favorite opportunities, and get personalized recommendations.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                      <Link to="/register">
-                        <Button className="w-full sm:w-auto bg-secondary hover:bg-green-600 text-white font-bold py-6 px-8 rounded-full shadow-lg hover:scale-105 transition-transform text-base uppercase tracking-wider">
-                          Create Free Account
-                        </Button>
-                      </Link>
-                      <Link to="/about">
-                        <Button variant="outline" className="w-full sm:w-auto bg-transparent border-white/20 text-white hover:bg-white/10 font-bold py-6 px-8 rounded-full shadow-lg transition-colors text-base uppercase tracking-wider">
-                          Learn More
-                        </Button>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+              {/* Scholarship Quiz Section */}
+              <section className="pt-8">
+                <ScholarshipQuiz />
               </section>
 
             </div>
@@ -256,11 +267,52 @@ function HomePage() {
                 </form>
               </div>
 
-              {/* Advertisement Placeholder */}
-              <div className="rounded-lg border border-border bg-white p-4 text-center shadow-sm">
-                <span className="text-[10px] uppercase text-muted-foreground tracking-wider mb-2 block font-sans">- Advertisement -</span>
-                <div className="mx-auto h-[250px] w-full max-w-[300px] bg-muted/30 flex items-center justify-center rounded border border-border/50">
-                  <span className="text-muted-foreground/60 font-semibold text-sm">Ad Space</span>
+              {/* Deadline Countdown */}
+              <div className="bg-white p-5 rounded-lg border border-border shadow-sm">
+                <div className="mb-4 border-b-2 border-border pb-1">
+                  <h3 className="flex items-center gap-2 text-lg font-bold text-navy uppercase tracking-wide border-b-4 border-red-500 -mb-[3px] pb-1 font-heading">
+                    <Clock className="h-4 w-4 text-red-500" /> Closing Soon
+                  </h3>
+                </div>
+                <div className="space-y-4">
+                  {closingSoon.map((opp) => (
+                    <div key={opp.id} className="flex justify-between items-center gap-2 border-b border-border/50 pb-2 last:border-0 last:pb-0">
+                      <Link to="/opportunities/$slug" params={{ slug: opp.slug }} className="font-bold text-sm text-navy hover:text-secondary line-clamp-1 flex-1">
+                        {opp.title}
+                      </Link>
+                      <span className="shrink-0 bg-red-100 text-red-700 text-[10px] font-bold px-2 py-1 rounded-full uppercase">
+                        {daysUntil(opp.deadline) === 0 ? "Today" : `${daysUntil(opp.deadline)} Days`}
+                      </span>
+                    </div>
+                  ))}
+                  {closingSoon.length === 0 && <p className="text-sm text-muted-foreground">No upcoming deadlines.</p>}
+                </div>
+              </div>
+
+              {/* Trending Opportunities */}
+              <div className="bg-white p-5 rounded-lg border border-border shadow-sm">
+                <div className="mb-4 border-b-2 border-border pb-1">
+                  <h3 className="flex items-center gap-2 text-lg font-bold text-navy uppercase tracking-wide border-b-4 border-secondary -mb-[3px] pb-1 font-heading">
+                    <TrendingUp className="h-4 w-4 text-secondary" /> Trending
+                  </h3>
+                </div>
+                <div className="space-y-4">
+                  {trending.map((opp, idx) => (
+                    <div key={opp.id} className="flex gap-3 items-center group">
+                      <span className="text-2xl font-black text-muted/50 w-6 text-center">{idx + 1}</span>
+                      <div className="flex-1">
+                        <Link to="/opportunities/$slug" params={{ slug: opp.slug }} className="font-bold text-sm text-navy hover:text-secondary line-clamp-2">
+                          {opp.title}
+                        </Link>
+                        <div className="flex items-center gap-2 mt-1 text-[10px] font-semibold text-muted-foreground">
+                          <span>👁 {opp.views_count} views</span>
+                          <span>•</span>
+                          <span>🔖 {opp.bookmarks_count} saves</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {trending.length === 0 && <p className="text-sm text-muted-foreground">No trending opportunities.</p>}
                 </div>
               </div>
 
@@ -313,6 +365,31 @@ function HomePage() {
                     <span className="text-[10px] uppercase tracking-wider opacity-80">Subscribers</span>
                   </a>
                 </div>
+              </div>
+
+              {/* Application Resources Sidebar Block */}
+              <div className="bg-gradient-to-b from-blue-50 to-white p-5 rounded-lg border border-blue-100 shadow-sm">
+                <div className="mb-4 border-b-2 border-border pb-1">
+                  <h3 className="inline-block text-lg font-bold text-navy uppercase tracking-wide border-b-4 border-blue-500 -mb-[3px] pb-1 font-heading">Free Resources</h3>
+                </div>
+                <ul className="space-y-3 font-sans">
+                  {[
+                    { name: 'Academic CV Template', icon: '📄' },
+                    { name: 'SOP Writing Guide', icon: '✍️' },
+                    { name: 'Recommendation Letter Guide', icon: '✉️' },
+                    { name: 'IELTS Preparation Kit', icon: '📚' },
+                    { name: 'Student Visa Guide', icon: '✈️' },
+                    { name: 'Interview Tips', icon: '🎯' },
+                  ].map(resource => (
+                    <li key={resource.name}>
+                      <a href="#" className="flex items-center gap-3 p-2 rounded hover:bg-blue-100/50 transition-colors group">
+                        <span className="text-xl">{resource.icon}</span>
+                        <span className="text-sm font-semibold text-navy/80 group-hover:text-secondary flex-1">{resource.name}</span>
+                        <Download className="h-3.5 w-3.5 text-muted-foreground group-hover:text-secondary" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               {/* Quick Links */}
