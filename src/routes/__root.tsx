@@ -9,6 +9,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -80,10 +81,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=5" },
       { title: "ScholarsConnect — Connecting Dreams to Opportunities" },
-      { name: "description", content: "Discover verified scholarships, internships, grants, hackathons and jobs for students across Africa. Free search, deadline reminders and application tracking." },
+      {
+        name: "description",
+        content:
+          "Discover verified scholarships, internships, grants, hackathons and jobs for students across Africa. Free search, deadline reminders and application tracking.",
+      },
       { name: "author", content: "ScholarsConnect" },
       { property: "og:title", content: "ScholarsConnect — Connecting Dreams to Opportunities" },
-      { property: "og:description", content: "Discover verified scholarships, internships, grants and more for students across Africa." },
+      {
+        property: "og:description",
+        content:
+          "Discover verified scholarships, internships, grants and more for students across Africa.",
+      },
       { property: "og:site_name", content: "ScholarsConnect" },
       { property: "og:type", content: "website" },
       { property: "og:image", content: "/logo.png" },
@@ -110,7 +119,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@context": "https://schema.org",
           "@type": "WebSite",
           name: "ScholarsConnect",
-          description: "Connecting Dreams to Opportunities — scholarships, internships and grants for African students.",
+          description:
+            "Connecting Dreams to Opportunities — scholarships, internships and grants for African students.",
         }),
       },
     ],
@@ -129,13 +139,12 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
+        <Analytics />
         <Scripts />
       </body>
     </html>
   );
 }
-
-
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
