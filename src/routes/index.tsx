@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { OpportunityCard } from "@/components/OpportunityCard";
 import { ScholarshipQuiz } from "@/components/ScholarshipQuiz";
+import { AdBanner } from "@/components/AdBanner";
 import { homeQuery, blogListQuery } from "@/lib/queries";
 import { Loader2 } from "lucide-react";
 import { getImageUrl, daysUntil, type OpportunityCardData } from "@/lib/sc-shared";
@@ -283,6 +284,11 @@ function HomePage() {
                 <ScholarshipQuiz />
               </section>
 
+              {/* Sponsored Offer Banner */}
+              <section className="pt-8">
+                <AdBanner />
+              </section>
+
               {/* Featured Category Sections */}
               {data.featured_category_sections?.map((section) => (
                 <section key={section.category.id} className="pt-10">
@@ -371,6 +377,9 @@ function HomePage() {
                 </form>
               </div>
 
+              {/* Sidebar Sponsored Offer 1 */}
+              <AdBanner variant="sidebar" />
+
               {/* Deadline Countdown */}
               <div className="bg-white p-5 rounded-lg border border-border shadow-sm">
                 <div className="mb-4 border-b-2 border-border pb-1">
@@ -419,6 +428,9 @@ function HomePage() {
                   {trending.length === 0 && <p className="text-sm text-muted-foreground">No trending opportunities.</p>}
                 </div>
               </div>
+
+              {/* Sidebar Sponsored Offer 2 */}
+              <AdBanner variant="sidebar" />
 
               {/* News & Blog Sidebar */}
               <div className="bg-white p-5 rounded-lg border border-border shadow-sm">

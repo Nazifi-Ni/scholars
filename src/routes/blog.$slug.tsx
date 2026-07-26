@@ -9,6 +9,7 @@ import { blogPostQuery } from "@/lib/queries";
 import { getImageUrl } from "@/lib/sc-shared";
 import { addBlogComment } from "@/lib/public.functions";
 import { WhatsAppBanner } from "@/components/WhatsAppBanner";
+import { AdBanner } from "@/components/AdBanner";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ context, params }) => {
@@ -101,6 +102,7 @@ function BlogPostPage() {
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
+          <AdBanner className="mb-10" />
           <WhatsAppBanner className="mb-16" />
 
           {/* Comments Section */}

@@ -17,7 +17,9 @@ import { Route as InternshipsRouteImport } from './routes/internships'
 import { Route as HackathonsRouteImport } from './routes/hackathons'
 import { Route as GrantsRouteImport } from './routes/grants'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as CoursesRouteImport } from './routes/courses'
+import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompetitionsRouteImport } from './routes/competitions'
 import { Route as BookmarksRouteImport } from './routes/bookmarks'
@@ -77,9 +79,19 @@ const FaqRoute = FaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DisclaimerRoute = DisclaimerRouteImport.update({
+  id: '/disclaimer',
+  path: '/disclaimer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CoursesRoute = CoursesRouteImport.update({
   id: '/courses',
   path: '/courses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CookiePolicyRoute = CookiePolicyRouteImport.update({
+  id: '/cookie-policy',
+  path: '/cookie-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -181,7 +193,9 @@ export interface FileRoutesByFullPath {
   '/bookmarks': typeof BookmarksRoute
   '/competitions': typeof CompetitionsRoute
   '/contact': typeof ContactRoute
+  '/cookie-policy': typeof CookiePolicyRoute
   '/courses': typeof CoursesRoute
+  '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/grants': typeof GrantsRoute
   '/hackathons': typeof HackathonsRoute
@@ -209,7 +223,9 @@ export interface FileRoutesByTo {
   '/bookmarks': typeof BookmarksRoute
   '/competitions': typeof CompetitionsRoute
   '/contact': typeof ContactRoute
+  '/cookie-policy': typeof CookiePolicyRoute
   '/courses': typeof CoursesRoute
+  '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/grants': typeof GrantsRoute
   '/hackathons': typeof HackathonsRoute
@@ -239,7 +255,9 @@ export interface FileRoutesById {
   '/bookmarks': typeof BookmarksRoute
   '/competitions': typeof CompetitionsRoute
   '/contact': typeof ContactRoute
+  '/cookie-policy': typeof CookiePolicyRoute
   '/courses': typeof CoursesRoute
+  '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/grants': typeof GrantsRoute
   '/hackathons': typeof HackathonsRoute
@@ -270,7 +288,9 @@ export interface FileRouteTypes {
     | '/bookmarks'
     | '/competitions'
     | '/contact'
+    | '/cookie-policy'
     | '/courses'
+    | '/disclaimer'
     | '/faq'
     | '/grants'
     | '/hackathons'
@@ -298,7 +318,9 @@ export interface FileRouteTypes {
     | '/bookmarks'
     | '/competitions'
     | '/contact'
+    | '/cookie-policy'
     | '/courses'
+    | '/disclaimer'
     | '/faq'
     | '/grants'
     | '/hackathons'
@@ -327,7 +349,9 @@ export interface FileRouteTypes {
     | '/bookmarks'
     | '/competitions'
     | '/contact'
+    | '/cookie-policy'
     | '/courses'
+    | '/disclaimer'
     | '/faq'
     | '/grants'
     | '/hackathons'
@@ -357,7 +381,9 @@ export interface RootRouteChildren {
   BookmarksRoute: typeof BookmarksRoute
   CompetitionsRoute: typeof CompetitionsRoute
   ContactRoute: typeof ContactRoute
+  CookiePolicyRoute: typeof CookiePolicyRoute
   CoursesRoute: typeof CoursesRoute
+  DisclaimerRoute: typeof DisclaimerRoute
   FaqRoute: typeof FaqRoute
   GrantsRoute: typeof GrantsRoute
   HackathonsRoute: typeof HackathonsRoute
@@ -428,11 +454,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/disclaimer': {
+      id: '/disclaimer'
+      path: '/disclaimer'
+      fullPath: '/disclaimer'
+      preLoaderRoute: typeof DisclaimerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/courses': {
       id: '/courses'
       path: '/courses'
       fullPath: '/courses'
       preLoaderRoute: typeof CoursesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookie-policy': {
+      id: '/cookie-policy'
+      path: '/cookie-policy'
+      fullPath: '/cookie-policy'
+      preLoaderRoute: typeof CookiePolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -606,7 +646,9 @@ const rootRouteChildren: RootRouteChildren = {
   BookmarksRoute: BookmarksRoute,
   CompetitionsRoute: CompetitionsRoute,
   ContactRoute: ContactRoute,
+  CookiePolicyRoute: CookiePolicyRoute,
   CoursesRoute: CoursesRoute,
+  DisclaimerRoute: DisclaimerRoute,
   FaqRoute: FaqRoute,
   GrantsRoute: GrantsRoute,
   HackathonsRoute: HackathonsRoute,
