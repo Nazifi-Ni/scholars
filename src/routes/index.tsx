@@ -102,13 +102,9 @@ function HomePage() {
           </div>
         </div>
 
-        {/* Global Ad Banner Placeholder */}
+        {/* Global Ad Banner */}
         <div className="mx-auto max-w-7xl px-4 mt-8 lg:px-8">
-          <div className="w-full h-[90px] md:h-[120px] bg-muted/30 border border-border/50 rounded-xl flex items-center justify-center relative overflow-hidden shadow-sm">
-            {/* You can drop your Google AdSense or similar script here later */}
-            <span className="text-muted-foreground/50 font-bold uppercase tracking-widest text-sm md:text-base">Advertisement Space</span>
-            <div className="absolute top-2 right-2 px-2 py-0.5 bg-white/50 rounded text-[9px] uppercase tracking-wider text-muted-foreground/70">Ad</div>
-          </div>
+          <AdBanner />
         </div>
 
         {/* 70/30 Main Grid */}
