@@ -131,9 +131,7 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
-        {/* Monetag In-Page Push & Vignette Banners (No Popunders!) */}
-        <script src="https://quge5.com/88/tag.min.js" data-zone="11424164" async data-cfasync="false"></script>
-        <script src="https://quge5.com/88/tag.min.js" data-zone="11424165" async data-cfasync="false"></script>
+        <script src="https://quge5.com/88/tag.min.js" data-zone="264153" async data-cfasync="false"></script>
       </head>
       <body>
         {children}
