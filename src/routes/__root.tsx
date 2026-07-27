@@ -131,12 +131,6 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
-        {/* Monetag Standalone Vignette Banner & In-Page Push (100% No Popunders!) */}
-        <script src="https://n6wxm.com/vignette.min.js" data-zone="11424905" async data-cfasync="false"></script>
-        <script src="https://nap5k.com/tag.min.js" data-zone="11424833" async data-cfasync="false"></script>
-        {/* Monetag Inline Verification Fallback */}
-        <script dangerouslySetInnerHTML={{ __html: `(function(s){s.dataset.zone='11424905',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`, }} />
-        <script dangerouslySetInnerHTML={{ __html: `(function(s){s.dataset.zone='11424833',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`, }} />
       </head>
       <body>
         {children}
