@@ -1,4 +1,6 @@
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Clock, Tag, MessageCircle, Send } from "lucide-react";
@@ -97,10 +99,11 @@ function BlogPostPage() {
           )}
 
           {/* Content */}
-          <div 
-            className="prose prose-lg prose-navy max-w-none font-sans leading-relaxed prose-a:text-secondary prose-a:font-semibold hover:prose-a:underline mb-12"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+          <div className="prose prose-lg prose-navy max-w-none font-sans leading-relaxed prose-a:text-secondary prose-a:font-semibold hover:prose-a:underline mb-12">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {post.content}
+            </ReactMarkdown>
+          </div>
 
           <AdBanner className="mb-10" />
           <WhatsAppBanner className="mb-16" />
