@@ -6,7 +6,7 @@ import { SiteLayout } from "@/components/layout/SiteLayout";
 import { RouteErrorFallback } from "@/components/RouteFallbacks";
 import { blogListQuery } from "@/lib/queries";
 
-export const Route = createFileRoute("/blog")({
+export const Route = createFileRoute("/blog/")({
   loader: ({ context }) => context.queryClient.ensureQueryData(blogListQuery),
   head: () => ({
     meta: [

@@ -23,11 +23,11 @@ import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompetitionsRouteImport } from './routes/competitions'
 import { Route as BookmarksRouteImport } from './routes/bookmarks'
-import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OpportunitiesIndexRouteImport } from './routes/opportunities.index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as OpportunitiesSlugRouteImport } from './routes/opportunities.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
@@ -109,11 +109,6 @@ const BookmarksRoute = BookmarksRouteImport.update({
   path: '/bookmarks',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BlogRoute = BlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -134,6 +129,11 @@ const OpportunitiesIndexRoute = OpportunitiesIndexRouteImport.update({
   path: '/opportunities/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -145,9 +145,9 @@ const OpportunitiesSlugRoute = OpportunitiesSlugRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => BlogRoute,
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminUsersRoute = AdminUsersRouteImport.update({
   id: '/users',
@@ -189,7 +189,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
-  '/blog': typeof BlogRouteWithChildren
   '/bookmarks': typeof BookmarksRoute
   '/competitions': typeof CompetitionsRoute
   '/contact': typeof ContactRoute
@@ -214,12 +213,12 @@ export interface FileRoutesByFullPath {
   '/blog/$slug': typeof BlogSlugRoute
   '/opportunities/$slug': typeof OpportunitiesSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/opportunities/': typeof OpportunitiesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/blog': typeof BlogRouteWithChildren
   '/bookmarks': typeof BookmarksRoute
   '/competitions': typeof CompetitionsRoute
   '/contact': typeof ContactRoute
@@ -244,6 +243,7 @@ export interface FileRoutesByTo {
   '/blog/$slug': typeof BlogSlugRoute
   '/opportunities/$slug': typeof OpportunitiesSlugRoute
   '/admin': typeof AdminIndexRoute
+  '/blog': typeof BlogIndexRoute
   '/opportunities': typeof OpportunitiesIndexRoute
 }
 export interface FileRoutesById {
@@ -251,7 +251,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
-  '/blog': typeof BlogRouteWithChildren
   '/bookmarks': typeof BookmarksRoute
   '/competitions': typeof CompetitionsRoute
   '/contact': typeof ContactRoute
@@ -276,6 +275,7 @@ export interface FileRoutesById {
   '/blog/$slug': typeof BlogSlugRoute
   '/opportunities/$slug': typeof OpportunitiesSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/opportunities/': typeof OpportunitiesIndexRoute
 }
 export interface FileRouteTypes {
@@ -284,7 +284,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
-    | '/blog'
     | '/bookmarks'
     | '/competitions'
     | '/contact'
@@ -309,12 +308,12 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/opportunities/$slug'
     | '/admin/'
+    | '/blog/'
     | '/opportunities/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/blog'
     | '/bookmarks'
     | '/competitions'
     | '/contact'
@@ -339,13 +338,13 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/opportunities/$slug'
     | '/admin'
+    | '/blog'
     | '/opportunities'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/admin'
-    | '/blog'
     | '/bookmarks'
     | '/competitions'
     | '/contact'
@@ -370,6 +369,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/opportunities/$slug'
     | '/admin/'
+    | '/blog/'
     | '/opportunities/'
   fileRoutesById: FileRoutesById
 }
@@ -377,7 +377,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
-  BlogRoute: typeof BlogRouteWithChildren
   BookmarksRoute: typeof BookmarksRoute
   CompetitionsRoute: typeof CompetitionsRoute
   ContactRoute: typeof ContactRoute
@@ -392,7 +391,9 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   ScholarshipsRoute: typeof ScholarshipsRoute
   TermsRoute: typeof TermsRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   OpportunitiesSlugRoute: typeof OpportunitiesSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
   OpportunitiesIndexRoute: typeof OpportunitiesIndexRoute
 }
 
@@ -496,13 +497,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BookmarksRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin': {
       id: '/admin'
       path: '/admin'
@@ -531,6 +525,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OpportunitiesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/': {
       id: '/admin/'
       path: '/'
@@ -547,10 +548,10 @@ declare module '@tanstack/react-router' {
     }
     '/blog/$slug': {
       id: '/blog/$slug'
-      path: '/$slug'
+      path: '/blog/$slug'
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
-      parentRoute: typeof BlogRoute
+      parentRoute: typeof rootRouteImport
     }
     '/admin/users': {
       id: '/admin/users'
@@ -628,21 +629,10 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
-interface BlogRouteChildren {
-  BlogSlugRoute: typeof BlogSlugRoute
-}
-
-const BlogRouteChildren: BlogRouteChildren = {
-  BlogSlugRoute: BlogSlugRoute,
-}
-
-const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
-  BlogRoute: BlogRouteWithChildren,
   BookmarksRoute: BookmarksRoute,
   CompetitionsRoute: CompetitionsRoute,
   ContactRoute: ContactRoute,
@@ -657,7 +647,9 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   ScholarshipsRoute: ScholarshipsRoute,
   TermsRoute: TermsRoute,
+  BlogSlugRoute: BlogSlugRoute,
   OpportunitiesSlugRoute: OpportunitiesSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
   OpportunitiesIndexRoute: OpportunitiesIndexRoute,
 }
 export const routeTree = rootRouteImport
