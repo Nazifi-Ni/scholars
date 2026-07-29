@@ -37,21 +37,28 @@ function BlogPage() {
       <section className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {data.posts.map((post) => (
-            <article key={post.slug} className="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-soft card-hover">
+            <Link 
+              key={post.slug} 
+              to="/blog/$slug" 
+              params={{ slug: post.slug }}
+              className="group flex flex-col rounded-2xl border border-border bg-card p-6 shadow-sm hover:shadow-card hover:-translate-y-1 transition-all cursor-pointer"
+            >
               {post.category && (
-                <span className="inline-flex w-fit items-center gap-1 rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
+                <span className="inline-flex w-fit items-center gap-1 rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent mb-3">
                   <Tag className="h-3 w-3" /> {post.category}
                 </span>
               )}
-              <Link to="/blog/$slug" params={{ slug: post.slug }} className="mt-3 block group">
-                <h2 className="text-lg font-bold leading-snug text-foreground group-hover:text-secondary transition-colors">{post.title}</h2>
-              </Link>
-              <p className="mt-2 flex-1 text-sm text-muted-foreground line-clamp-4">{post.excerpt}</p>
-              <div className="mt-4 flex items-center justify-between border-t border-border pt-3 text-xs text-muted-foreground">
+              <h2 className="text-lg font-bold leading-snug text-foreground group-hover:text-secondary transition-colors">
+                {post.title}
+              </h2>
+              <p className="mt-2 flex-1 text-sm text-muted-foreground line-clamp-4">
+                {post.excerpt}
+              </p>
+              <div className="mt-4 flex items-center justify-between border-t border-border/50 pt-4 text-xs text-muted-foreground font-medium">
                 <span>{new Date(post.published_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</span>
                 <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{post.reading_minutes} min read</span>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </section>
