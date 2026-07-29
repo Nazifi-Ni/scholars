@@ -83,7 +83,7 @@ function BlogPostPage() {
       <article className="bg-white">
         {/* Header Hero */}
         <header className="bg-gradient-hero px-4 py-12 lg:px-8 text-center border-b border-border">
-          <div className="mx-auto max-w-4xl">
+          <div className="mx-auto max-w-3xl">
             {post.category && (
               <span className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-accent/20 px-3 py-1 text-sm font-semibold text-accent font-sans">
                 <Tag className="h-4 w-4" /> {post.category}
@@ -99,18 +99,18 @@ function BlogPostPage() {
           </div>
         </header>
 
-        <div className="mx-auto max-w-4xl px-4 py-10 lg:px-8">
+        <div className="mx-auto max-w-3xl px-4 py-10 lg:px-8">
           <Link to="/blog" className="inline-flex items-center gap-2 text-sm font-semibold text-secondary hover:underline mb-8 font-sans">
             <ArrowLeft className="h-4 w-4" /> Back to all posts
           </Link>
 
           {/* Featured Image */}
           {(post.featured_image || post.image_url) && (
-            <div className="mb-10 overflow-hidden rounded-2xl shadow-card bg-muted border border-border">
+            <div className="mb-10 overflow-hidden rounded-2xl shadow-sm bg-muted/50 border border-border flex justify-center items-center p-2 sm:p-4">
               <img 
                 src={getImageUrl(post.featured_image ?? post.image_url)} 
                 alt={post.title}
-                className="w-full h-auto object-cover max-h-[500px]"
+                className="w-full h-auto object-contain max-h-[350px] rounded-xl mix-blend-multiply"
               />
             </div>
           )}
