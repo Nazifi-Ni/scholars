@@ -33,6 +33,23 @@ export const Route = createFileRoute("/blog/$slug")({
         { property: "og:image", content: getImageUrl(loaderData.post.featured_image ?? loaderData.post.image_url) },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:image", content: getImageUrl(loaderData.post.featured_image ?? loaderData.post.image_url) },
+      ],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: loaderData.post.title,
+            description: loaderData.post.excerpt,
+            image: getImageUrl(loaderData.post.featured_image ?? loaderData.post.image_url),
+            datePublished: loaderData.post.published_at,
+            author: {
+              "@type": "Organization",
+              name: "ScholarsConnect",
+            },
+          }),
+        },
       ]
     };
   },

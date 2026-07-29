@@ -47,6 +47,7 @@ export function OpportunityCard({ opportunity }: { opportunity: OpportunityCardD
               src={getImageUrl(opportunity.featured_image)} 
               alt={opportunity.title}
               className="h-full w-full object-cover rounded-lg"
+              loading="lazy"
             />
           ) : (
             <GraduationCap className="h-8 w-8 text-navy/20" />
