@@ -11,7 +11,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
+
 import { AuthProvider } from "@/hooks/use-auth";
 
 function NotFoundComponent() {
@@ -40,7 +40,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    console.error("Root error:", error);
   }, [error]);
 
   return (
@@ -79,6 +79,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=5" },
+      { name: "google-site-verification", content: "TFZNOl1OuyQI-GUS6ZthRroDDJZ8Is_qGStDEzBhnio" },
       { title: "ScholarsConnect — Connecting Dreams to Opportunities" },
       { name: "description", content: "Discover verified scholarships, internships, grants, hackathons and jobs for students across Africa. Free search, deadline reminders and application tracking." },
       { name: "author", content: "ScholarsConnect" },
@@ -101,7 +102,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap",
       },
-      { rel: "icon", href: "/logo.png", type: "image/png" },
     ],
     scripts: [
       {

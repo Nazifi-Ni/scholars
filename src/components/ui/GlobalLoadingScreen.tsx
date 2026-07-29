@@ -25,12 +25,12 @@ export function GlobalLoadingScreen() {
         <div className="absolute inset-0 -m-12 animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite] rounded-full border-4 border-primary/20" />
         <div className="absolute inset-0 -m-8 animate-[ping_1.5s_cubic-bezier(0,0,0.2,1)_infinite] rounded-full border-4 border-primary/40" />
         
-        {/* Bouncing Logo */}
-        <img 
-          src="/logo.png" 
-          alt="Loading ScholarsConnect" 
-          className="relative z-10 h-24 w-auto animate-bounce object-contain drop-shadow-xl" 
-        />
+        {/* Bouncing Text Logo */}
+        <div className="relative z-10 flex flex-col items-center justify-center animate-bounce-subtle">
+          <span className="text-4xl font-extrabold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent drop-shadow-sm">
+            ScholarsConnect
+          </span>
+        </div>
         
         <p className="mt-12 animate-pulse text-lg font-medium text-foreground tracking-wide">
           Connecting Dreams to Opportunities...
