@@ -36,7 +36,7 @@ export function useBookmarks() {
     });
   };
 
-  const isBookmarked = (id: number) => {
+  const isBookmarked = (id: string | number) => {
     return bookmarks.some((b) => b.id === id);
   };
 

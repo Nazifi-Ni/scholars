@@ -17,6 +17,22 @@ export interface CountryData {
   is_featured?: boolean;
 }
 
+export interface CategoryData {
+  id: number | string;
+  name: string;
+  slug: string;
+  icon?: string | null;
+  count?: number;
+}
+
+export interface UniversityData {
+  id: number | string;
+  name: string;
+  slug: string;
+  logo_url?: string | null;
+  country?: { name: string; slug: string } | null;
+}
+
 export interface HomeData {
   featured: OpportunityCardData[];
   latest: OpportunityCardData[];
