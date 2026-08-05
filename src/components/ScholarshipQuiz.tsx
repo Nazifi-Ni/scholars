@@ -9,6 +9,7 @@ export function ScholarshipQuiz() {
   const [loading, setLoading] = useState(false);
   const [matchCount, setMatchCount] = useState<number | null>(null);
   const [isOtherField, setIsOtherField] = useState(false);
+  const [isOtherNationality, setIsOtherNationality] = useState(false);
 
   const [form, setForm] = useState({
     degree: "",
@@ -173,14 +174,38 @@ export function ScholarshipQuiz() {
         {step === 5 && !loading && (
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
             <label className="block text-sm font-semibold text-navy mb-3">What is your nationality?</label>
-            <input 
-              type="text" 
-              placeholder="e.g. Nigerian, Kenyan, Indian..." 
+            <select
               className="w-full p-3 border border-border rounded-lg text-sm focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary mb-3 font-medium text-navy shadow-sm transition-all"
-              value={form.nationality}
-              onChange={e => setForm({ ...form, nationality: e.target.value })}
-              onKeyDown={e => { if (e.key === 'Enter' && form.nationality.trim()) calculateMatches(); }}
-            />
+              value={isOtherNationality ? 'Other' : (form.nationality || "")}
+              onChange={e => {
+                if (e.target.value === 'Other') {
+                  setIsOtherNationality(true);
+                  setForm({ ...form, nationality: '' });
+                } else {
+                  setIsOtherNationality(false);
+                  setForm({ ...form, nationality: e.target.value });
+                }
+              }}
+            >
+              <option value="" disabled>Select nationality</option>
+              <option value="Nigerian">Nigerian</option>
+              <option value="Indian">Indian</option>
+              <option value="Kenyan">Kenyan</option>
+              <option value="Pakistani">Pakistani</option>
+              <option value="Ghanaian">Ghanaian</option>
+              <option value="Bangladeshi">Bangladeshi</option>
+              <option value="Other">Other (Type below)</option>
+            </select>
+            {isOtherNationality && (
+              <input 
+                type="text" 
+                placeholder="e.g. South African, Egyptian..." 
+                className="w-full p-3 border border-border rounded-lg text-sm focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary mb-3 font-medium text-navy shadow-sm transition-all animate-in fade-in"
+                value={form.nationality}
+                onChange={e => setForm({ ...form, nationality: e.target.value })}
+                onKeyDown={e => { if (e.key === 'Enter' && form.nationality.trim()) calculateMatches(); }}
+              />
+            )}
             <div className="flex justify-between items-center mt-2">
               <button onClick={handlePrev} className="text-xs font-semibold text-muted-foreground hover:text-navy transition-colors">← Back</button>
               <Button onClick={calculateMatches} disabled={!form.nationality.trim()} className="bg-secondary hover:bg-green-600 text-white font-bold h-9 px-6 rounded-full shadow-md transition-transform hover:scale-105">
