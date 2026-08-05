@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; background: transparent; overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <!-- Adsterra Script -->
+    <script async="async" data-cfasync="false" src="https://pl30649382.effectivecpmnetwork.com/ca9c8fca25079f01c5dab2673821b2d3/invoke.js"></script>
+    <div id="container-ca9c8fca25079f01c5dab2673821b2d3"></div>
+    
+    <!-- Resize logic to communicate with React parent -->
+    <script>
+      setInterval(() => {
+        const container = document.getElementById('container-ca9c8fca25079f01c5dab2673821b2d3');
+        if (container && container.offsetHeight > 50) {
+          window.parent.postMessage({ type: 'adsterra-resize', height: container.offsetHeight }, window.location.origin);
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>
