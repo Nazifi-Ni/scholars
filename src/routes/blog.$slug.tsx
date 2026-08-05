@@ -69,7 +69,7 @@ function BlogPostPage() {
   const [commentForm, setCommentForm] = useState({ author_name: "", content: "" });
 
   const submitComment = useMutation({
-    mutationFn: () => addBlogComment(slug, commentForm),
+    mutationFn: () => addBlogComment({ data: { slug, author_name: commentForm.author_name, content: commentForm.content } }),
     onSuccess: () => {
       setCommentForm({ author_name: "", content: "" });
       queryClient.invalidateQueries({ queryKey: ["blog", slug] });

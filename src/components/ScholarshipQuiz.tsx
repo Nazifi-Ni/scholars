@@ -8,6 +8,7 @@ export function ScholarshipQuiz() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [matchCount, setMatchCount] = useState<number | null>(null);
+  const [isOtherField, setIsOtherField] = useState(false);
 
   const [form, setForm] = useState({
     degree: "",
@@ -108,14 +109,38 @@ export function ScholarshipQuiz() {
         {step === 3 && (
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
             <label className="block text-sm font-semibold text-navy mb-3">What is your field of study?</label>
-            <input 
-              type="text" 
-              placeholder="e.g. Computer Science" 
+            <select
               className="w-full p-3 border border-border rounded-lg text-sm focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary mb-3 font-medium text-navy shadow-sm transition-all"
-              value={form.course}
-              onChange={e => setForm({ ...form, course: e.target.value })}
-              onKeyDown={e => { if (e.key === 'Enter' && form.course.trim()) handleNext(); }}
-            />
+              value={isOtherField ? 'Other' : (form.course || "")}
+              onChange={e => {
+                if (e.target.value === 'Other') {
+                  setIsOtherField(true);
+                  setForm({ ...form, course: '' });
+                } else {
+                  setIsOtherField(false);
+                  setForm({ ...form, course: e.target.value });
+                }
+              }}
+            >
+              <option value="" disabled>Select your field</option>
+              <option value="Computer Science & IT">Computer Science & IT</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Medicine & Health">Medicine & Health</option>
+              <option value="Business & Management">Business & Management</option>
+              <option value="Arts & Humanities">Arts & Humanities</option>
+              <option value="Law">Law</option>
+              <option value="Other">Other (Type below)</option>
+            </select>
+            {isOtherField && (
+              <input 
+                type="text" 
+                placeholder="e.g. Architecture" 
+                className="w-full p-3 border border-border rounded-lg text-sm focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary mb-3 font-medium text-navy shadow-sm transition-all animate-in fade-in"
+                value={form.course}
+                onChange={e => setForm({ ...form, course: e.target.value })}
+                onKeyDown={e => { if (e.key === 'Enter' && form.course.trim()) handleNext(); }}
+              />
+            )}
             <div className="flex justify-between items-center mt-2">
               <button onClick={handlePrev} className="text-xs font-semibold text-muted-foreground hover:text-navy transition-colors">← Back</button>
               <Button onClick={handleNext} disabled={!form.course.trim()} className="bg-navy hover:bg-navy-light text-white text-xs h-9 px-6 rounded-full font-bold shadow-md transition-transform hover:scale-105">Next</Button>

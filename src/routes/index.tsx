@@ -390,7 +390,7 @@ function HomePage() {
                       <Link to="/opportunities/$slug" params={{ slug: opp.slug }} className="font-bold text-sm text-navy hover:text-secondary line-clamp-1 flex-1">
                         {opp.title}
                       </Link>
-                      <span className="shrink-0 bg-red-100 text-red-700 text-[10px] font-bold px-2 py-1 rounded-full uppercase">
+                      <span className={`shrink-0 text-[10px] font-bold px-2 py-1 rounded-full uppercase ${daysUntil(opp.deadline) !== null && daysUntil(opp.deadline)! < 7 ? 'bg-red-100 text-red-700' : 'bg-muted text-muted-foreground'}`}>
                         {daysUntil(opp.deadline) === 0 ? "Today" : `${daysUntil(opp.deadline)} Days`}
                       </span>
                     </div>

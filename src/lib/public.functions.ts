@@ -78,15 +78,17 @@ export const getFaqs = createServerFn({ method: "GET" }).handler(async () => {
   return response.json();
 });
 
-export async function addBlogComment(slug: string, data: { author_name: string; content: string }) {
-  const res = await fetch(`${API_BASE_URL}/blog/${slug}/comments`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify(data),
+export const addBlogComment = createServerFn({ method: "POST" })
+  .inputValidator((input: { slug: string; author_name: string; content: string }) => input)
+  .handler(async ({ data }) => {
+    const res = await fetch(`${API_BASE_URL}/blog/${data.slug}/comments`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ author_name: data.author_name, content: data.content }),
+    });
+    if (!res.ok) throw new Error("Failed to post comment");
+    return res.json();
   });
-  if (!res.ok) throw new Error("Failed to post comment");
-  return res.json();
-}

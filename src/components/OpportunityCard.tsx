@@ -107,7 +107,7 @@ export function OpportunityCard({ opportunity }: { opportunity: OpportunityCardD
             <span
               className={cn(
                 "inline-flex items-center gap-1.5 text-xs font-bold",
-                days <= 14 ? "text-destructive" : "text-muted-foreground",
+                days < 7 ? "text-destructive" : "text-muted-foreground",
               )}
             >
               <Timer className="h-3.5 w-3.5" />
