@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { WhatsAppBanner } from "@/components/WhatsAppBanner";
 import { NewsletterWidget } from "@/components/NewsletterWidget";
 import { AdBanner } from "@/components/AdBanner";
+import { AdsterraNativeBanner } from "@/components/AdsterraNativeBanner";
 
 export const Route = createFileRoute("/opportunities/$slug")({
   loader: async ({ context, params }) => {
@@ -190,6 +191,9 @@ function OpportunityDetailPage() {
           {/* Details Sections */}
           <DetailSection title="Eligibility Requirements" content={o.eligibility} />
           <DetailSection title="Benefits" content={o.benefits} />
+          
+          <AdsterraNativeBanner />
+          
           <DetailSection title="Required Documents" content={o.required_documents} />
           <DetailSection title="How to Apply (Step by Step)" content={o.application_procedure} />
 

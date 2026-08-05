@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Search, ChevronRight, Mail, Download, Clock, TrendingUp } from "lucide-react";
@@ -8,6 +8,7 @@ import { SiteLayout } from "@/components/layout/SiteLayout";
 import { OpportunityCard } from "@/components/OpportunityCard";
 import { ScholarshipQuiz } from "@/components/ScholarshipQuiz";
 import { AdBanner } from "@/components/AdBanner";
+import { AdsterraNativeBanner } from "@/components/AdsterraNativeBanner";
 import { homeQuery, blogListQuery } from "@/lib/queries";
 import { Loader2 } from "lucide-react";
 import { getImageUrl, daysUntil, type OpportunityCardData } from "@/lib/sc-shared";
@@ -187,8 +188,10 @@ function HomePage() {
 
                     {/* Module Layout (Thumbnail left, text right) */}
                     <div className="flex flex-col gap-5">
-                      {latestOpportunities.slice(3, 8).map((opp) => (
-                        <div key={opp.id} className="group flex gap-4 bg-white p-2.5 sm:p-3 rounded-lg border border-border shadow-sm hover:shadow-card transition-all">
+                      {latestOpportunities.slice(3, 8).map((opp, index) => (
+                        <Fragment key={opp.id}>
+                          {index === 2 && <AdsterraNativeBanner />}
+                          <div className="group flex gap-4 bg-white p-2.5 sm:p-3 rounded-lg border border-border shadow-sm hover:shadow-card transition-all">
                           <Link to="/opportunities/$slug" params={{ slug: opp.slug }} className="shrink-0 w-[110px] h-[110px] sm:w-[220px] sm:h-[160px] overflow-hidden rounded border border-border/50 bg-muted">
                             <img 
                               src={getImageUrl(opp.featured_image ?? opp.image_url)} 
@@ -215,6 +218,7 @@ function HomePage() {
                             )}
                           </div>
                         </div>
+                        </Fragment>
                       ))}
                     </div>
                   </>
