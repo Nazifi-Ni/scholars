@@ -55,7 +55,7 @@ function HomePage() {
   const remainingLatest = latestOpportunities.slice(0, 6);
   
   const closingSoon = [...latestOpportunities]
-    .filter(o => o.deadline && daysUntil(o.deadline) !== null && daysUntil(o.deadline)! >= 0)
+    .filter(o => o.deadline && daysUntil(o.deadline) !== null && daysUntil(o.deadline)! >= 0 && daysUntil(o.deadline)! < 7)
     .sort((a, b) => new Date(a.deadline!).getTime() - new Date(b.deadline!).getTime())
     .slice(0, 4);
 
