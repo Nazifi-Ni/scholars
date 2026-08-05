@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "@tanstack/react-router";
 import { Search, Loader2 } from "lucide-react";
+import { searchOpportunities } from "@/lib/public.functions";
 
 export function ScholarshipQuiz() {
   const navigate = useNavigate();
@@ -22,20 +23,29 @@ export function ScholarshipQuiz() {
   const handleNext = () => setStep(s => s + 1);
   const handlePrev = () => setStep(s => s - 1);
 
-  const calculateMatches = () => {
+  const calculateMatches = async () => {
     setLoading(true);
-    // Fake calculation delay
-    setTimeout(() => {
+    try {
+      const filters = {
+        degree: form.degree ? form.degree.toLowerCase() : undefined,
+        country: form.country && form.country !== 'Europe' && form.country !== 'Anywhere' ? form.country.toLowerCase() : undefined,
+        funding: form.funding ? form.funding : undefined,
+        q: form.course || undefined
+      };
+      const res = await searchOpportunities({ data: filters });
+      setMatchCount(res.count || 0);
+    } catch (e) {
+      setMatchCount(0);
+    } finally {
       setLoading(false);
-      setMatchCount(Math.floor(Math.random() * 20) + 5); // random 5 to 25 matches
       setStep(6);
-    }, 1500);
+    }
   };
 
   const handleViewMatches = () => {
     navigate({
       to: "/opportunities",
-      search: {
+      search: matchCount === 0 ? {} : {
         degree: form.degree ? form.degree.toLowerCase() : undefined,
         country: form.country && form.country !== 'Europe' && form.country !== 'Anywhere' ? form.country.toLowerCase() : undefined,
         funding: form.funding ? form.funding : undefined,
@@ -230,19 +240,22 @@ export function ScholarshipQuiz() {
         )}
 
         {step === 6 && (
-          <div className="animate-in fade-in zoom-in duration-500 text-center py-4">
-            <div className="mx-auto h-20 w-20 bg-green-100 rounded-full flex items-center justify-center mb-5 shadow-inner relative overflow-hidden">
-              <div className="absolute inset-0 bg-secondary/20 animate-ping"></div>
-              <span className="text-4xl relative z-10">🎉</span>
+          <div className="animate-in fade-in zoom-in-95 duration-500 text-center py-4">
+            <div className="h-20 w-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <span className="text-4xl">{matchCount === 0 ? "🧐" : "🎉"}</span>
             </div>
-            <h4 className="text-2xl font-black text-navy mb-2 font-heading tracking-tight">We found {matchCount} matches!</h4>
-            <p className="text-sm text-muted-foreground mb-6 font-sans">
-              Based on your profile, we've found highly relevant opportunities that fit your criteria perfectly.
+            <h4 className="text-2xl font-bold text-navy font-heading mb-3">
+              {matchCount === 0 ? "No exact matches found" : `We found ${matchCount} matches!`}
+            </h4>
+            <p className="text-sm text-navy-foreground/70 mb-8 max-w-sm mx-auto">
+              {matchCount === 0 
+                ? "Try broadening your criteria or browse all available opportunities." 
+                : "Based on your profile, we've found highly relevant opportunities that fit your criteria perfectly."}
             </p>
-            <Button onClick={handleViewMatches} className="w-full bg-secondary hover:bg-green-600 text-white font-bold rounded-full h-12 text-[15px] shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
-              View Your Matches
+            <Button onClick={handleViewMatches} className="w-full bg-secondary hover:bg-green-600 text-white font-bold h-12 rounded-full text-base shadow-lg transition-transform hover:scale-[1.02]">
+              {matchCount === 0 ? "Browse All Opportunities" : "View Your Matches"}
             </Button>
-            <button onClick={() => { setStep(1); setForm({ degree: '', country: '', course: '', funding: '', nationality: '' }); }} className="mt-5 text-xs font-semibold text-muted-foreground hover:text-navy underline transition-colors">
+            <button onClick={() => setStep(1)} className="mt-6 text-sm font-semibold text-muted-foreground hover:text-navy transition-colors underline underline-offset-4">
               Start Over
             </button>
           </div>
