@@ -2,10 +2,16 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useAuth } from '@/hooks/use-auth';
 import { useEffect, useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { toast } from 'sonner';
+import { Edit2, Trash2, PlusCircle, LayoutList, Layers, Link as LinkIcon, Image as ImageIcon, FileText } from 'lucide-react';
 
 export const Route = createFileRoute('/admin/opportunities')({
   component: AdminOpportunities,
@@ -15,284 +21,404 @@ function AdminOpportunities() {
   const { token } = useAuth();
   const [opportunities, setOpportunities] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingId, setEditingId] = useState<number | null>(null);
   
-  const formRef = useRef<HTMLFormElement>(null);
+  // Modals
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
+  
+  // Form State
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [formData, setFormData] = useState<any>({
+    title: '', slug: '', summary: '', eligibility: '', benefits: '',
+    opportunity_type: 'scholarship', category_id: '', funding_type: 'fully_funded',
+    status: 'published', degree_levels: '["Bachelors"]', is_featured: false,
+    application_link: '', official_website: '', required_documents: '',
+    application_procedure: '', deadline: ''
+  });
 
   const fetchData = async () => {
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api';
-    
-    // Fetch opportunities
-    const resOpps = await fetch(`${API_BASE_URL}/admin/opportunities`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    if (resOpps.ok) setOpportunities(await resOpps.json());
+    try {
+      const resOpps = await fetch(`${API_BASE_URL}/admin/opportunities`, { headers: { 'Authorization': `Bearer ${token}` } });
+      if (resOpps.ok) setOpportunities(await resOpps.json());
 
-    // Fetch categories for dropdown
-    const resCats = await fetch(`${API_BASE_URL}/admin/categories`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    if (resCats.ok) setCategories(await resCats.json());
+      const resCats = await fetch(`${API_BASE_URL}/admin/categories`, { headers: { 'Authorization': `Bearer ${token}` } });
+      if (resCats.ok) setCategories(await resCats.json());
+    } catch (e) {
+      toast.error('Failed to load data');
+    }
   };
 
-  useEffect(() => {
-    if (token) fetchData();
-  }, [token]);
+  useEffect(() => { if (token) fetchData(); }, [token]);
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this opportunity?')) return;
+  const handleDelete = async () => {
+    if (!deleteId) return;
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api';
-    const res = await fetch(`${API_BASE_URL}/admin/opportunities/${id}`, {
+    
+    const promise = fetch(`${API_BASE_URL}/admin/opportunities/${deleteId}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}` }
+    }).then(async (res) => {
+      if (!res.ok) throw new Error('Failed to delete');
+      setOpportunities(opportunities.filter(o => o.id !== deleteId));
+      setDeleteId(null);
     });
-    if (res.ok) setOpportunities(opportunities.filter(o => o.id !== id));
+
+    toast.promise(promise, {
+      loading: 'Deleting opportunity...',
+      success: 'Opportunity deleted successfully!',
+      error: 'Failed to delete opportunity.'
+    });
   };
 
   const handleEdit = (opp: any) => {
     setEditingId(opp.id);
-    // Defer modal opening to next tick to fix INP (Interaction to Next Paint) issue
-    setTimeout(() => {
-      setIsModalOpen(true);
-      // Populate form next tick after modal mounts
-      setTimeout(() => {
-        if (!formRef.current) return;
-        const form = formRef.current;
-        (form.elements.namedItem('title') as HTMLInputElement).value = opp.title;
-        (form.elements.namedItem('slug') as HTMLInputElement).value = opp.slug;
-        (form.elements.namedItem('summary') as HTMLTextAreaElement).value = opp.summary || '';
-        (form.elements.namedItem('eligibility') as HTMLTextAreaElement).value = opp.eligibility || '';
-        (form.elements.namedItem('benefits') as HTMLTextAreaElement).value = opp.benefits || '';
-        (form.elements.namedItem('opportunity_type') as HTMLSelectElement).value = opp.opportunity_type;
-        (form.elements.namedItem('category_id') as HTMLSelectElement).value = opp.category_id || '';
-        (form.elements.namedItem('funding_type') as HTMLSelectElement).value = opp.funding_type;
-        (form.elements.namedItem('status') as HTMLSelectElement).value = opp.status;
-        (form.elements.namedItem('degree_levels') as HTMLInputElement).value = opp.degree_levels ? JSON.stringify(opp.degree_levels) : '["Bachelors"]';
-        (form.elements.namedItem('is_featured') as HTMLInputElement).checked = !!opp.is_featured;
-        (form.elements.namedItem('application_link') as HTMLInputElement).value = opp.application_link || '';
-        (form.elements.namedItem('official_website') as HTMLInputElement).value = opp.official_website || '';
-        (form.elements.namedItem('required_documents') as HTMLTextAreaElement).value = opp.required_documents || '';
-        (form.elements.namedItem('application_procedure') as HTMLTextAreaElement).value = opp.application_procedure || '';
-        (form.elements.namedItem('deadline') as HTMLInputElement).value = opp.deadline ? opp.deadline.split('T')[0] : '';
-      }, 100);
-    }, 10);
+    setFormData({
+      title: opp.title || '',
+      slug: opp.slug || '',
+      summary: opp.summary || '',
+      eligibility: opp.eligibility || '',
+      benefits: opp.benefits || '',
+      opportunity_type: opp.opportunity_type || 'scholarship',
+      category_id: opp.category_id ? String(opp.category_id) : '',
+      funding_type: opp.funding_type || 'fully_funded',
+      status: opp.status || 'published',
+      degree_levels: opp.degree_levels ? JSON.stringify(opp.degree_levels) : '["Bachelors"]',
+      is_featured: !!opp.is_featured,
+      application_link: opp.application_link || '',
+      official_website: opp.official_website || '',
+      required_documents: opp.required_documents || '',
+      application_procedure: opp.application_procedure || '',
+      deadline: opp.deadline ? opp.deadline.split('T')[0] : ''
+    });
+    setIsModalOpen(true);
   };
 
   const handleCreate = () => {
     setEditingId(null);
-    // Defer modal opening to next tick to fix INP issue
-    setTimeout(() => {
-      setIsModalOpen(true);
-      setTimeout(() => {
-        if (formRef.current) formRef.current.reset();
-      }, 50);
-    }, 10);
+    setFormData({
+      title: '', slug: '', summary: '', eligibility: '', benefits: '',
+      opportunity_type: 'scholarship', category_id: '', funding_type: 'fully_funded',
+      status: 'published', degree_levels: '["Bachelors"]', is_featured: false,
+      application_link: '', official_website: '', required_documents: '',
+      application_procedure: '', deadline: ''
+    });
+    setIsModalOpen(true);
+  };
+
+  const handleFieldChange = (field: string, value: any) => {
+    setFormData((prev: any) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formRef.current) return;
     
-    const formData = new FormData(formRef.current);
-    
-    // Convert string array to proper format for API
-    try {
-      const degreesStr = formData.get('degree_levels') as string;
-      const degreesArr = JSON.parse(degreesStr);
-      formData.set('degree_levels', JSON.stringify(degreesArr));
-    } catch (e) {
-      alert("Degree levels must be a valid JSON array like [\"Bachelors\", \"Masters\"]");
-      return;
-    }
-
-    if (editingId) {
-      formData.append('_method', 'PUT'); // Laravel spoofing for PUT with FormData
-    }
-
-    const url = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api';
-    const endpoint = editingId ? `/admin/opportunities/${editingId}` : `/admin/opportunities`;
-    
-    const res = await fetch(url + endpoint, {
-      method: 'POST', // Always POST when using FormData (with _method=PUT for updates)
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json'
-      },
-      body: formData
+    const formPayload = new FormData();
+    Object.keys(formData).forEach(key => {
+      if (key === 'is_featured') {
+        formPayload.append(key, formData[key] ? '1' : '0');
+      } else if (key === 'degree_levels') {
+        try {
+          formPayload.append(key, JSON.stringify(JSON.parse(formData[key])));
+        } catch(err) {
+          toast.error("Degree levels must be a valid JSON array like [\"Bachelors\"]");
+          return;
+        }
+      } else {
+        formPayload.append(key, formData[key] || '');
+      }
     });
 
-    if (res.ok) {
+    const fileInput = document.getElementById('image') as HTMLInputElement;
+    if (fileInput && fileInput.files && fileInput.files[0]) {
+      formPayload.append('image', fileInput.files[0]);
+    }
+
+    if (editingId) formPayload.append('_method', 'PUT');
+
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api';
+    const endpoint = editingId ? `/admin/opportunities/${editingId}` : `/admin/opportunities`;
+    
+    const promise = fetch(API_BASE_URL + endpoint, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' },
+      body: formPayload
+    }).then(async (res) => {
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || 'Error saving data');
+      }
       setIsModalOpen(false);
       fetchData();
-    } else {
-      const error = await res.json();
-      alert("Error saving: " + JSON.stringify(error.errors || error.message));
-    }
+    });
+
+    toast.promise(promise, {
+      loading: 'Saving opportunity...',
+      success: 'Opportunity saved successfully!',
+      error: (err) => err.message
+    });
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900">Manage Opportunities</h1>
-        <Button className="bg-blue-600" onClick={handleCreate}>Create Opportunity</Button>
+    <div className="space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Opportunities</h1>
+          <p className="text-sm text-gray-500 mt-1">Manage scholarships, jobs, and internships.</p>
+        </div>
+        <Button onClick={handleCreate} className="bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-200">
+          <PlusCircle className="w-4 h-4 mr-2" /> Create Opportunity
+        </Button>
       </div>
       
-      <div className="rounded-md border bg-white overflow-hidden shadow-sm">
-        <table className="w-full text-sm text-left">
-          <thead className="border-b bg-gray-50 text-gray-700">
-            <tr>
-              <th className="px-6 py-3 font-semibold">Title</th>
-              <th className="px-6 py-3 font-semibold">Type</th>
-              <th className="px-6 py-3 font-semibold">Status</th>
-              <th className="px-6 py-3 font-semibold text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {opportunities.map((opp) => (
-              <tr key={opp.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 font-medium text-gray-900">{opp.title}</td>
-                <td className="px-6 py-4 text-gray-500 capitalize">{opp.opportunity_type?.replace('-', ' ')}</td>
-                <td className="px-6 py-4">
-                  <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${opp.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                    {opp.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-right space-x-3">
-                  <button onClick={() => handleEdit(opp)} className="text-blue-600 hover:text-blue-900 font-medium">Edit</button>
-                  <button onClick={() => handleDelete(opp.id)} className="text-red-600 hover:text-red-900 font-medium">Delete</button>
-                </td>
-              </tr>
-            ))}
-            {opportunities.length === 0 && (
+      {/* Table */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm text-left">
+            <thead className="bg-gray-50/50 text-gray-500 font-medium border-b border-gray-100">
               <tr>
-                <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
-                  No opportunities found. Click "Create Opportunity" to add one.
-                </td>
+                <th className="px-6 py-4">Title</th>
+                <th className="px-6 py-4">Type & Category</th>
+                <th className="px-6 py-4">Status</th>
+                <th className="px-6 py-4 text-right">Actions</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {opportunities.map((opp) => (
+                <tr key={opp.id} className="hover:bg-gray-50/50 transition-colors group">
+                  <td className="px-6 py-4">
+                    <div className="font-semibold text-gray-900 line-clamp-1">{opp.title}</div>
+                    <div className="text-xs text-gray-400 mt-1">{new Date(opp.created_at).toLocaleDateString()}</div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex flex-col gap-1.5 items-start">
+                      <Badge variant="outline" className="capitalize bg-indigo-50 text-indigo-700 border-indigo-100">
+                        {opp.opportunity_type?.replace('_', ' ')}
+                      </Badge>
+                      {opp.category && <span className="text-xs text-gray-500">{opp.category.name}</span>}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <Badge variant={opp.status === 'published' ? 'default' : 'secondary'} className={opp.status === 'published' ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-100 border-0' : 'bg-amber-100 text-amber-800 hover:bg-amber-100 border-0'}>
+                      {opp.status}
+                    </Badge>
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50" onClick={() => handleEdit(opp)}>
+                        <Edit2 className="h-4 w-4" />
+                      </Button>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50" onClick={() => setDeleteId(opp.id)}>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {opportunities.length === 0 && (
+                <tr>
+                  <td colSpan={4} className="px-6 py-12 text-center text-gray-500">
+                    <div className="flex flex-col items-center justify-center">
+                      <div className="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+                        <FileText className="h-6 w-6 text-gray-400" />
+                      </div>
+                      <p>No opportunities found.</p>
+                    </div>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the opportunity from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} className="bg-red-600 hover:bg-red-700">Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Create/Edit Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>{editingId ? 'Edit Opportunity' : 'Create Opportunity'}</DialogTitle>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col p-0 gap-0 bg-gray-50">
+          <DialogHeader className="px-6 py-4 bg-white border-b border-gray-100">
+            <DialogTitle className="text-xl">{editingId ? 'Edit Opportunity' : 'Create Opportunity'}</DialogTitle>
           </DialogHeader>
-          <form ref={formRef} onSubmit={handleSubmit} className="space-y-4 mt-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="title">Title</Label>
-                <Input id="title" name="title" required />
+          
+          <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
+            <Tabs defaultValue="basic" className="w-full">
+              <div className="bg-white px-6 pt-2 border-b border-gray-100 sticky top-0 z-10">
+                <TabsList className="w-full justify-start h-auto bg-transparent p-0 gap-6">
+                  <TabsTrigger value="basic" className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 py-3 text-sm font-medium">
+                    <LayoutList className="w-4 h-4 mr-2" /> Basic Info
+                  </TabsTrigger>
+                  <TabsTrigger value="details" className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 py-3 text-sm font-medium">
+                    <Layers className="w-4 h-4 mr-2" /> Details
+                  </TabsTrigger>
+                  <TabsTrigger value="links" className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 py-3 text-sm font-medium">
+                    <LinkIcon className="w-4 h-4 mr-2" /> Links & Media
+                  </TabsTrigger>
+                </TabsList>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="slug">Slug (e.g. my-scholarship-2026)</Label>
-                <Input id="slug" name="slug" required />
+
+              <div className="p-6">
+                <TabsContent value="basic" className="space-y-6 mt-0">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label>Title</Label>
+                      <Input value={formData.title} onChange={e => handleFieldChange('title', e.target.value)} required placeholder="e.g. Oxford Full Scholarship" className="bg-white" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Slug</Label>
+                      <Input value={formData.slug} onChange={e => handleFieldChange('slug', e.target.value)} required placeholder="e.g. oxford-scholarship-2026" className="bg-white" />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Summary</Label>
+                    <Textarea value={formData.summary} onChange={e => handleFieldChange('summary', e.target.value)} className="bg-white h-24" placeholder="Brief description..." />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="space-y-2">
+                      <Label>Type</Label>
+                      <Select value={formData.opportunity_type} onValueChange={v => handleFieldChange('opportunity_type', v)}>
+                        <SelectTrigger className="bg-white"><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="scholarship">Scholarship</SelectItem>
+                          <SelectItem value="internship">Internship</SelectItem>
+                          <SelectItem value="job">Job</SelectItem>
+                          <SelectItem value="grant">Grant</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Category</Label>
+                      <Select value={formData.category_id} onValueChange={v => handleFieldChange('category_id', v)}>
+                        <SelectTrigger className="bg-white"><SelectValue placeholder="Select Category" /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="none">No Category</SelectItem>
+                          {categories.map((c: any) => (
+                            <SelectItem key={c.id} value={String(c.id)}>{c.name}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Funding</Label>
+                      <Select value={formData.funding_type} onValueChange={v => handleFieldChange('funding_type', v)}>
+                        <SelectTrigger className="bg-white"><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="fully_funded">Fully Funded</SelectItem>
+                          <SelectItem value="partially_funded">Partially Funded</SelectItem>
+                          <SelectItem value="paid">Paid</SelectItem>
+                          <SelectItem value="unpaid">Unpaid</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="details" className="space-y-6 mt-0">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label>Eligibility</Label>
+                      <Textarea value={formData.eligibility} onChange={e => handleFieldChange('eligibility', e.target.value)} className="bg-white h-40" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Benefits</Label>
+                      <Textarea value={formData.benefits} onChange={e => handleFieldChange('benefits', e.target.value)} className="bg-white h-40" />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label>Required Documents</Label>
+                      <Textarea value={formData.required_documents} onChange={e => handleFieldChange('required_documents', e.target.value)} className="bg-white h-40" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Application Procedure</Label>
+                      <Textarea value={formData.application_procedure} onChange={e => handleFieldChange('application_procedure', e.target.value)} className="bg-white h-40" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Degree Levels (JSON Array)</Label>
+                    <Input value={formData.degree_levels} onChange={e => handleFieldChange('degree_levels', e.target.value)} className="bg-white font-mono text-sm" />
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="links" className="space-y-6 mt-0">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label>Application Link</Label>
+                      <Input value={formData.application_link} onChange={e => handleFieldChange('application_link', e.target.value)} type="url" className="bg-white" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Official Website</Label>
+                      <Input value={formData.official_website} onChange={e => handleFieldChange('official_website', e.target.value)} type="url" className="bg-white" />
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label>Deadline</Label>
+                      <Input value={formData.deadline} onChange={e => handleFieldChange('deadline', e.target.value)} type="date" className="bg-white" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Cover Image</Label>
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded bg-gray-100 border border-gray-200 flex items-center justify-center shrink-0">
+                          <ImageIcon className="w-5 h-5 text-gray-400" />
+                        </div>
+                        <Input id="image" type="file" accept="image/*" className="bg-white cursor-pointer file:cursor-pointer file:border-0 file:bg-gray-100 file:text-gray-700 file:font-medium file:mr-4 file:px-4 file:py-1 file:rounded-md hover:file:bg-gray-200" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-white border border-gray-200 rounded-xl space-y-4">
+                    <h3 className="font-semibold text-gray-900">Publishing Settings</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label>Status</Label>
+                        <Select value={formData.status} onValueChange={v => handleFieldChange('status', v)}>
+                          <SelectTrigger className="bg-white"><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="published">Published</SelectItem>
+                            <SelectItem value="draft">Draft</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="flex items-center space-x-3 pt-8">
+                        <input 
+                          type="checkbox" 
+                          id="is_featured" 
+                          checked={formData.is_featured} 
+                          onChange={e => handleFieldChange('is_featured', e.target.checked)}
+                          className="w-5 h-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 cursor-pointer"
+                        />
+                        <Label htmlFor="is_featured" className="cursor-pointer font-medium">Feature on Homepage</Label>
+                      </div>
+                    </div>
+                  </div>
+                </TabsContent>
               </div>
-            </div>
+            </Tabs>
             
-            <div className="space-y-2">
-              <Label htmlFor="summary">Summary</Label>
-              <Textarea id="summary" name="summary" />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="eligibility">Eligibility</Label>
-                <Textarea id="eligibility" name="eligibility" className="h-32" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="benefits">Benefits</Label>
-                <Textarea id="benefits" name="benefits" className="h-32" />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="required_documents">Required Documents</Label>
-                <Textarea id="required_documents" name="required_documents" className="h-32" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="application_procedure">Application Procedure</Label>
-                <Textarea id="application_procedure" name="application_procedure" className="h-32" />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="opportunity_type">Type</Label>
-                <select id="opportunity_type" name="opportunity_type" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background" required>
-                  <option value="scholarship">Scholarship</option>
-                  <option value="internship">Internship</option>
-                  <option value="job">Job</option>
-                  <option value="grant">Grant</option>
-                </select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="category_id">Category</Label>
-                <select id="category_id" name="category_id" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background">
-                  <option value="">No Category</option>
-                  {categories.map((c: any) => (
-                    <option key={c.id} value={c.id}>{c.name}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="funding_type">Funding</Label>
-                <select id="funding_type" name="funding_type" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background" required>
-                  <option value="fully_funded">Fully Funded</option>
-                  <option value="partially_funded">Partially Funded</option>
-                  <option value="unpaid">Unpaid</option>
-                  <option value="paid">Paid</option>
-                </select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="degree_levels">Degree Levels (JSON Array)</Label>
-                <Input id="degree_levels" name="degree_levels" defaultValue='["Bachelors", "Masters"]' required />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="status">Status</Label>
-                <select id="status" name="status" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background" required>
-                  <option value="published">Published</option>
-                  <option value="draft">Draft</option>
-                </select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="application_link">Apply Link (URL)</Label>
-                <Input id="application_link" name="application_link" type="url" />
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="official_website">Official Website (URL)</Label>
-              <Input id="official_website" name="official_website" type="url" />
-            </div>
-            <div className="grid grid-cols-2 gap-4 items-center">
-              <div className="space-y-2">
-                <Label htmlFor="deadline">Application Deadline</Label>
-                <Input id="deadline" name="deadline" type="date" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="image">Cover Image</Label>
-                <Input id="image" name="image" type="file" accept="image/*" />
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-2 mt-2">
-              <input type="checkbox" id="is_featured" name="is_featured" value="1" className="h-4 w-4" />
-              <Label htmlFor="is_featured">Feature on Homepage</Label>
-            </div>
-
-            <div className="flex justify-end space-x-2 pt-4 border-t">
-              <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-              <Button type="submit">Save Opportunity</Button>
+            <div className="p-6 bg-white border-t border-gray-100 flex items-center justify-end gap-3 mt-auto sticky bottom-0">
+              <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)}>Cancel</Button>
+              <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-200">
+                {editingId ? 'Save Changes' : 'Create Opportunity'}
+              </Button>
             </div>
           </form>
         </DialogContent>
