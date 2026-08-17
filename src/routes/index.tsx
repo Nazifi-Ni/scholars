@@ -15,20 +15,29 @@ import { getImageUrl, daysUntil, type OpportunityCardData } from "@/lib/sc-share
 export const Route = createFileRoute("/")({
   loader: async ({ context }) => {
     // Fetch home data and blog data in parallel
-    await Promise.all([
+    return await Promise.all([
       context.queryClient.ensureQueryData(homeQuery),
       context.queryClient.ensureQueryData(blogListQuery),
     ]);
   },
-  head: () => ({
-    meta: [
-      { title: "ScholarsConnect | Find Scholarships, Internships & Jobs" },
-      { name: "description", content: "Discover 1,500+ fully funded scholarships, internships, hackathons, and jobs worldwide. Let ScholarsConnect match you with your perfect opportunity today." },
-      { property: "og:title", content: "ScholarsConnect | Find Scholarships, Internships & Jobs" },
-      { property: "og:description", content: "Discover 1,500+ fully funded scholarships, internships, hackathons, and jobs worldwide." },
-    ],
-    links: [{ rel: "canonical", href: "/" }],
-  }),
+  head: ({ loaderData }) => {
+    const homeData = loaderData?.[0]; // from Promise.all array
+    const s = homeData?.settings || {};
+    const siteTitle = s.site_name ? `${s.site_name} | ${s.site_tagline || 'Find Scholarships'}` : "ScholarsConnect | Find Scholarships, Internships & Jobs";
+    const siteDesc = s.meta_description || "Discover 1,500+ fully funded scholarships, internships, hackathons, and jobs worldwide.";
+    const siteKeywords = s.meta_keywords || "scholarships, internships, jobs, study abroad, fully funded";
+    
+    return {
+      meta: [
+        { title: siteTitle },
+        { name: "description", content: siteDesc },
+        { name: "keywords", content: siteKeywords },
+        { property: "og:title", content: siteTitle },
+        { property: "og:description", content: siteDesc },
+      ],
+      links: [{ rel: "canonical", href: "/" }],
+    };
+  },
   component: HomePage,
   pendingComponent: () => (
     <SiteLayout>
