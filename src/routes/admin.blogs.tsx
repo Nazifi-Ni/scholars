@@ -291,8 +291,7 @@ function AdminBlogs() {
               </div>
             </div>
 
-              </div>
-            </div>
+
 
             <div className="p-4 bg-white border border-gray-200 rounded-xl space-y-4">
               <h3 className="font-semibold text-gray-900">SEO & Meta</h3>
