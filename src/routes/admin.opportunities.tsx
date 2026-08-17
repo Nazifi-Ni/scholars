@@ -33,7 +33,7 @@ function AdminOpportunities() {
     opportunity_type: 'scholarship', category_id: '', funding_type: 'fully_funded',
     status: 'published', degree_levels: '["Bachelors"]', is_featured: false,
     application_link: '', official_website: '', required_documents: '',
-    application_procedure: '', deadline: ''
+    application_procedure: '', deadline: '', meta_description: '', meta_keywords: ''
   });
 
   const fetchData = async () => {
@@ -89,7 +89,9 @@ function AdminOpportunities() {
       official_website: opp.official_website || '',
       required_documents: opp.required_documents || '',
       application_procedure: opp.application_procedure || '',
-      deadline: opp.deadline ? opp.deadline.split('T')[0] : ''
+      deadline: opp.deadline ? opp.deadline.split('T')[0] : '',
+      meta_description: opp.meta_description || '',
+      meta_keywords: opp.meta_keywords || ''
     });
     setIsModalOpen(true);
   };
@@ -101,7 +103,7 @@ function AdminOpportunities() {
       opportunity_type: 'scholarship', category_id: '', funding_type: 'fully_funded',
       status: 'published', degree_levels: '["Bachelors"]', is_featured: false,
       application_link: '', official_website: '', required_documents: '',
-      application_procedure: '', deadline: ''
+      application_procedure: '', deadline: '', meta_description: '', meta_keywords: ''
     });
     setIsModalOpen(true);
   };
@@ -269,6 +271,9 @@ function AdminOpportunities() {
                   <TabsTrigger value="links" className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 py-3 text-sm font-medium">
                     <LinkIcon className="w-4 h-4 mr-2" /> Links & Media
                   </TabsTrigger>
+                  <TabsTrigger value="seo" className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 py-3 text-sm font-medium">
+                    <FileText className="w-4 h-4 mr-2" /> SEO
+                  </TabsTrigger>
                 </TabsList>
               </div>
 
@@ -409,6 +414,17 @@ function AdminOpportunities() {
                         <Label htmlFor="is_featured" className="cursor-pointer font-medium">Feature on Homepage</Label>
                       </div>
                     </div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="seo" className="space-y-6 mt-0">
+                  <div className="space-y-2">
+                    <Label>Meta Description</Label>
+                    <Textarea value={formData.meta_description} onChange={e => handleFieldChange('meta_description', e.target.value)} placeholder="Brief description for search engines (max 160 chars)" className="bg-white h-24" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Meta Keywords</Label>
+                    <Input value={formData.meta_keywords} onChange={e => handleFieldChange('meta_keywords', e.target.value)} placeholder="scholarships, undergraduate, funding..." className="bg-white" />
                   </div>
                 </TabsContent>
               </div>

@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\StatsController as AdminStatsController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\SubscriberController as AdminSubscriberController;
 use App\Http\Controllers\Admin\CountryController as AdminCountryController;
+use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,4 +79,8 @@ Route::middleware(['auth:sanctum', \App\Http\Middleware\IsAdmin::class])->prefix
     // Countries
     Route::get('countries', [AdminCountryController::class, 'index']);
     Route::post('countries/{country}/toggle-featured', [AdminCountryController::class, 'toggleFeatured']);
+
+    // Settings
+    Route::get('settings', [AdminSettingController::class, 'index']);
+    Route::post('settings', [AdminSettingController::class, 'store']);
 });

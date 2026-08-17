@@ -28,7 +28,7 @@ function AdminBlogs() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [formData, setFormData] = useState<any>({
     title: '', slug: '', excerpt: '', content: '', category: '', tags: '',
-    reading_minutes: 4, status: 'published'
+    reading_minutes: 4, status: 'published', meta_description: '', meta_keywords: ''
   });
 
   const fetchBlogs = async () => {
@@ -77,7 +77,9 @@ function AdminBlogs() {
       category: blog.category || '',
       tags: blog.tags ? blog.tags.join(', ') : '',
       reading_minutes: blog.reading_minutes || 4,
-      status: blog.status || 'published'
+      status: blog.status || 'published',
+      meta_description: blog.meta_description || '',
+      meta_keywords: blog.meta_keywords || ''
     });
     setIsModalOpen(true);
   };
@@ -86,7 +88,7 @@ function AdminBlogs() {
     setEditingId(null);
     setFormData({
       title: '', slug: '', excerpt: '', content: '', category: '', tags: '',
-      reading_minutes: 4, status: 'published'
+      reading_minutes: 4, status: 'published', meta_description: '', meta_keywords: ''
     });
     setIsModalOpen(true);
   };
@@ -285,6 +287,23 @@ function AdminBlogs() {
                 <div className="space-y-2">
                   <Label>Cover Image</Label>
                   <Input id="image" type="file" accept="image/*" className="bg-white cursor-pointer" />
+                </div>
+              </div>
+            </div>
+
+              </div>
+            </div>
+
+            <div className="p-4 bg-white border border-gray-200 rounded-xl space-y-4">
+              <h3 className="font-semibold text-gray-900">SEO & Meta</h3>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Meta Description</Label>
+                  <Textarea value={formData.meta_description} onChange={e => handleFieldChange('meta_description', e.target.value)} placeholder="Brief description for search engines (max 160 chars)" className="bg-white h-20" />
+                </div>
+                <div className="space-y-2">
+                  <Label>Meta Keywords</Label>
+                  <Input value={formData.meta_keywords} onChange={e => handleFieldChange('meta_keywords', e.target.value)} placeholder="scholarships, undergraduate, funding..." className="bg-white" />
                 </div>
               </div>
             </div>

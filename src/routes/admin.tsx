@@ -40,8 +40,8 @@ function SidebarContent({ user, handleLogout }: { user: any, handleLogout: () =>
         <Link to="/admin/categories" className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-200 [&.active]:bg-gradient-to-r [&.active]:from-indigo-500/20 [&.active]:to-purple-600/20 [&.active]:text-white [&.active]:font-semibold [&.active]:border-l-2 [&.active]:border-indigo-400">
           <Tags size={18} /> <span className="text-sm">Categories</span>
         </Link>
-        <Link to="/admin/countries" className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-200 [&.active]:bg-gradient-to-r [&.active]:from-indigo-500/20 [&.active]:to-purple-600/20 [&.active]:text-white [&.active]:font-semibold [&.active]:border-l-2 [&.active]:border-indigo-400">
-          <Globe size={18} /> <span className="text-sm">Countries</span>
+        <Link to="/admin/settings" className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-200 [&.active]:bg-gradient-to-r [&.active]:from-indigo-500/20 [&.active]:to-purple-600/20 [&.active]:text-white [&.active]:font-semibold [&.active]:border-l-2 [&.active]:border-indigo-400">
+          <Globe size={18} /> <span className="text-sm">Global Settings</span>
         </Link>
 
         <div className="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-3 mt-8 px-2">Community</div>
