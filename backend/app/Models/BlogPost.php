@@ -31,4 +31,12 @@ class BlogPost extends Model
     {
         return $this->hasMany(BlogComment::class, 'blog_post_id');
     }
+
+    public function getFeaturedImageAttribute($value)
+    {
+        if ($value && !str_starts_with($value, 'http')) {
+            return rtrim(config('app.url'), '/') . $value;
+        }
+        return $value;
+    }
 }

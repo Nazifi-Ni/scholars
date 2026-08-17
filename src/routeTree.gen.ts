@@ -33,9 +33,9 @@ import { Route as OpportunitiesSlugRouteImport } from './routes/opportunities.$s
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminSubscribersRouteImport } from './routes/admin.subscribers'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminOpportunitiesRouteImport } from './routes/admin.opportunities'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
-import { Route as AdminCountriesRouteImport } from './routes/admin.countries'
 import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
 import { Route as AdminBlogsRouteImport } from './routes/admin.blogs'
 
@@ -159,6 +159,11 @@ const AdminSubscribersRoute = AdminSubscribersRouteImport.update({
   path: '/subscribers',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminOpportunitiesRoute = AdminOpportunitiesRouteImport.update({
   id: '/opportunities',
   path: '/opportunities',
@@ -167,11 +172,6 @@ const AdminOpportunitiesRoute = AdminOpportunitiesRouteImport.update({
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminCountriesRoute = AdminCountriesRouteImport.update({
-  id: '/countries',
-  path: '/countries',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
@@ -205,9 +205,9 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/admin/blogs': typeof AdminBlogsRoute
   '/admin/categories': typeof AdminCategoriesRoute
-  '/admin/countries': typeof AdminCountriesRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/opportunities': typeof AdminOpportunitiesRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/admin/users': typeof AdminUsersRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -235,9 +235,9 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/admin/blogs': typeof AdminBlogsRoute
   '/admin/categories': typeof AdminCategoriesRoute
-  '/admin/countries': typeof AdminCountriesRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/opportunities': typeof AdminOpportunitiesRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/admin/users': typeof AdminUsersRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -267,9 +267,9 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/admin/blogs': typeof AdminBlogsRoute
   '/admin/categories': typeof AdminCategoriesRoute
-  '/admin/countries': typeof AdminCountriesRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/opportunities': typeof AdminOpportunitiesRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/admin/users': typeof AdminUsersRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -300,9 +300,9 @@ export interface FileRouteTypes {
     | '/terms'
     | '/admin/blogs'
     | '/admin/categories'
-    | '/admin/countries'
     | '/admin/login'
     | '/admin/opportunities'
+    | '/admin/settings'
     | '/admin/subscribers'
     | '/admin/users'
     | '/blog/$slug'
@@ -330,9 +330,9 @@ export interface FileRouteTypes {
     | '/terms'
     | '/admin/blogs'
     | '/admin/categories'
-    | '/admin/countries'
     | '/admin/login'
     | '/admin/opportunities'
+    | '/admin/settings'
     | '/admin/subscribers'
     | '/admin/users'
     | '/blog/$slug'
@@ -361,9 +361,9 @@ export interface FileRouteTypes {
     | '/terms'
     | '/admin/blogs'
     | '/admin/categories'
-    | '/admin/countries'
     | '/admin/login'
     | '/admin/opportunities'
+    | '/admin/settings'
     | '/admin/subscribers'
     | '/admin/users'
     | '/blog/$slug'
@@ -567,6 +567,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSubscribersRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/opportunities': {
       id: '/admin/opportunities'
       path: '/opportunities'
@@ -579,13 +586,6 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/admin/login'
       preLoaderRoute: typeof AdminLoginRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/countries': {
-      id: '/admin/countries'
-      path: '/countries'
-      fullPath: '/admin/countries'
-      preLoaderRoute: typeof AdminCountriesRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/categories': {
@@ -608,9 +608,9 @@ declare module '@tanstack/react-router' {
 interface AdminRouteChildren {
   AdminBlogsRoute: typeof AdminBlogsRoute
   AdminCategoriesRoute: typeof AdminCategoriesRoute
-  AdminCountriesRoute: typeof AdminCountriesRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminOpportunitiesRoute: typeof AdminOpportunitiesRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
   AdminSubscribersRoute: typeof AdminSubscribersRoute
   AdminUsersRoute: typeof AdminUsersRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -619,9 +619,9 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminBlogsRoute: AdminBlogsRoute,
   AdminCategoriesRoute: AdminCategoriesRoute,
-  AdminCountriesRoute: AdminCountriesRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminOpportunitiesRoute: AdminOpportunitiesRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
   AdminSubscribersRoute: AdminSubscribersRoute,
   AdminUsersRoute: AdminUsersRoute,
   AdminIndexRoute: AdminIndexRoute,

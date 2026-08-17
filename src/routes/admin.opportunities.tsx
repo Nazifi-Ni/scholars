@@ -305,6 +305,9 @@ function AdminOpportunities() {
                           <SelectItem value="internship">Internship</SelectItem>
                           <SelectItem value="job">Job</SelectItem>
                           <SelectItem value="grant">Grant</SelectItem>
+                          <SelectItem value="competition">Competition</SelectItem>
+                          <SelectItem value="hackathon">Hackathon</SelectItem>
+                          <SelectItem value="course">Course</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>

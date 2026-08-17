@@ -19,4 +19,12 @@ class Opportunity extends Model
     public function university() { return $this->belongsTo(University::class); }
     public function organization() { return $this->belongsTo(Organization::class); }
     public function images() { return $this->hasMany(OpportunityImage::class); }
+
+    public function getFeaturedImageAttribute($value)
+    {
+        if ($value && !str_starts_with($value, 'http')) {
+            return rtrim(config('app.url'), '/') . $value;
+        }
+        return $value;
+    }
 }
