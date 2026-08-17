@@ -20,6 +20,15 @@ export const Route = createFileRoute("/")({
       context.queryClient.ensureQueryData(blogListQuery),
     ]);
   },
+  head: () => ({
+    meta: [
+      { title: "ScholarsConnect | Find Scholarships, Internships & Jobs" },
+      { name: "description", content: "Discover 1,500+ fully funded scholarships, internships, hackathons, and jobs worldwide. Let ScholarsConnect match you with your perfect opportunity today." },
+      { property: "og:title", content: "ScholarsConnect | Find Scholarships, Internships & Jobs" },
+      { property: "og:description", content: "Discover 1,500+ fully funded scholarships, internships, hackathons, and jobs worldwide." },
+    ],
+    links: [{ rel: "canonical", href: "/" }],
+  }),
   component: HomePage,
   pendingComponent: () => (
     <SiteLayout>
@@ -81,7 +90,7 @@ function HomePage() {
           {/* Subtle background decoration */}
           <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10 mix-blend-overlay"></div>
           
-          <div className="mx-auto max-w-7xl px-4 lg:px-8 relative z-10">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-6 font-heading tracking-tight animate-fade-up">
               Find Your Next <span className="text-transparent bg-clip-text bg-gradient-to-r from-highlight to-secondary">Opportunity</span>
             </h1>
@@ -104,12 +113,12 @@ function HomePage() {
         </div>
 
         {/* Global Ad Banner */}
-        <div className="mx-auto max-w-7xl px-4 mt-8 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 mt-8 lg:px-8">
           <AdBanner />
         </div>
 
         {/* 70/30 Main Grid */}
-        <div className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-12">
             
             {/* Left Column (67%) */}

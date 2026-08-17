@@ -14,7 +14,7 @@ export function ScholarshipQuiz() {
 
   const [form, setForm] = useState({
     degree: "",
-    country: "",
+    type: "",
     course: "",
     funding: "",
     nationality: ""
@@ -28,10 +28,14 @@ export function ScholarshipQuiz() {
     try {
       const filters = {
         degree: form.degree ? form.degree.toLowerCase() : undefined,
-        country: form.country && form.country !== 'Europe' && form.country !== 'Anywhere' ? form.country.toLowerCase() : undefined,
+        type: form.type ? form.type.toLowerCase().replace(/s$/, '') : undefined,
         funding: form.funding ? form.funding : undefined,
         q: form.course || undefined
       };
+      
+      // Artificial delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
       const res = await searchOpportunities({ data: filters });
       setMatchCount(res.count || 0);
     } catch (e) {
@@ -47,7 +51,7 @@ export function ScholarshipQuiz() {
       to: "/opportunities",
       search: matchCount === 0 ? {} : {
         degree: form.degree ? form.degree.toLowerCase() : undefined,
-        country: form.country && form.country !== 'Europe' && form.country !== 'Anywhere' ? form.country.toLowerCase() : undefined,
+        type: form.type ? form.type.toLowerCase().replace(/s$/, '') : undefined,
         funding: form.funding ? form.funding : undefined,
         q: form.course || undefined
       }
@@ -101,12 +105,12 @@ export function ScholarshipQuiz() {
 
         {step === 2 && (
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <label className="block text-sm font-semibold text-navy mb-3">Preferred study destination?</label>
+            <label className="block text-sm font-semibold text-navy mb-3">What type of opportunity?</label>
             <div className="grid grid-cols-2 gap-2">
-              {['USA', 'UK', 'Canada', 'Australia', 'Europe', 'Anywhere'].map(d => (
+              {['Scholarships', 'Internships', 'Jobs', 'Grants', 'Hackathons', 'Courses'].map(d => (
                 <button 
                   key={d} 
-                  onClick={() => { setForm({ ...form, country: d }); handleNext(); }}
+                  onClick={() => { setForm({ ...form, type: d }); handleNext(); }}
                   className="p-3 border border-border rounded-lg text-sm hover:border-secondary hover:bg-secondary/5 transition-all font-medium text-navy/80 hover:scale-[1.02] shadow-sm hover:shadow-md"
                 >
                   {d}
@@ -235,7 +239,7 @@ export function ScholarshipQuiz() {
               </div>
             </div>
             <h4 className="text-lg font-bold text-navy animate-pulse">Analyzing Profile...</h4>
-            <p className="text-xs text-muted-foreground mt-2">Scanning 1,500+ opportunities across {form.country || 'the globe'}</p>
+            <p className="text-xs text-muted-foreground mt-2">Scanning 1,500+ opportunities across the globe</p>
           </div>
         )}
 
