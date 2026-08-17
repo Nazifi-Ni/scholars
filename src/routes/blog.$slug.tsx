@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useSuspenseQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Clock, Tag, MessageCircle, Send } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
@@ -16,9 +16,12 @@ import { AdBanner } from "@/components/AdBanner";
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ context, params }) => {
     try {
-      return await context.queryClient.ensureQueryData(blogPostQuery(params.slug));
+      const data = await context.queryClient.ensureQueryData(blogPostQuery(params.slug));
+      if (!data?.post) throw notFound();
+      return data;
     } catch (e) {
-      throw new Error("Not found");
+      if (e instanceof Error && e.message === "Not found") throw notFound();
+      throw e;
     }
   },
   head: ({ loaderData }) => {
