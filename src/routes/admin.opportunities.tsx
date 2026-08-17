@@ -126,6 +126,8 @@ function AdminOpportunities() {
           toast.error("Degree levels must be a valid JSON array like [\"Bachelors\"]");
           return;
         }
+      } else if (key === 'category_id' && formData[key] === 'none') {
+        formPayload.append(key, '');
       } else {
         formPayload.append(key, formData[key] || '');
       }
