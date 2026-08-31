@@ -481,47 +481,7 @@ function HomePage() {
                 </div>
               </div>
 
-              {/* Stay Connected / Social Counters */}
-              <div className="bg-white p-5 rounded-lg border border-border shadow-sm">
-                <div className="mb-4 border-b-2 border-border pb-1">
-                  <h3 className="inline-block text-lg font-bold text-navy uppercase tracking-wide border-b-4 border-accent -mb-[3px] pb-1 font-heading">Stay Connected</h3>
-                </div>
-                <div className="grid grid-cols-2 gap-2 font-sans">
-                  <a href="#" className="flex flex-col items-center justify-center bg-blue-600 text-white rounded p-3 hover:bg-blue-700 transition-colors">
-                    <span className="font-bold text-sm">250k+</span>
-                    <span className="text-[10px] uppercase tracking-wider opacity-80">Followers</span>
-                  </a>
-                  <a href="#" className="flex flex-col items-center justify-center bg-green-500 text-white rounded p-3 hover:bg-green-600 transition-colors">
-                    <span className="font-bold text-sm">85k+</span>
-                    <span className="text-[10px] uppercase tracking-wider opacity-80">Subscribers</span>
-                  </a>
-                </div>
-              </div>
-
-              {/* Application Resources Sidebar Block */}
-              <div className="bg-gradient-to-b from-blue-50 to-white p-5 rounded-lg border border-blue-100 shadow-sm">
-                <div className="mb-4 border-b-2 border-border pb-1">
-                  <h3 className="inline-block text-lg font-bold text-navy uppercase tracking-wide border-b-4 border-blue-500 -mb-[3px] pb-1 font-heading">Free Resources</h3>
-                </div>
-                <ul className="space-y-3 font-sans">
-                  {[
-                    { name: 'Academic CV Template', icon: '📄' },
-                    { name: 'SOP Writing Guide', icon: '✍️' },
-                    { name: 'Recommendation Letter Guide', icon: '✉️' },
-                    { name: 'IELTS Preparation Kit', icon: '📚' },
-                    { name: 'Student Visa Guide', icon: '✈️' },
-                    { name: 'Interview Tips', icon: '🎯' },
-                  ].map(resource => (
-                    <li key={resource.name}>
-                      <a href="#" className="flex items-center gap-3 p-2 rounded hover:bg-blue-100/50 transition-colors group">
-                        <span className="text-xl">{resource.icon}</span>
-                        <span className="text-sm font-semibold text-navy/80 group-hover:text-secondary flex-1">{resource.name}</span>
-                        <Download className="h-3.5 w-3.5 text-muted-foreground group-hover:text-secondary" />
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              {/* Removed Stay Connected and Free Resources blocks to prevent AdSense "Low value content" and broken link penalties */}
 
               {/* Quick Links */}
               <div className="rounded-lg border border-border bg-white p-5 shadow-sm">
