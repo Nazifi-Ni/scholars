@@ -119,7 +119,7 @@ function BlogPostPage() {
           )}
 
           {/* Content */}
-          <div className="prose prose-lg prose-navy max-w-none font-sans leading-relaxed prose-a:text-secondary prose-a:font-semibold hover:prose-a:underline mb-12">
+          <div className="prose prose-base sm:prose-lg prose-navy max-w-none font-sans leading-relaxed prose-a:text-secondary prose-a:font-semibold hover:prose-a:underline mb-12 prose-headings:font-heading prose-headings:text-navy">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {post.content}
             </ReactMarkdown>
