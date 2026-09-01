@@ -48,7 +48,8 @@ class OpportunityController extends Controller
                 'application_procedure' => 'nullable|string',
                 'meta_title' => 'nullable|string|max:255',
                 'meta_description' => 'nullable|string',
-                'meta_keywords' => 'nullable|string'
+                'meta_keywords' => 'nullable|string',
+                'scholarsconnect_advice' => 'nullable|string'
             ]);
 
             $data['degree_levels'] = $this->handleJsonInput($data['degree_levels']);
@@ -109,9 +110,10 @@ class OpportunityController extends Controller
             'official_website' => 'nullable|url',
             'required_documents' => 'nullable|string',
             'application_procedure' => 'nullable|string',
-            'meta_title' => 'nullable|string|max:255',
-            'meta_description' => 'nullable|string',
-            'meta_keywords' => 'nullable|string'
+                'meta_title' => 'nullable|string|max:255',
+                'meta_description' => 'nullable|string',
+                'meta_keywords' => 'nullable|string',
+                'scholarsconnect_advice' => 'nullable|string'
         ]);
 
         $data['degree_levels'] = $this->handleJsonInput($data['degree_levels']);

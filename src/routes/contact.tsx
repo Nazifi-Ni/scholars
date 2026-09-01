@@ -27,9 +27,8 @@ function ContactPage() {
       </section>
       <section className="mx-auto grid max-w-4xl gap-5 px-4 py-14 sm:grid-cols-3 lg:px-8">
         {[
-          { icon: Mail, title: "General", value: "hello@scholarsconnect.africa" },
-          { icon: MessageSquare, title: "Support", value: "support@scholarsconnect.africa" },
-          { icon: Building2, title: "Partnerships", value: "partners@scholarsconnect.africa" },
+          { icon: Mail, title: "Email", value: "admin@scholarsconnect.com.ng" },
+          { icon: MessageSquare, title: "Phone", value: "07065274251" },
         ].map((c) => (
           <div key={c.title} className="rounded-2xl border border-border bg-card p-6 text-center shadow-soft card-hover">
             <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-accent/10 text-accent">

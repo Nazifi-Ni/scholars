@@ -89,6 +89,7 @@ function AdminOpportunities() {
       official_website: opp.official_website || '',
       required_documents: opp.required_documents || '',
       application_procedure: opp.application_procedure || '',
+      scholarsconnect_advice: opp.scholarsconnect_advice || '',
       deadline: opp.deadline ? opp.deadline.split('T')[0] : '',
       meta_description: opp.meta_description || '',
       meta_keywords: opp.meta_keywords || ''
@@ -103,7 +104,7 @@ function AdminOpportunities() {
       opportunity_type: 'scholarship', category_id: '', funding_type: 'fully_funded',
       status: 'published', degree_levels: '["Bachelors"]', is_featured: false,
       application_link: '', official_website: '', required_documents: '',
-      application_procedure: '', deadline: '', meta_description: '', meta_keywords: ''
+      application_procedure: '', scholarsconnect_advice: '', deadline: '', meta_description: '', meta_keywords: ''
     });
     setIsModalOpen(true);
   };
@@ -359,6 +360,11 @@ function AdminOpportunities() {
                     <div className="space-y-2">
                       <Label>Application Procedure</Label>
                       <Textarea value={formData.application_procedure} onChange={e => handleFieldChange('application_procedure', e.target.value)} className="bg-white h-40" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>ScholarsConnect Advice</Label>
+                      <Textarea value={formData.scholarsconnect_advice} onChange={e => handleFieldChange('scholarsconnect_advice', e.target.value)} placeholder="Exclusive advice to beat AdSense 'low value' flag" className="bg-white h-32 border-indigo-200 focus-visible:ring-indigo-500" />
+                      <p className="text-xs text-muted-foreground">This adds unique content to your listings to help with SEO and AdSense.</p>
                     </div>
                   </div>
                   <div className="space-y-2">

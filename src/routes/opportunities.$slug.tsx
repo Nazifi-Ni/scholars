@@ -193,6 +193,18 @@ function OpportunityDetailPage() {
           <DetailSection title="Required Documents" content={o.required_documents} />
           <DetailSection title="How to Apply (Step by Step)" content={o.application_procedure} />
 
+          {/* ScholarsConnect Advice */}
+          {o.scholarsconnect_advice && (
+            <div className="my-10 border-l-4 border-yellow-500 bg-yellow-50/50 p-6 sm:p-8 rounded-r-xl shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-4 opacity-10 text-6xl pointer-events-none">💡</div>
+              <h2 className="mb-4 flex items-center font-heading text-xl sm:text-2xl font-bold text-yellow-800 uppercase tracking-wide">
+                <span className="mr-2 text-2xl">💡</span> ScholarsConnect Advice
+              </h2>
+              <div className="prose prose-yellow prose-sm sm:prose-base max-w-none text-yellow-900/90 leading-relaxed font-sans">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{o.scholarsconnect_advice}</ReactMarkdown>
+              </div>
+            </div>
+          )}
           {/* Ad Placeholder inside content */}
           <AdBanner className="my-8" />
 
