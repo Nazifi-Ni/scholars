@@ -1,6 +1,8 @@
 // @ts-nocheck
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import {
   BadgeCheck, Calendar, ExternalLink, Globe2, GraduationCap, Building2,
   Mail, Star, Timer, Eye, Bookmark, ArrowRight, CheckCircle2, FileText, Info, HelpCircle
