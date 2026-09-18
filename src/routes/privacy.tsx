@@ -39,7 +39,7 @@ function PrivacyPage() {
           </section>
           <section>
             <h2 className="text-lg font-semibold text-foreground">5. Your Rights</h2>
-            <p className="mt-2">You may request access to, correction of, or deletion of your personal data at any time by contacting hello@scholarsconnect.africa.</p>
+            <p className="mt-2">You may request access to, correction of, or deletion of your personal data at any time by contacting admin@scholarsconnect.com.ng.</p>
           </section>
         </div>
       </section>
