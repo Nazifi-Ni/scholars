@@ -19,7 +19,11 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md text-navy shadow-sm border-b-[3px] border-highlight transition-all">
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-4 lg:px-8">
         <Link to="/" className="flex items-center gap-2 group">
-          <img src="/logo.png" alt="ScholarsConnect Logo" className="h-12 w-auto transition-transform group-hover:scale-105" />
+          <img
+            src="/logo.png"
+            alt="ScholarsConnect Logo"
+            className="h-12 w-auto transition-transform group-hover:scale-105"
+          />
         </Link>
 
         {/* Center/Right Navigation */}

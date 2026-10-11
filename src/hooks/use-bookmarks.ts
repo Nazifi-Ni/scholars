@@ -14,7 +14,7 @@ export function useBookmarks() {
         console.error("Failed to parse bookmarks", e);
       }
     };
-    
+
     load();
     window.addEventListener("storage", load);
     return () => window.removeEventListener("storage", load);

@@ -1,6 +1,22 @@
 import { Link } from "@tanstack/react-router";
-import { BadgeCheck, Bookmark, Timer, Building2, GraduationCap, MapPin, DollarSign, BookOpen, Share2 } from "lucide-react";
-import { fundingLabel, typeLabel, daysUntil, getImageUrl, type OpportunityCardData } from "@/lib/sc-shared";
+import {
+  BadgeCheck,
+  Bookmark,
+  Timer,
+  Building2,
+  GraduationCap,
+  MapPin,
+  DollarSign,
+  BookOpen,
+  Share2,
+} from "lucide-react";
+import {
+  fundingLabel,
+  typeLabel,
+  daysUntil,
+  getImageUrl,
+  type OpportunityCardData,
+} from "@/lib/sc-shared";
 import { cn } from "@/lib/utils";
 import { useBookmarks } from "@/hooks/use-bookmarks";
 
@@ -16,7 +32,7 @@ export function OpportunityCard({ opportunity }: { opportunity: OpportunityCardD
     const url = window.location.origin + "/opportunities/" + opportunity.slug;
     const text = `Check out this ${opportunity.title} on ScholarsConnect!`;
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
-    window.open(whatsappUrl, '_blank');
+    window.open(whatsappUrl, "_blank");
   };
 
   return (
@@ -27,24 +43,46 @@ export function OpportunityCard({ opportunity }: { opportunity: OpportunityCardD
     >
       {/* Top Banner Area with Logo */}
       <div className="w-full h-32 bg-gradient-to-r from-navy/5 to-navy/10 relative shrink-0 border-b border-border">
-        {opportunity.is_featured && (
-          <span className="absolute top-3 right-3 rounded bg-highlight/90 backdrop-blur-sm px-2.5 py-1 text-[10px] font-bold text-navy shadow-sm uppercase tracking-wider">
-            Featured
-          </span>
-        )}
-        <span className={cn("absolute top-3 left-3 rounded px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shadow-sm backdrop-blur-sm", 
-            opportunity.opportunity_type === 'scholarship' ? 'bg-blue-100/90 text-blue-800' :
-            opportunity.opportunity_type === 'internship' ? 'bg-purple-100/90 text-purple-800' :
-            'bg-white/90 text-navy'
-          )}>
-            {typeLabel(opportunity.opportunity_type)}
+        <div className="absolute top-3 right-3 flex items-center gap-1.5 z-10">
+          {opportunity.is_sponsored && (
+            <span className="rounded bg-amber-500/95 text-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shadow-sm">
+              Sponsored
+            </span>
+          )}
+          {opportunity.is_featured && !opportunity.is_sponsored && (
+            <span className="rounded bg-highlight/90 backdrop-blur-sm px-2.5 py-1 text-[10px] font-bold text-navy shadow-sm uppercase tracking-wider">
+              Featured
+            </span>
+          )}
+          {(opportunity.is_expired || (days !== null && days < 0)) && (
+            <span className="rounded bg-gray-700 text-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shadow-sm">
+              Closed
+            </span>
+          )}
+        </div>
+
+        <span
+          className={cn(
+            "absolute top-3 left-3 rounded px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shadow-sm backdrop-blur-sm",
+            opportunity.opportunity_type === "scholarship"
+              ? "bg-blue-100/90 text-blue-800"
+              : opportunity.opportunity_type === "internship"
+                ? "bg-purple-100/90 text-purple-800"
+                : opportunity.opportunity_type === "competition"
+                  ? "bg-amber-100/90 text-amber-800"
+                  : opportunity.opportunity_type === "grant"
+                    ? "bg-emerald-100/90 text-emerald-800"
+                    : "bg-white/90 text-navy",
+          )}
+        >
+          {typeLabel(opportunity.opportunity_type)}
         </span>
-        
+
         {/* Floating Logo */}
         <div className="absolute -bottom-8 left-5 h-16 w-16 rounded-xl border border-border bg-white shadow-md overflow-hidden flex items-center justify-center p-1 z-10">
           {opportunity.featured_image ? (
-            <img 
-              src={getImageUrl(opportunity.featured_image)} 
+            <img
+              src={getImageUrl(opportunity.featured_image)}
               alt={opportunity.title}
               className="h-full w-full object-cover rounded-lg"
               loading="lazy"
@@ -56,34 +94,44 @@ export function OpportunityCard({ opportunity }: { opportunity: OpportunityCardD
       </div>
 
       <div className="flex flex-col flex-1 p-5 pt-10">
+        {provider && (
+          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1 line-clamp-1">
+            {provider}
+          </span>
+        )}
         <h3 className="line-clamp-2 text-lg font-bold leading-snug text-navy transition-colors group-hover:text-secondary font-heading mb-3">
           {opportunity.title}
         </h3>
 
-        {/* Tags Row: Country, Funding, Degree */}
+        {/* Tags Row: Country, Funding, Degree (Only render when valid/applicable) */}
         <div className="flex flex-wrap gap-2 mb-4">
-          <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-1 text-[11px] font-semibold text-muted-foreground border border-border/50">
-            {opportunity.country ? (
-              <>{opportunity.country.flag_emoji} {opportunity.country.name}</>
-            ) : (
-              <><MapPin className="h-3 w-3" /> Global</>
-            )}
-          </span>
-          <span className="inline-flex items-center gap-1 rounded-md bg-green-50 px-2 py-1 text-[11px] font-semibold text-green-700 border border-green-100">
-            <DollarSign className="h-3 w-3" /> {fundingLabel(opportunity.funding_type)}
-          </span>
-          {opportunity.degree_levels && opportunity.degree_levels.length > 0 && (
-            <span className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-1 text-[11px] font-semibold text-blue-700 border border-blue-100">
-              <BookOpen className="h-3 w-3" /> {opportunity.degree_levels[0]}
-              {opportunity.degree_levels.length > 1 && <span className="opacity-70 ml-0.5">+{opportunity.degree_levels.length - 1}</span>}
+          {opportunity.country && (
+            <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-1 text-[11px] font-semibold text-muted-foreground border border-border/50">
+              {opportunity.country.flag_emoji} {opportunity.country.name}
             </span>
           )}
+          {fundingLabel(opportunity.funding_type) && (
+            <span className="inline-flex items-center gap-1 rounded-md bg-green-50 px-2 py-1 text-[11px] font-semibold text-green-700 border border-green-100">
+              <DollarSign className="h-3 w-3" /> {fundingLabel(opportunity.funding_type)}
+            </span>
+          )}
+          {opportunity.degree_levels &&
+            opportunity.degree_levels.length > 0 &&
+            opportunity.degree_levels[0] !== "not_applicable" &&
+            opportunity.degree_levels[0] !== "Not Applicable" && (
+              <span className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-1 text-[11px] font-semibold text-blue-700 border border-blue-100">
+                <BookOpen className="h-3 w-3" /> {opportunity.degree_levels[0]}
+                {opportunity.degree_levels.length > 1 && (
+                  <span className="opacity-70 ml-0.5">+{opportunity.degree_levels.length - 1}</span>
+                )}
+              </span>
+            )}
         </div>
 
         {/* Action Row: Save, Share, Deadline */}
         <div className="mt-auto pt-4 flex items-center justify-between border-t border-border/60">
           <div className="flex items-center gap-2">
-            <button 
+            <button
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -91,10 +139,15 @@ export function OpportunityCard({ opportunity }: { opportunity: OpportunityCardD
               }}
               className="flex items-center gap-1.5 rounded-md hover:bg-muted px-2 py-1 text-xs font-semibold text-muted-foreground transition-colors"
             >
-              <Bookmark className={cn("h-4 w-4 transition-colors", bookmarked ? "fill-secondary text-secondary" : "")} />
+              <Bookmark
+                className={cn(
+                  "h-4 w-4 transition-colors",
+                  bookmarked ? "fill-secondary text-secondary" : "",
+                )}
+              />
               <span className="hidden sm:inline">{bookmarked ? "Saved" : "Save"}</span>
             </button>
-            <button 
+            <button
               onClick={handleShare}
               className="flex items-center gap-1.5 rounded-md hover:bg-muted px-2 py-1 text-xs font-semibold text-muted-foreground transition-colors hover:text-green-600"
             >

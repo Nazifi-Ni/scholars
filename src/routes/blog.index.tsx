@@ -11,9 +11,16 @@ export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
       { title: "Blog — ScholarsConnect" },
-      { name: "description", content: "Scholarship guides, application tips and opportunity round-ups for African students." },
+      {
+        name: "description",
+        content:
+          "Scholarship guides, application tips and opportunity round-ups for African students.",
+      },
       { property: "og:title", content: "Blog — ScholarsConnect" },
-      { property: "og:description", content: "Scholarship guides, essay tips and opportunity round-ups." },
+      {
+        property: "og:description",
+        content: "Scholarship guides, essay tips and opportunity round-ups.",
+      },
       { property: "og:url", content: "/blog" },
     ],
     links: [{ rel: "canonical", href: "/blog" }],
@@ -28,7 +35,9 @@ function BlogPage() {
     <SiteLayout>
       <section className="bg-gradient-hero px-4 py-14 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <h1 className="text-3xl font-bold text-navy-foreground sm:text-4xl">The ScholarsConnect Blog</h1>
+          <h1 className="text-3xl font-bold text-navy-foreground sm:text-4xl">
+            The ScholarsConnect Blog
+          </h1>
           <p className="mt-3 max-w-2xl text-navy-foreground/70">
             Guides, essay tips and opportunity round-ups written by scholars, for scholars.
           </p>
@@ -37,9 +46,9 @@ function BlogPage() {
       <section className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {data.posts.map((post) => (
-            <Link 
-              key={post.slug} 
-              to="/blog/$slug" 
+            <Link
+              key={post.slug}
+              to="/blog/$slug"
               params={{ slug: post.slug }}
               className="group flex flex-col rounded-2xl border border-border bg-card p-6 shadow-sm hover:shadow-card hover:-translate-y-1 transition-all cursor-pointer"
             >
@@ -55,8 +64,17 @@ function BlogPage() {
                 {post.excerpt}
               </p>
               <div className="mt-4 flex items-center justify-between border-t border-border/50 pt-4 text-xs text-muted-foreground font-medium">
-                <span>{new Date(post.published_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</span>
-                <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{post.reading_minutes} min read</span>
+                <span>
+                  {new Date(post.published_at).toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </span>
+                <span className="inline-flex items-center gap-1">
+                  <Clock className="h-3.5 w-3.5" />
+                  {post.reading_minutes} min read
+                </span>
               </div>
             </Link>
           ))}

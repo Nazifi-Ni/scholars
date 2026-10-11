@@ -12,6 +12,12 @@ class Opportunity extends Model
         'degree_levels' => 'array',
         'eligible_countries' => 'array',
         'deadline' => 'datetime',
+        'last_verified_at' => 'datetime',
+        'application_open_date' => 'date',
+        'is_sponsored' => 'boolean',
+        'is_expired' => 'boolean',
+        'is_verified' => 'boolean',
+        'is_featured' => 'boolean',
     ];
 
     public function category() { return $this->belongsTo(Category::class); }

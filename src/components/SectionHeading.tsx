@@ -19,9 +19,13 @@ export function SectionHeading({
     <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
       <div className="max-w-2xl">
         {eyebrow && (
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-secondary">{eyebrow}</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-secondary">
+            {eyebrow}
+          </p>
         )}
-        <h2 className="mt-1.5 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">{title}</h2>
+        <h2 className="mt-1.5 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          {title}
+        </h2>
         {subtitle && <p className="mt-2 text-sm text-muted-foreground sm:text-base">{subtitle}</p>}
       </div>
       {linkTo && (

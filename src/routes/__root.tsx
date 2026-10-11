@@ -82,10 +82,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=5" },
       { name: "google-site-verification", content: "TFZNOl1OuyQI-GUS6ZthRroDDJZ8Is_qGStDEzBhnio" },
       { title: "ScholarsConnect — Connecting Dreams to Opportunities" },
-      { name: "description", content: "Discover verified scholarships, internships, grants, hackathons and jobs for students across Africa. Free search, deadline reminders and application tracking." },
+      {
+        name: "description",
+        content:
+          "Discover verified scholarships, internships, grants, hackathons and jobs for students across Africa. Free search, deadline reminders and application tracking.",
+      },
       { name: "author", content: "ScholarsConnect" },
       { property: "og:title", content: "ScholarsConnect — Connecting Dreams to Opportunities" },
-      { property: "og:description", content: "Discover verified scholarships, internships, grants and more for students across Africa." },
+      {
+        property: "og:description",
+        content:
+          "Discover verified scholarships, internships, grants and more for students across Africa.",
+      },
       { property: "og:site_name", content: "ScholarsConnect" },
       { property: "og:type", content: "website" },
       { property: "og:image", content: "/logo.png" },
@@ -114,15 +122,46 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children: `window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', 'G-C1D0KLJM9L');`
+gtag('config', 'G-C1D0KLJM9L');`,
       },
       {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "WebSite",
-          name: "ScholarsConnect",
-          description: "Connecting Dreams to Opportunities — scholarships, internships and grants for African students.",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://scholarsconnect.com.ng/#organization",
+              name: "ScholarsConnect",
+              url: "https://scholarsconnect.com.ng",
+              logo: {
+                "@type": "ImageObject",
+                url: "https://scholarsconnect.com.ng/logo.png",
+              },
+              contactPoint: {
+                "@type": "ContactPoint",
+                telephone: "+2347065274251",
+                contactType: "editorial desk",
+                email: "admin@scholarsconnect.com.ng",
+              },
+            },
+            {
+              "@type": "WebSite",
+              "@id": "https://scholarsconnect.com.ng/#website",
+              url: "https://scholarsconnect.com.ng",
+              name: "ScholarsConnect",
+              publisher: {
+                "@id": "https://scholarsconnect.com.ng/#organization",
+              },
+              description:
+                "Connecting Dreams to Opportunities — verified scholarships, internships and grants for African students.",
+              potentialAction: {
+                "@type": "SearchAction",
+                target: "https://scholarsconnect.com.ng/opportunities?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+              },
+            },
+          ],
         }),
       },
       {
@@ -151,8 +190,6 @@ function RootShell({ children }: { children: ReactNode }) {
     </html>
   );
 }
-
-
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();

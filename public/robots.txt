@@ -1,3 +1,14 @@
 User-agent: *
 Allow: /
-Sitemap: https://www.scholarsconnect.com.ng/sitemap.xml
+
+# Disallow private and admin portals
+Disallow: /admin
+Disallow: /admin/
+Disallow: /bookmarks
+
+# Prevent indexing of internal search query results to avoid duplicate/thin parameters
+Disallow: /opportunities?q=*
+Disallow: /opportunities?*q=*
+
+# Canonical Sitemap
+Sitemap: https://scholarsconnect.com.ng/sitemap.xml

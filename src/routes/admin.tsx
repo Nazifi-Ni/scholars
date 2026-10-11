@@ -1,15 +1,27 @@
-import { Outlet, createFileRoute, useLocation, Link } from '@tanstack/react-router';
-import { useAuth } from '@/hooks/use-auth';
-import { Button } from '@/components/ui/button';
-import { LayoutDashboard, FileText, LogOut, Tags, Mail, Globe, Menu, ShieldCheck } from 'lucide-react';
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Outlet, createFileRoute, useLocation, Link } from "@tanstack/react-router";
+import { useAuth } from "@/hooks/use-auth";
+import { Button } from "@/components/ui/button";
+import {
+  LayoutDashboard,
+  FileText,
+  LogOut,
+  Tags,
+  Mail,
+  Globe,
+  Menu,
+  ShieldCheck,
+} from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-export const Route = createFileRoute('/admin')({
+export const Route = createFileRoute("/admin")({
+  head: () => ({
+    meta: [{ name: "robots", content: "noindex, nofollow" }],
+  }),
   component: AdminLayout,
 });
 
-function SidebarContent({ user, handleLogout }: { user: any, handleLogout: () => void }) {
+function SidebarContent({ user, handleLogout }: { user: any; handleLogout: () => void }) {
   return (
     <>
       <div className="p-6 border-b border-white/10 flex items-center gap-3">
@@ -21,39 +33,68 @@ function SidebarContent({ user, handleLogout }: { user: any, handleLogout: () =>
           <p className="text-xs text-white/60 truncate w-40">{user?.email}</p>
         </div>
       </div>
-      
+
       <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-1 scrollbar-hide">
-        <div className="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-3 px-2">Core Data</div>
-        
-        <Link to="/admin" className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-200 [&.active]:bg-gradient-to-r [&.active]:from-indigo-500/20 [&.active]:to-purple-600/20 [&.active]:text-white [&.active]:font-semibold [&.active]:border-l-2 [&.active]:border-indigo-400">
+        <div className="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-3 px-2">
+          Core Data
+        </div>
+
+        <Link
+          to="/admin"
+          className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-200 [&.active]:bg-gradient-to-r [&.active]:from-indigo-500/20 [&.active]:to-purple-600/20 [&.active]:text-white [&.active]:font-semibold [&.active]:border-l-2 [&.active]:border-indigo-400"
+        >
           <LayoutDashboard size={18} /> <span className="text-sm">Overview</span>
         </Link>
-        <Link to="/admin/opportunities" className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-200 [&.active]:bg-gradient-to-r [&.active]:from-indigo-500/20 [&.active]:to-purple-600/20 [&.active]:text-white [&.active]:font-semibold [&.active]:border-l-2 [&.active]:border-indigo-400">
+        <Link
+          to="/admin/opportunities"
+          className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-200 [&.active]:bg-gradient-to-r [&.active]:from-indigo-500/20 [&.active]:to-purple-600/20 [&.active]:text-white [&.active]:font-semibold [&.active]:border-l-2 [&.active]:border-indigo-400"
+        >
           <FileText size={18} /> <span className="text-sm">Opportunities</span>
         </Link>
-        <Link to="/admin/blogs" className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-200 [&.active]:bg-gradient-to-r [&.active]:from-indigo-500/20 [&.active]:to-purple-600/20 [&.active]:text-white [&.active]:font-semibold [&.active]:border-l-2 [&.active]:border-indigo-400">
+        <Link
+          to="/admin/blogs"
+          className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-200 [&.active]:bg-gradient-to-r [&.active]:from-indigo-500/20 [&.active]:to-purple-600/20 [&.active]:text-white [&.active]:font-semibold [&.active]:border-l-2 [&.active]:border-indigo-400"
+        >
           <FileText size={18} /> <span className="text-sm">Blog Posts</span>
         </Link>
 
-        <div className="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-3 mt-8 px-2">Configuration</div>
+        <div className="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-3 mt-8 px-2">
+          Configuration
+        </div>
 
-        <Link to="/admin/categories" className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-200 [&.active]:bg-gradient-to-r [&.active]:from-indigo-500/20 [&.active]:to-purple-600/20 [&.active]:text-white [&.active]:font-semibold [&.active]:border-l-2 [&.active]:border-indigo-400">
+        <Link
+          to="/admin/categories"
+          className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-200 [&.active]:bg-gradient-to-r [&.active]:from-indigo-500/20 [&.active]:to-purple-600/20 [&.active]:text-white [&.active]:font-semibold [&.active]:border-l-2 [&.active]:border-indigo-400"
+        >
           <Tags size={18} /> <span className="text-sm">Categories</span>
         </Link>
-        <Link to="/admin/settings" className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-200 [&.active]:bg-gradient-to-r [&.active]:from-indigo-500/20 [&.active]:to-purple-600/20 [&.active]:text-white [&.active]:font-semibold [&.active]:border-l-2 [&.active]:border-indigo-400">
+        <Link
+          to="/admin/settings"
+          className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-200 [&.active]:bg-gradient-to-r [&.active]:from-indigo-500/20 [&.active]:to-purple-600/20 [&.active]:text-white [&.active]:font-semibold [&.active]:border-l-2 [&.active]:border-indigo-400"
+        >
           <Globe size={18} /> <span className="text-sm">Global Settings</span>
         </Link>
 
-        <div className="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-3 mt-8 px-2">Community</div>
+        <div className="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-3 mt-8 px-2">
+          Community
+        </div>
 
-        <Link to="/admin/subscribers" className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-200 [&.active]:bg-gradient-to-r [&.active]:from-indigo-500/20 [&.active]:to-purple-600/20 [&.active]:text-white [&.active]:font-semibold [&.active]:border-l-2 [&.active]:border-indigo-400">
+        <Link
+          to="/admin/subscribers"
+          className="flex items-center space-x-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-200 [&.active]:bg-gradient-to-r [&.active]:from-indigo-500/20 [&.active]:to-purple-600/20 [&.active]:text-white [&.active]:font-semibold [&.active]:border-l-2 [&.active]:border-indigo-400"
+        >
           <Mail size={18} /> <span className="text-sm">Subscribers</span>
         </Link>
       </nav>
 
       <div className="p-4 border-t border-white/10 bg-black/20">
-        <Button variant="ghost" className="w-full justify-start text-white/70 hover:text-white hover:bg-red-500/20 h-12 rounded-xl transition-colors" onClick={handleLogout}>
-          <LogOut size={18} className="mr-3" /> <span className="text-sm font-semibold">Sign Out</span>
+        <Button
+          variant="ghost"
+          className="w-full justify-start text-white/70 hover:text-white hover:bg-red-500/20 h-12 rounded-xl transition-colors"
+          onClick={handleLogout}
+        >
+          <LogOut size={18} className="mr-3" />{" "}
+          <span className="text-sm font-semibold">Sign Out</span>
         </Button>
       </div>
     </>
@@ -63,9 +104,14 @@ function SidebarContent({ user, handleLogout }: { user: any, handleLogout: () =>
 function AdminLayout() {
   const { user, logout, isLoading } = useAuth();
   const location = useLocation();
-  const isLoginPage = location.pathname === '/admin/login';
+  const isLoginPage = location.pathname === "/admin/login";
 
-  if (isLoading) return <div className="p-10 text-center flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
+  if (isLoading)
+    return (
+      <div className="p-10 text-center flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+      </div>
+    );
 
   if (!user && !isLoginPage) {
     return (
@@ -75,9 +121,13 @@ function AdminLayout() {
             <ShieldCheck size={32} />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h2>
-          <p className="text-gray-500 mb-8">You need administrator privileges to access this dashboard.</p>
+          <p className="text-gray-500 mb-8">
+            You need administrator privileges to access this dashboard.
+          </p>
           <Link to="/admin/login">
-            <Button className="w-full h-12 text-md font-semibold bg-indigo-600 hover:bg-indigo-700">Go to Secure Login</Button>
+            <Button className="w-full h-12 text-md font-semibold bg-indigo-600 hover:bg-indigo-700">
+              Go to Secure Login
+            </Button>
           </Link>
         </div>
       </div>
@@ -90,7 +140,7 @@ function AdminLayout() {
 
   const handleLogout = () => {
     logout();
-    window.location.href = '/admin/login';
+    window.location.href = "/admin/login";
   };
 
   return (
@@ -113,24 +163,27 @@ function AdminLayout() {
                   <Menu size={24} />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-72 p-0 bg-slate-900 border-r-0 text-white flex flex-col">
+              <SheetContent
+                side="left"
+                className="w-72 p-0 bg-slate-900 border-r-0 text-white flex flex-col"
+              >
                 <SheetTitle className="sr-only">Admin Navigation</SheetTitle>
                 <SidebarContent user={user} handleLogout={handleLogout} />
               </SheetContent>
             </Sheet>
-            
+
             <h1 className="text-xl font-bold text-gray-800 lg:hidden">Admin Hub</h1>
           </div>
 
           {/* Right side Profile */}
           <div className="flex items-center gap-4">
             <div className="hidden sm:block text-right">
-              <p className="text-sm font-semibold text-gray-900">{user?.name || 'Administrator'}</p>
+              <p className="text-sm font-semibold text-gray-900">{user?.name || "Administrator"}</p>
               <p className="text-xs text-gray-500">{user?.email}</p>
             </div>
             <Avatar className="h-10 w-10 border-2 border-indigo-100">
               <AvatarFallback className="bg-indigo-600 text-white font-bold">
-                {user?.email?.charAt(0).toUpperCase() || 'A'}
+                {user?.email?.charAt(0).toUpperCase() || "A"}
               </AvatarFallback>
             </Avatar>
           </div>

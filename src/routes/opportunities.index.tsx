@@ -4,14 +4,23 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { OpportunityCard } from "@/components/OpportunityCard";
 import { RouteErrorFallback, RouteNotFoundFallback } from "@/components/RouteFallbacks";
 import { searchQuery, filterOptionsQuery } from "@/lib/queries";
 import {
-  OPPORTUNITY_TYPES, FUNDING_TYPES, DEGREE_LEVELS,
-  type OpportunityCardData, type SearchFilters,
+  OPPORTUNITY_TYPES,
+  FUNDING_TYPES,
+  DEGREE_LEVELS,
+  type OpportunityCardData,
+  type SearchFilters,
 } from "@/lib/sc-shared";
 
 const SORTS = [
@@ -38,16 +47,28 @@ export const Route = createFileRoute("/opportunities/")({
       context.queryClient.ensureQueryData(searchQuery(deps)),
       context.queryClient.ensureQueryData(filterOptionsQuery),
     ]),
-  head: () => ({
-    meta: [
-      { title: "Browse Opportunities — ScholarsConnect" },
-      { name: "description", content: "Search 1,200+ verified scholarships, internships, grants, hackathons and jobs. Filter by country, funding, degree level and deadline." },
-      { property: "og:title", content: "Browse Opportunities — ScholarsConnect" },
-      { property: "og:description", content: "Search verified scholarships, internships, grants and jobs with smart filters." },
-      { property: "og:url", content: "/opportunities" },
-    ],
-    links: [{ rel: "canonical", href: "/opportunities" }],
-  }),
+  head: ({ deps }) => {
+    const hasSearchQuery = !!deps?.q;
+    return {
+      meta: [
+        { title: "Browse Verified Opportunities — ScholarsConnect" },
+        {
+          name: "description",
+          content:
+            "Discover verified scholarships, internships, grants, and fellowships for African students. Filter by destination country, degree level, and funding category.",
+        },
+        { property: "og:title", content: "Browse Opportunities — ScholarsConnect" },
+        {
+          property: "og:description",
+          content:
+            "Discover verified scholarships, internships, grants, and fellowships for African students.",
+        },
+        { property: "og:url", content: "https://scholarsconnect.com.ng/opportunities" },
+        ...(hasSearchQuery ? [{ name: "robots", content: "noindex, follow" }] : []),
+      ],
+      links: [{ rel: "canonical", href: "https://scholarsconnect.com.ng/opportunities" }],
+    };
+  },
   errorComponent: RouteErrorFallback,
   notFoundComponent: RouteNotFoundFallback,
   component: BrowsePage,
@@ -62,7 +83,9 @@ function BrowsePage() {
   const [showFilters, setShowFilters] = useState(false);
 
   const update = (patch: Partial<SearchFilters>) =>
-    navigate({ search: (prev: SearchFilters) => ({ ...prev, ...patch, page: patch.page ?? undefined }) });
+    navigate({
+      search: (prev: SearchFilters) => ({ ...prev, ...patch, page: patch.page ?? undefined }),
+    });
 
   const activeFilterCount = ["type", "category", "country", "funding", "degree"].filter(
     (k) => search[k as keyof SearchFilters],
@@ -74,9 +97,12 @@ function BrowsePage() {
     <SiteLayout>
       <section className="bg-gradient-hero px-4 py-12 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <h1 className="text-3xl font-bold text-navy-foreground sm:text-4xl">Browse Opportunities</h1>
+          <h1 className="text-3xl font-bold text-navy-foreground sm:text-4xl">
+            Browse Opportunities
+          </h1>
           <p className="mt-2 text-navy-foreground/70">
-            {results.count.toLocaleString()} verified opportunities. Filter to find your perfect match.
+            {results.count.toLocaleString()} verified opportunities. Filter to find your perfect
+            match.
           </p>
           <form
             onSubmit={(e) => {
@@ -94,7 +120,12 @@ function BrowsePage() {
                 className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
               />
             </div>
-            <Button type="submit" className="w-full sm:w-auto rounded-xl sm:rounded-full bg-gradient-cta px-8 py-6 sm:py-2 font-bold uppercase tracking-wider text-white shadow-md">Search</Button>
+            <Button
+              type="submit"
+              className="w-full sm:w-auto rounded-xl sm:rounded-full bg-gradient-cta px-8 py-6 sm:py-2 font-bold uppercase tracking-wider text-white shadow-md"
+            >
+              Search
+            </Button>
           </form>
         </div>
       </section>
@@ -106,7 +137,8 @@ function BrowsePage() {
             <div className="sticky top-24 bg-white rounded-xl border border-border p-5 shadow-sm">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold text-navy text-lg flex items-center gap-2">
-                  <SlidersHorizontal className="h-5 w-5" /> Filters {activeFilterCount > 0 && `(${activeFilterCount})`}
+                  <SlidersHorizontal className="h-5 w-5" /> Filters{" "}
+                  {activeFilterCount > 0 && `(${activeFilterCount})`}
                 </h3>
                 {activeFilterCount > 0 && (
                   <Button
@@ -122,7 +154,9 @@ function BrowsePage() {
 
               <div className="space-y-4">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Type</label>
+                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    Type
+                  </label>
                   <FilterSelect
                     value={search.type}
                     placeholder="All Types"
@@ -131,7 +165,9 @@ function BrowsePage() {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Category</label>
+                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    Category
+                  </label>
                   <FilterSelect
                     value={search.category}
                     placeholder="All Categories"
@@ -140,16 +176,23 @@ function BrowsePage() {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Country</label>
+                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    Country
+                  </label>
                   <FilterSelect
                     value={search.country}
                     placeholder="All Countries"
-                    items={options.countries.map((c) => ({ value: c.slug, label: `${c.flag_emoji ?? ""} ${c.name}` }))}
+                    items={options.countries.map((c) => ({
+                      value: c.slug,
+                      label: `${c.flag_emoji ?? ""} ${c.name}`,
+                    }))}
                     onChange={(v) => update({ country: v, page: undefined })}
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Funding</label>
+                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    Funding
+                  </label>
                   <FilterSelect
                     value={search.funding}
                     placeholder="All Funding"
@@ -158,7 +201,9 @@ function BrowsePage() {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Degree Level</label>
+                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    Degree Level
+                  </label>
                   <FilterSelect
                     value={search.degree}
                     placeholder="All Degrees"
@@ -188,8 +233,12 @@ function BrowsePage() {
 
             {results.items.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-border bg-card py-20 text-center">
-                <p className="text-lg font-semibold text-foreground font-heading">No opportunities found</p>
-                <p className="mt-1 text-sm text-muted-foreground font-sans">Try removing some filters or using a different keyword.</p>
+                <p className="text-lg font-semibold text-foreground font-heading">
+                  No opportunities found
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground font-sans">
+                  Try removing some filters or using a different keyword.
+                </p>
               </div>
             ) : (
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -199,34 +248,33 @@ function BrowsePage() {
               </div>
             )}
 
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="mt-10 flex items-center justify-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="rounded-full"
-              disabled={results.page === 0}
-              onClick={() => update({ page: results.page - 1 || undefined })}
-            >
-              Previous
-            </Button>
-            <span className="px-3 text-sm text-muted-foreground">
-              Page {results.page + 1} of {totalPages}
-            </span>
-            <Button
-              variant="outline"
-              size="sm"
-              className="rounded-full"
-              disabled={results.page + 1 >= totalPages}
-              onClick={() => update({ page: results.page + 1 })}
-            >
-              Next
-            </Button>
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-10 flex items-center justify-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="rounded-full"
+                  disabled={results.page === 0}
+                  onClick={() => update({ page: results.page - 1 || undefined })}
+                >
+                  Previous
+                </Button>
+                <span className="px-3 text-sm text-muted-foreground">
+                  Page {results.page + 1} of {totalPages}
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="rounded-full"
+                  disabled={results.page + 1 >= totalPages}
+                  onClick={() => update({ page: results.page + 1 })}
+                >
+                  Next
+                </Button>
+              </div>
+            )}
           </div>
-        )}
-        
-        </div>
         </div>
       </section>
     </SiteLayout>
@@ -245,10 +293,7 @@ function FilterSelect({
   onChange: (value?: string) => void;
 }) {
   return (
-    <Select
-      value={value ?? "__all"}
-      onValueChange={(v) => onChange(v === "__all" ? undefined : v)}
-    >
+    <Select value={value ?? "__all"} onValueChange={(v) => onChange(v === "__all" ? undefined : v)}>
       <SelectTrigger className="h-9 w-full rounded-full border-border bg-card text-xs font-medium lg:w-auto lg:min-w-36">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>

@@ -44,7 +44,8 @@ export const getFilterOptions = createServerFn({ method: "GET" }).handler(async 
 
 export const getOpportunityBySlug = createServerFn({ method: "GET" })
   .inputValidator((input: { slug: string }) => {
-    if (typeof input.slug !== "string" || !/^[a-z0-9-._]{1,120}$/i.test(input.slug)) throw new Error("Invalid slug");
+    if (typeof input.slug !== "string" || !/^[a-z0-9-._]{1,120}$/i.test(input.slug))
+      throw new Error("Invalid slug");
     return { slug: input.slug };
   })
   .handler(async ({ data }) => {
@@ -62,7 +63,8 @@ export const getBlogPosts = createServerFn({ method: "GET" }).handler(async () =
 
 export const getBlogPostBySlug = createServerFn({ method: "GET" })
   .inputValidator((input: { slug: string }) => {
-    if (typeof input.slug !== "string" || !/^[a-z0-9-._]{1,120}$/i.test(input.slug)) throw new Error("Invalid slug");
+    if (typeof input.slug !== "string" || !/^[a-z0-9-._]{1,120}$/i.test(input.slug))
+      throw new Error("Invalid slug");
     return { slug: input.slug };
   })
   .handler(async ({ data }) => {

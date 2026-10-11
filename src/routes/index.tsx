@@ -23,10 +23,15 @@ export const Route = createFileRoute("/")({
   head: ({ loaderData }) => {
     const homeData = loaderData?.[0]; // from Promise.all array
     const s = homeData?.settings || {};
-    const siteTitle = s.site_name ? `${s.site_name} | ${s.site_tagline || 'Find Scholarships'}` : "ScholarsConnect | Find Scholarships, Internships & Jobs";
-    const siteDesc = s.meta_description || "Discover 1,500+ fully funded scholarships, internships, hackathons, and jobs worldwide.";
-    const siteKeywords = s.meta_keywords || "scholarships, internships, jobs, study abroad, fully funded";
-    
+    const siteTitle = s.site_name
+      ? `${s.site_name} | ${s.site_tagline || "Find Scholarships"}`
+      : "ScholarsConnect — Find Verified Scholarships & Internships";
+    const siteDesc =
+      s.meta_description ||
+      "Discover verified scholarships, internships, grants, and academic opportunities for ambitious students across Africa.";
+    const siteKeywords =
+      s.meta_keywords || "scholarships, internships, jobs, study abroad, fully funded";
+
     return {
       meta: [
         { title: siteTitle },
@@ -34,8 +39,9 @@ export const Route = createFileRoute("/")({
         { name: "keywords", content: siteKeywords },
         { property: "og:title", content: siteTitle },
         { property: "og:description", content: siteDesc },
+        { property: "og:url", content: "https://scholarsconnect.com.ng" },
       ],
-      links: [{ rel: "canonical", href: "/" }],
+      links: [{ rel: "canonical", href: "https://scholarsconnect.com.ng" }],
     };
   },
   component: HomePage,
@@ -50,7 +56,8 @@ export const Route = createFileRoute("/")({
           Waking up the server...
         </h2>
         <p className="text-muted-foreground text-sm md:text-base max-w-md mx-auto leading-relaxed">
-          Our free servers go to sleep after inactivity. Please give it 30-60 seconds to boot up and fetch the latest opportunities for you!
+          Our free servers go to sleep after inactivity. Please give it 30-60 seconds to boot up and
+          fetch the latest opportunities for you!
         </p>
       </div>
     </SiteLayout>
@@ -71,14 +78,20 @@ function HomePage() {
   const latestOpportunities = data.latest as OpportunityCardData[];
   const featuredOpportunity = data.featured?.[0] as OpportunityCardData | undefined;
   const remainingLatest = latestOpportunities.slice(0, 6);
-  
+
   const closingSoon = [...latestOpportunities]
-    .filter(o => o.deadline && daysUntil(o.deadline) !== null && daysUntil(o.deadline)! >= 0 && daysUntil(o.deadline)! < 7)
+    .filter(
+      (o) =>
+        o.deadline &&
+        daysUntil(o.deadline) !== null &&
+        daysUntil(o.deadline)! >= 0 &&
+        daysUntil(o.deadline)! < 7,
+    )
     .sort((a, b) => new Date(a.deadline!).getTime() - new Date(b.deadline!).getTime())
     .slice(0, 4);
 
   const trending = [...latestOpportunities]
-    .sort((a, b) => (b.views_count + b.bookmarks_count) - (a.views_count + a.bookmarks_count))
+    .sort((a, b) => b.views_count + b.bookmarks_count - (a.views_count + a.bookmarks_count))
     .slice(0, 4);
 
   // Fake tabs for styling purposes, linking to actual filters
@@ -98,13 +111,20 @@ function HomePage() {
         <div className="bg-gradient-hero border-b border-navy-light pb-12 pt-8 shadow-inner relative overflow-hidden">
           {/* Subtle background decoration */}
           <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10 mix-blend-overlay"></div>
-          
+
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-6 font-heading tracking-tight animate-fade-up">
-              Find Your Next <span className="text-transparent bg-clip-text bg-gradient-to-r from-highlight to-secondary">Opportunity</span>
+              Find Your Next{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-highlight to-secondary">
+                Opportunity
+              </span>
             </h1>
-            
-            <form onSubmit={submitSearch} className="flex flex-col sm:flex-row max-w-3xl gap-3 rounded-xl glass-dark p-2 sm:p-2.5 shadow-glow animate-fade-up" style={{ animationDelay: '100ms' }}>
+
+            <form
+              onSubmit={submitSearch}
+              className="flex flex-col sm:flex-row max-w-3xl gap-3 rounded-xl glass-dark p-2 sm:p-2.5 shadow-glow animate-fade-up"
+              style={{ animationDelay: "100ms" }}
+            >
               <div className="flex flex-1 items-center gap-3 pl-3 pr-2 py-2 sm:py-0 bg-white/10 rounded-lg border border-white/20">
                 <Search className="h-5 w-5 shrink-0 text-white/70" />
                 <input
@@ -114,7 +134,10 @@ function HomePage() {
                   className="w-full bg-transparent text-base text-white outline-none placeholder:text-white/60 placeholder:font-light"
                 />
               </div>
-              <Button type="submit" className="w-full sm:w-auto h-12 sm:h-auto rounded-lg bg-secondary px-8 text-base font-bold text-white shadow-sm hover:bg-green-600 transition-all hover:scale-[1.02]">
+              <Button
+                type="submit"
+                className="w-full sm:w-auto h-12 sm:h-auto rounded-lg bg-secondary px-8 text-base font-bold text-white shadow-sm hover:bg-green-600 transition-all hover:scale-[1.02]"
+              >
                 Search
               </Button>
             </form>
@@ -129,27 +152,32 @@ function HomePage() {
         {/* 70/30 Main Grid */}
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-12">
-            
             {/* Left Column (67%) */}
             <div className="lg:col-span-8 space-y-10">
-              
               {/* Latest Opportunities Section */}
               <section>
                 {/* Section Header with Tabs */}
                 <div className="mb-5 flex items-end justify-between border-b-2 border-border pb-1">
-                  <h2 className="text-xl font-bold text-navy uppercase tracking-wide border-b-4 border-navy -mb-[3px] pb-1 font-heading">Latest Opportunities</h2>
+                  <h2 className="text-xl font-bold text-navy uppercase tracking-wide border-b-4 border-navy -mb-[3px] pb-1 font-heading">
+                    Latest Opportunities
+                  </h2>
                   <div className="hidden md:flex gap-4 text-sm font-medium text-muted-foreground pb-1 font-sans">
                     {TABS.map((tab, i) => (
-                      <Link 
-                        key={tab.label} 
-                        to="/opportunities" 
+                      <Link
+                        key={tab.label}
+                        to="/opportunities"
                         search={tab.search}
                         className={`hover:text-secondary transition-colors ${i === 0 ? "text-navy" : ""}`}
                       >
                         {tab.label}
                       </Link>
                     ))}
-                    <Link to="/opportunities" className="hover:text-secondary font-semibold transition-colors">More ▾</Link>
+                    <Link
+                      to="/opportunities"
+                      className="hover:text-secondary font-semibold transition-colors"
+                    >
+                      More ▾
+                    </Link>
                   </div>
                 </div>
 
@@ -158,16 +186,23 @@ function HomePage() {
                     {/* Big Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-1 mb-8 rounded-lg overflow-hidden shadow-card">
                       {/* Left Hero */}
-                      <Link to="/opportunities/$slug" params={{ slug: latestOpportunities[0]?.slug || 'not-found' }} className="md:col-span-2 relative group h-[300px] md:h-[400px] bg-muted overflow-hidden">
-                        <img 
-                          src={getImageUrl(latestOpportunities[0]?.featured_image ?? latestOpportunities[0]?.image_url)} 
+                      <Link
+                        to="/opportunities/$slug"
+                        params={{ slug: latestOpportunities[0]?.slug || "not-found" }}
+                        className="md:col-span-2 relative group h-[300px] md:h-[400px] bg-muted overflow-hidden"
+                      >
+                        <img
+                          src={getImageUrl(
+                            latestOpportunities[0]?.featured_image ??
+                              latestOpportunities[0]?.image_url,
+                          )}
                           alt={latestOpportunities[0]?.title}
                           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/30 to-transparent" />
                         <div className="absolute bottom-0 left-0 p-5 md:p-6 w-full">
                           <span className="mb-3 inline-block bg-highlight px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-navy shadow-sm">
-                            {latestOpportunities[0]?.category?.name || 'Featured'}
+                            {latestOpportunities[0]?.category?.name || "Featured"}
                           </span>
                           <h3 className="text-2xl md:text-3xl font-bold leading-tight text-white group-hover:underline font-heading">
                             {latestOpportunities[0]?.title}
@@ -175,24 +210,33 @@ function HomePage() {
                           <div className="mt-2 md:mt-3 text-xs text-gray-300 font-sans flex items-center gap-2">
                             <span className="font-bold text-white">ScholarsConnect</span>
                             <span>•</span>
-                            <span>{latestOpportunities[0] ? new Date(latestOpportunities[0].created_at).toLocaleDateString() : ''}</span>
+                            <span>
+                              {latestOpportunities[0]
+                                ? new Date(latestOpportunities[0].created_at).toLocaleDateString()
+                                : ""}
+                            </span>
                           </div>
                         </div>
                       </Link>
 
                       {/* Right Stacked */}
                       <div className="grid grid-rows-2 gap-1 h-[300px] md:h-[400px]">
-                        {latestOpportunities.slice(1, 3).map(opp => (
-                          <Link key={opp.id} to="/opportunities/$slug" params={{ slug: opp.slug }} className="relative group bg-muted overflow-hidden h-full">
-                            <img 
-                              src={getImageUrl(opp.featured_image ?? opp.image_url)} 
+                        {latestOpportunities.slice(1, 3).map((opp) => (
+                          <Link
+                            key={opp.id}
+                            to="/opportunities/$slug"
+                            params={{ slug: opp.slug }}
+                            className="relative group bg-muted overflow-hidden h-full"
+                          >
+                            <img
+                              src={getImageUrl(opp.featured_image ?? opp.image_url)}
                               alt={opp.title}
                               className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/40 to-transparent" />
                             <div className="absolute bottom-0 left-0 p-4 w-full">
                               <span className="mb-2 inline-block bg-secondary px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-white">
-                                {opp.category?.name || 'Latest'}
+                                {opp.category?.name || "Latest"}
                               </span>
                               <h3 className="text-sm md:text-base font-bold leading-tight text-white group-hover:underline font-heading line-clamp-3 md:line-clamp-2">
                                 {opp.title}
@@ -206,20 +250,29 @@ function HomePage() {
                     {/* Module Layout (Thumbnail left, text right) */}
                     <div className="flex flex-col gap-5">
                       {latestOpportunities.slice(3, 8).map((opp) => (
-                        <div key={opp.id} className="group flex gap-4 bg-white p-2.5 sm:p-3 rounded-lg border border-border shadow-sm hover:shadow-card transition-all">
-                          <Link to="/opportunities/$slug" params={{ slug: opp.slug }} className="shrink-0 w-[110px] h-[110px] sm:w-[220px] sm:h-[160px] overflow-hidden rounded border border-border/50 bg-muted">
-                            <img 
-                              src={getImageUrl(opp.featured_image ?? opp.image_url)} 
+                        <div
+                          key={opp.id}
+                          className="group flex gap-4 bg-white p-2.5 sm:p-3 rounded-lg border border-border shadow-sm hover:shadow-card transition-all"
+                        >
+                          <Link
+                            to="/opportunities/$slug"
+                            params={{ slug: opp.slug }}
+                            className="shrink-0 w-[110px] h-[110px] sm:w-[220px] sm:h-[160px] overflow-hidden rounded border border-border/50 bg-muted"
+                          >
+                            <img
+                              src={getImageUrl(opp.featured_image ?? opp.image_url)}
                               alt={opp.title}
                               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                             />
                           </Link>
                           <div className="flex flex-col justify-center flex-1">
                             <span className="text-[10px] sm:text-xs font-bold uppercase text-secondary mb-1 sm:mb-1.5 tracking-wider font-sans">
-                              {opp.category?.name || 'Opportunity'}
+                              {opp.category?.name || "Opportunity"}
                             </span>
                             <h4 className="text-base sm:text-xl font-bold leading-snug text-navy group-hover:text-secondary font-heading line-clamp-2 sm:line-clamp-3">
-                              <Link to="/opportunities/$slug" params={{ slug: opp.slug }}>{opp.title}</Link>
+                              <Link to="/opportunities/$slug" params={{ slug: opp.slug }}>
+                                {opp.title}
+                              </Link>
                             </h4>
                             <div className="mt-1.5 sm:mt-2 text-[11px] sm:text-sm text-muted-foreground font-sans flex items-center gap-1.5 sm:gap-2">
                               <span className="font-semibold text-navy/80">ScholarsConnect</span>
@@ -245,7 +298,9 @@ function HomePage() {
               {data.featured_countries && data.featured_countries.length > 0 && (
                 <section className="pt-4">
                   <div className="mb-5 border-b-2 border-border pb-1 flex justify-between items-end">
-                    <h2 className="inline-block text-xl font-bold text-navy uppercase tracking-wide border-b-4 border-highlight -mb-[3px] pb-1 font-heading">Study Destinations</h2>
+                    <h2 className="inline-block text-xl font-bold text-navy uppercase tracking-wide border-b-4 border-highlight -mb-[3px] pb-1 font-heading">
+                      Study Destinations
+                    </h2>
                   </div>
                   <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
                     {data.featured_countries.map((country) => (
@@ -257,12 +312,18 @@ function HomePage() {
                       >
                         <div className="h-12 w-12 rounded-full bg-muted/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-inner overflow-hidden border border-border/50">
                           {country.code ? (
-                            <img src={`https://flagsapi.com/${country.code.toUpperCase()}/flat/64.png`} alt={country.name} className="h-full w-full object-cover" />
+                            <img
+                              src={`https://flagsapi.com/${country.code.toUpperCase()}/flat/64.png`}
+                              alt={country.name}
+                              className="h-full w-full object-cover"
+                            />
                           ) : (
-                            <span className="text-2xl">{country.flag_emoji || '🌍'}</span>
+                            <span className="text-2xl">{country.flag_emoji || "🌍"}</span>
                           )}
                         </div>
-                        <p className="font-bold text-navy text-center group-hover:text-secondary font-heading text-xs uppercase tracking-wider">{country.name}</p>
+                        <p className="font-bold text-navy text-center group-hover:text-secondary font-heading text-xs uppercase tracking-wider">
+                          {country.name}
+                        </p>
                       </Link>
                     ))}
                   </div>
@@ -272,7 +333,9 @@ function HomePage() {
               {/* Browse By Category Section */}
               <section className="pt-4">
                 <div className="mb-5 border-b-2 border-border pb-1">
-                  <h2 className="inline-block text-xl font-bold text-navy uppercase tracking-wide border-b-4 border-highlight -mb-[3px] pb-1 font-heading">Categories</h2>
+                  <h2 className="inline-block text-xl font-bold text-navy uppercase tracking-wide border-b-4 border-highlight -mb-[3px] pb-1 font-heading">
+                    Categories
+                  </h2>
                 </div>
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                   {data.categories.map((cat) => (
@@ -284,11 +347,13 @@ function HomePage() {
                     >
                       {/* Interactive background glow effect */}
                       <div className="absolute inset-0 bg-gradient-to-br from-highlight/0 to-highlight/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                      
+
                       <div className="h-16 w-16 mb-3 rounded-full bg-gradient-to-br from-navy/5 to-navy/10 flex items-center justify-center shadow-inner group-hover:scale-110 group-hover:shadow-md transition-all duration-300">
-                        <span className="text-3xl drop-shadow-sm">{cat.icon || '🎓'}</span>
+                        <span className="text-3xl drop-shadow-sm">{cat.icon || "🎓"}</span>
                       </div>
-                      <p className="font-bold text-navy text-center group-hover:text-secondary font-heading text-sm relative z-10">{cat.name}</p>
+                      <p className="font-bold text-navy text-center group-hover:text-secondary font-heading text-sm relative z-10">
+                        {cat.name}
+                      </p>
                     </Link>
                   ))}
                 </div>
@@ -308,17 +373,24 @@ function HomePage() {
               {data.featured_category_sections?.map((section) => (
                 <section key={section.category.id} className="pt-10">
                   <div className="mb-6 flex items-center gap-4">
-                    <h2 className="text-xl font-bold text-navy uppercase tracking-wide font-heading">{section.category.name}</h2>
+                    <h2 className="text-xl font-bold text-navy uppercase tracking-wide font-heading">
+                      {section.category.name}
+                    </h2>
                     <div className="flex-1 border-t-2 border-secondary/50"></div>
                   </div>
-                  
+
                   {/* Top Row: 2 Large Hero Cards */}
                   {section.opportunities.length > 0 && (
                     <div className="grid gap-4 sm:grid-cols-2 mb-4">
-                      {section.opportunities.slice(0, 2).map(opp => (
-                        <Link key={opp.id} to="/opportunities/$slug" params={{ slug: opp.slug }} className="relative group h-[220px] sm:h-[280px] bg-muted overflow-hidden rounded-lg">
-                          <img 
-                            src={getImageUrl(opp.featured_image ?? opp.image_url)} 
+                      {section.opportunities.slice(0, 2).map((opp) => (
+                        <Link
+                          key={opp.id}
+                          to="/opportunities/$slug"
+                          params={{ slug: opp.slug }}
+                          className="relative group h-[220px] sm:h-[280px] bg-muted overflow-hidden rounded-lg"
+                        >
+                          <img
+                            src={getImageUrl(opp.featured_image ?? opp.image_url)}
                             alt={opp.title}
                             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                           />
@@ -341,13 +413,17 @@ function HomePage() {
                   {/* Bottom Rows: 4 Small Cards */}
                   {section.opportunities.length > 2 && (
                     <div className="grid gap-x-4 gap-y-6 sm:grid-cols-2 mt-6">
-                      {section.opportunities.slice(2, 6).map(opp => (
+                      {section.opportunities.slice(2, 6).map((opp) => (
                         <div key={opp.id} className="flex gap-3 group items-start">
-                          <Link to="/opportunities/$slug" params={{ slug: opp.slug }} className="shrink-0">
+                          <Link
+                            to="/opportunities/$slug"
+                            params={{ slug: opp.slug }}
+                            className="shrink-0"
+                          >
                             <div className="h-16 w-24 overflow-hidden rounded border border-border group-hover:border-secondary transition-colors bg-muted">
-                              <img 
-                                src={getImageUrl(opp.featured_image ?? opp.image_url)} 
-                                alt={opp.title} 
+                              <img
+                                src={getImageUrl(opp.featured_image ?? opp.image_url)}
+                                alt={opp.title}
                                 loading="lazy"
                                 className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
                               />
@@ -355,9 +431,13 @@ function HomePage() {
                           </Link>
                           <div className="flex flex-col flex-1">
                             <h4 className="text-[13px] font-bold leading-snug text-navy group-hover:text-secondary line-clamp-2 font-heading">
-                              <Link to="/opportunities/$slug" params={{ slug: opp.slug }}>{opp.title}</Link>
+                              <Link to="/opportunities/$slug" params={{ slug: opp.slug }}>
+                                {opp.title}
+                              </Link>
                             </h4>
-                            <span className="text-[11px] text-muted-foreground mt-1 font-sans">{new Date(opp.created_at).toLocaleDateString()}</span>
+                            <span className="text-[11px] text-muted-foreground mt-1 font-sans">
+                              {new Date(opp.created_at).toLocaleDateString()}
+                            </span>
                           </div>
                         </div>
                       ))}
@@ -366,29 +446,48 @@ function HomePage() {
 
                   <div className="flex justify-center mt-8">
                     <Link to="/opportunities" search={{ category: section.category.slug }}>
-                      <Button variant="outline" className="text-muted-foreground hover:text-navy hover:border-navy transition-all h-9 text-xs px-6">
+                      <Button
+                        variant="outline"
+                        className="text-muted-foreground hover:text-navy hover:border-navy transition-all h-9 text-xs px-6"
+                      >
                         Load more <ChevronRight className="h-3 w-3 ml-1" />
                       </Button>
                     </Link>
                   </div>
                 </section>
               ))}
-
             </div>
 
             {/* Right Column (33%) - Sidebar */}
             <aside className="lg:col-span-4 space-y-8 lg:sticky lg:top-24 h-fit pb-10">
-              
               {/* Sidebar Newsletter Widget */}
               <div className="rounded-lg bg-navy p-6 shadow-card text-center relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-10">
                   <Mail className="h-24 w-24 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2 relative z-10 font-heading">Never Miss a Deadline!</h3>
-                <p className="text-sm text-white/80 mb-5 relative z-10 font-sans">Join 85,000+ students getting the newest scholarships in their inbox.</p>
-                <form className="flex flex-col gap-3 relative z-10" onSubmit={(e) => e.preventDefault()}>
-                  <input type="email" placeholder="Email address" className="w-full rounded bg-white/10 border border-white/20 px-4 py-2.5 text-sm text-white placeholder:text-white/60 focus:outline-none focus:border-secondary" required />
-                  <Button type="submit" className="w-full bg-secondary hover:bg-green-600 text-white font-bold py-2.5 font-sans">Subscribe Now</Button>
+                <h3 className="text-xl font-bold text-white mb-2 relative z-10 font-heading">
+                  Never Miss a Deadline!
+                </h3>
+                <p className="text-sm text-white/80 mb-5 relative z-10 font-sans">
+                  Join students across Nigeria and Africa discovering verified scholarships in their
+                  inbox.
+                </p>
+                <form
+                  className="flex flex-col gap-3 relative z-10"
+                  onSubmit={(e) => e.preventDefault()}
+                >
+                  <input
+                    type="email"
+                    placeholder="Email address"
+                    className="w-full rounded bg-white/10 border border-white/20 px-4 py-2.5 text-sm text-white placeholder:text-white/60 focus:outline-none focus:border-secondary"
+                    required
+                  />
+                  <Button
+                    type="submit"
+                    className="w-full bg-secondary hover:bg-green-600 text-white font-bold py-2.5 font-sans"
+                  >
+                    Subscribe Now
+                  </Button>
                 </form>
               </div>
 
@@ -404,16 +503,29 @@ function HomePage() {
                 </div>
                 <div className="space-y-4">
                   {closingSoon.map((opp) => (
-                    <div key={opp.id} className="flex justify-between items-center gap-2 border-b border-border/50 pb-2 last:border-0 last:pb-0">
-                      <Link to="/opportunities/$slug" params={{ slug: opp.slug }} className="font-bold text-sm text-navy hover:text-secondary line-clamp-1 flex-1">
+                    <div
+                      key={opp.id}
+                      className="flex justify-between items-center gap-2 border-b border-border/50 pb-2 last:border-0 last:pb-0"
+                    >
+                      <Link
+                        to="/opportunities/$slug"
+                        params={{ slug: opp.slug }}
+                        className="font-bold text-sm text-navy hover:text-secondary line-clamp-1 flex-1"
+                      >
                         {opp.title}
                       </Link>
-                      <span className={`shrink-0 text-[10px] font-bold px-2 py-1 rounded-full uppercase ${daysUntil(opp.deadline) !== null && daysUntil(opp.deadline)! < 7 ? 'bg-red-100 text-red-700' : 'bg-muted text-muted-foreground'}`}>
-                        {daysUntil(opp.deadline) === 0 ? "Today" : `${daysUntil(opp.deadline)} Days`}
+                      <span
+                        className={`shrink-0 text-[10px] font-bold px-2 py-1 rounded-full uppercase ${daysUntil(opp.deadline) !== null && daysUntil(opp.deadline)! < 7 ? "bg-red-100 text-red-700" : "bg-muted text-muted-foreground"}`}
+                      >
+                        {daysUntil(opp.deadline) === 0
+                          ? "Today"
+                          : `${daysUntil(opp.deadline)} Days`}
                       </span>
                     </div>
                   ))}
-                  {closingSoon.length === 0 && <p className="text-sm text-muted-foreground">No upcoming deadlines.</p>}
+                  {closingSoon.length === 0 && (
+                    <p className="text-sm text-muted-foreground">No upcoming deadlines.</p>
+                  )}
                 </div>
               </div>
 
@@ -427,9 +539,15 @@ function HomePage() {
                 <div className="space-y-4">
                   {trending.map((opp, idx) => (
                     <div key={opp.id} className="flex gap-3 items-center group">
-                      <span className="text-2xl font-black text-muted/50 w-6 text-center">{idx + 1}</span>
+                      <span className="text-2xl font-black text-muted/50 w-6 text-center">
+                        {idx + 1}
+                      </span>
                       <div className="flex-1">
-                        <Link to="/opportunities/$slug" params={{ slug: opp.slug }} className="font-bold text-sm text-navy hover:text-secondary line-clamp-2">
+                        <Link
+                          to="/opportunities/$slug"
+                          params={{ slug: opp.slug }}
+                          className="font-bold text-sm text-navy hover:text-secondary line-clamp-2"
+                        >
                           {opp.title}
                         </Link>
                         <div className="flex items-center gap-2 mt-1 text-[10px] font-semibold text-muted-foreground">
@@ -440,7 +558,9 @@ function HomePage() {
                       </div>
                     </div>
                   ))}
-                  {trending.length === 0 && <p className="text-sm text-muted-foreground">No trending opportunities.</p>}
+                  {trending.length === 0 && (
+                    <p className="text-sm text-muted-foreground">No trending opportunities.</p>
+                  )}
                 </div>
               </div>
 
@@ -450,17 +570,19 @@ function HomePage() {
               {/* News & Blog Sidebar */}
               <div className="bg-white p-5 rounded-lg border border-border shadow-sm">
                 <div className="mb-4 border-b-2 border-border pb-1">
-                  <h3 className="inline-block text-lg font-bold text-navy uppercase tracking-wide border-b-4 border-red-600 -mb-[3px] pb-1 font-heading">News & Blogs</h3>
+                  <h3 className="inline-block text-lg font-bold text-navy uppercase tracking-wide border-b-4 border-red-600 -mb-[3px] pb-1 font-heading">
+                    News & Blogs
+                  </h3>
                 </div>
-                
+
                 <div className="space-y-5">
                   {blogData?.posts?.slice(0, 5).map((post: any) => (
                     <div key={post.id} className="flex gap-3 group items-start">
                       <Link to="/blog/$slug" params={{ slug: post.slug }} className="shrink-0 pt-1">
                         <div className="h-14 w-14 overflow-hidden rounded border border-border group-hover:border-secondary transition-colors">
-                          <img 
-                            src={getImageUrl(post.featured_image ?? post.image_url)} 
-                            alt={post.title} 
+                          <img
+                            src={getImageUrl(post.featured_image ?? post.image_url)}
+                            alt={post.title}
                             loading="lazy"
                             className="h-full w-full object-cover"
                           />
@@ -468,13 +590,17 @@ function HomePage() {
                       </Link>
                       <div className="flex flex-col flex-1">
                         <h4 className="text-[13px] font-bold leading-snug text-navy group-hover:text-secondary line-clamp-2 font-heading">
-                          <Link to="/blog/$slug" params={{ slug: post.slug }}>{post.title}</Link>
+                          <Link to="/blog/$slug" params={{ slug: post.slug }}>
+                            {post.title}
+                          </Link>
                         </h4>
-                        <span className="text-[10px] text-muted-foreground mt-1 font-sans">{new Date(post.created_at).toLocaleDateString()}</span>
+                        <span className="text-[10px] text-muted-foreground mt-1 font-sans">
+                          {new Date(post.created_at).toLocaleDateString()}
+                        </span>
                       </div>
                     </div>
                   ))}
-                  
+
                   {!blogData?.posts?.length && (
                     <p className="text-sm text-muted-foreground">No recent news available.</p>
                   )}
@@ -486,16 +612,52 @@ function HomePage() {
               {/* Quick Links */}
               <div className="rounded-lg border border-border bg-white p-5 shadow-sm">
                 <div className="mb-4 border-b-2 border-border pb-1">
-                  <h3 className="inline-block text-lg font-bold text-navy uppercase tracking-wide border-b-4 border-highlight -mb-[3px] pb-1 font-heading">Quick Links</h3>
+                  <h3 className="inline-block text-lg font-bold text-navy uppercase tracking-wide border-b-4 border-highlight -mb-[3px] pb-1 font-heading">
+                    Quick Links
+                  </h3>
                 </div>
                 <ul className="space-y-2.5 text-[13px] font-sans font-medium text-navy/80">
-                  <li><Link to="/opportunities" search={{ type: "scholarship" }} className="flex items-center hover:text-secondary transition-colors"><ChevronRight className="h-3.5 w-3.5 mr-1.5 text-secondary" /> Undergraduate Scholarships</Link></li>
-                  <li><Link to="/opportunities" search={{ type: "internship" }} className="flex items-center hover:text-secondary transition-colors"><ChevronRight className="h-3.5 w-3.5 mr-1.5 text-secondary" /> Internships & Competitions</Link></li>
-                  <li><Link to="/opportunities" search={{ funding: "fully_funded" }} className="flex items-center hover:text-secondary transition-colors"><ChevronRight className="h-3.5 w-3.5 mr-1.5 text-secondary" /> Fully Funded Opportunities</Link></li>
-                  <li><Link to="/about" className="flex items-center hover:text-secondary transition-colors"><ChevronRight className="h-3.5 w-3.5 mr-1.5 text-secondary" /> About ScholarsConnect</Link></li>
+                  <li>
+                    <Link
+                      to="/opportunities"
+                      search={{ type: "scholarship" }}
+                      className="flex items-center hover:text-secondary transition-colors"
+                    >
+                      <ChevronRight className="h-3.5 w-3.5 mr-1.5 text-secondary" /> Undergraduate
+                      Scholarships
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/opportunities"
+                      search={{ type: "internship" }}
+                      className="flex items-center hover:text-secondary transition-colors"
+                    >
+                      <ChevronRight className="h-3.5 w-3.5 mr-1.5 text-secondary" /> Internships &
+                      Competitions
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/opportunities"
+                      search={{ funding: "fully_funded" }}
+                      className="flex items-center hover:text-secondary transition-colors"
+                    >
+                      <ChevronRight className="h-3.5 w-3.5 mr-1.5 text-secondary" /> Fully Funded
+                      Opportunities
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/about"
+                      className="flex items-center hover:text-secondary transition-colors"
+                    >
+                      <ChevronRight className="h-3.5 w-3.5 mr-1.5 text-secondary" /> About
+                      ScholarsConnect
+                    </Link>
+                  </li>
                 </ul>
               </div>
-
             </aside>
           </div>
         </div>
@@ -503,4 +665,3 @@ function HomePage() {
     </SiteLayout>
   );
 }
-

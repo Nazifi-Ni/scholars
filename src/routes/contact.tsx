@@ -6,9 +6,16 @@ export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title: "Contact Us — ScholarsConnect" },
-      { name: "description", content: "Get in touch with the ScholarsConnect team — questions, partnerships and opportunity listings." },
+      {
+        name: "description",
+        content:
+          "Get in touch with the ScholarsConnect team — questions, partnerships and opportunity listings.",
+      },
       { property: "og:title", content: "Contact Us — ScholarsConnect" },
-      { property: "og:description", content: "Questions, partnerships and opportunity listings — talk to us." },
+      {
+        property: "og:description",
+        content: "Questions, partnerships and opportunity listings — talk to us.",
+      },
       { property: "og:url", content: "/contact" },
     ],
     links: [{ rel: "canonical", href: "/contact" }],
@@ -30,7 +37,10 @@ function ContactPage() {
           { icon: Mail, title: "Email", value: "admin@scholarsconnect.com.ng" },
           { icon: MessageSquare, title: "Phone", value: "07065274251" },
         ].map((c) => (
-          <div key={c.title} className="rounded-2xl border border-border bg-card p-6 text-center shadow-soft card-hover">
+          <div
+            key={c.title}
+            className="rounded-2xl border border-border bg-card p-6 text-center shadow-soft card-hover"
+          >
             <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-accent/10 text-accent">
               <c.icon className="h-5 w-5" />
             </span>

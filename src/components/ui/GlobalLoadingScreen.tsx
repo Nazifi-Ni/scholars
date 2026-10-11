@@ -24,16 +24,16 @@ export function GlobalLoadingScreen() {
         {/* Pulsing rings behind the logo */}
         <div className="absolute inset-0 -m-12 animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite] rounded-full border-4 border-primary/20" />
         <div className="absolute inset-0 -m-8 animate-[ping_1.5s_cubic-bezier(0,0,0.2,1)_infinite] rounded-full border-4 border-primary/40" />
-        
+
         {/* Bouncing Logo */}
         <div className="relative z-10 flex flex-col items-center justify-center animate-bounce-subtle">
-          <img 
-            src="/logo.png" 
-            alt="ScholarsConnect Loading" 
+          <img
+            src="/logo.png"
+            alt="ScholarsConnect Loading"
             className="w-24 h-auto drop-shadow-xl filter contrast-125 saturate-150"
           />
         </div>
-        
+
         <p className="mt-12 animate-pulse text-lg font-medium text-foreground tracking-wide">
           Connecting Dreams to Opportunities...
         </p>

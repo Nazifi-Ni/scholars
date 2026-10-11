@@ -30,3 +30,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Temporary database dumps and binaries
+dump.sql
+migrate_db.bat
+*.zip
+pg/

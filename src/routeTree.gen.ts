@@ -11,18 +11,22 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ScholarshipsRouteImport } from './routes/scholarships'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as JobsRouteImport } from './routes/jobs'
 import { Route as InternshipsRouteImport } from './routes/internships'
+import { Route as HowWeVerifyOpportunitiesRouteImport } from './routes/how-we-verify-opportunities'
 import { Route as HackathonsRouteImport } from './routes/hackathons'
 import { Route as GrantsRouteImport } from './routes/grants'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as EditorialPolicyRouteImport } from './routes/editorial-policy'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as CoursesRouteImport } from './routes/courses'
 import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompetitionsRouteImport } from './routes/competitions'
 import { Route as BookmarksRouteImport } from './routes/bookmarks'
+import { Route as AffiliateDisclosureRouteImport } from './routes/affiliate-disclosure'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -49,6 +53,11 @@ const ScholarshipsRoute = ScholarshipsRouteImport.update({
   path: '/scholarships',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
@@ -64,6 +73,12 @@ const InternshipsRoute = InternshipsRouteImport.update({
   path: '/internships',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HowWeVerifyOpportunitiesRoute =
+  HowWeVerifyOpportunitiesRouteImport.update({
+    id: '/how-we-verify-opportunities',
+    path: '/how-we-verify-opportunities',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const HackathonsRoute = HackathonsRouteImport.update({
   id: '/hackathons',
   path: '/hackathons',
@@ -77,6 +92,11 @@ const GrantsRoute = GrantsRouteImport.update({
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditorialPolicyRoute = EditorialPolicyRouteImport.update({
+  id: '/editorial-policy',
+  path: '/editorial-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DisclaimerRoute = DisclaimerRouteImport.update({
@@ -107,6 +127,11 @@ const CompetitionsRoute = CompetitionsRouteImport.update({
 const BookmarksRoute = BookmarksRouteImport.update({
   id: '/bookmarks',
   path: '/bookmarks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AffiliateDisclosureRoute = AffiliateDisclosureRouteImport.update({
+  id: '/affiliate-disclosure',
+  path: '/affiliate-disclosure',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -189,18 +214,22 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/affiliate-disclosure': typeof AffiliateDisclosureRoute
   '/bookmarks': typeof BookmarksRoute
   '/competitions': typeof CompetitionsRoute
   '/contact': typeof ContactRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/courses': typeof CoursesRoute
   '/disclaimer': typeof DisclaimerRoute
+  '/editorial-policy': typeof EditorialPolicyRoute
   '/faq': typeof FaqRoute
   '/grants': typeof GrantsRoute
   '/hackathons': typeof HackathonsRoute
+  '/how-we-verify-opportunities': typeof HowWeVerifyOpportunitiesRoute
   '/internships': typeof InternshipsRoute
   '/jobs': typeof JobsRoute
   '/privacy': typeof PrivacyRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/scholarships': typeof ScholarshipsRoute
   '/terms': typeof TermsRoute
   '/admin/blogs': typeof AdminBlogsRoute
@@ -219,18 +248,22 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/affiliate-disclosure': typeof AffiliateDisclosureRoute
   '/bookmarks': typeof BookmarksRoute
   '/competitions': typeof CompetitionsRoute
   '/contact': typeof ContactRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/courses': typeof CoursesRoute
   '/disclaimer': typeof DisclaimerRoute
+  '/editorial-policy': typeof EditorialPolicyRoute
   '/faq': typeof FaqRoute
   '/grants': typeof GrantsRoute
   '/hackathons': typeof HackathonsRoute
+  '/how-we-verify-opportunities': typeof HowWeVerifyOpportunitiesRoute
   '/internships': typeof InternshipsRoute
   '/jobs': typeof JobsRoute
   '/privacy': typeof PrivacyRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/scholarships': typeof ScholarshipsRoute
   '/terms': typeof TermsRoute
   '/admin/blogs': typeof AdminBlogsRoute
@@ -251,18 +284,22 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/affiliate-disclosure': typeof AffiliateDisclosureRoute
   '/bookmarks': typeof BookmarksRoute
   '/competitions': typeof CompetitionsRoute
   '/contact': typeof ContactRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/courses': typeof CoursesRoute
   '/disclaimer': typeof DisclaimerRoute
+  '/editorial-policy': typeof EditorialPolicyRoute
   '/faq': typeof FaqRoute
   '/grants': typeof GrantsRoute
   '/hackathons': typeof HackathonsRoute
+  '/how-we-verify-opportunities': typeof HowWeVerifyOpportunitiesRoute
   '/internships': typeof InternshipsRoute
   '/jobs': typeof JobsRoute
   '/privacy': typeof PrivacyRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/scholarships': typeof ScholarshipsRoute
   '/terms': typeof TermsRoute
   '/admin/blogs': typeof AdminBlogsRoute
@@ -284,18 +321,22 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
+    | '/affiliate-disclosure'
     | '/bookmarks'
     | '/competitions'
     | '/contact'
     | '/cookie-policy'
     | '/courses'
     | '/disclaimer'
+    | '/editorial-policy'
     | '/faq'
     | '/grants'
     | '/hackathons'
+    | '/how-we-verify-opportunities'
     | '/internships'
     | '/jobs'
     | '/privacy'
+    | '/privacy-policy'
     | '/scholarships'
     | '/terms'
     | '/admin/blogs'
@@ -314,18 +355,22 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/affiliate-disclosure'
     | '/bookmarks'
     | '/competitions'
     | '/contact'
     | '/cookie-policy'
     | '/courses'
     | '/disclaimer'
+    | '/editorial-policy'
     | '/faq'
     | '/grants'
     | '/hackathons'
+    | '/how-we-verify-opportunities'
     | '/internships'
     | '/jobs'
     | '/privacy'
+    | '/privacy-policy'
     | '/scholarships'
     | '/terms'
     | '/admin/blogs'
@@ -345,18 +390,22 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
+    | '/affiliate-disclosure'
     | '/bookmarks'
     | '/competitions'
     | '/contact'
     | '/cookie-policy'
     | '/courses'
     | '/disclaimer'
+    | '/editorial-policy'
     | '/faq'
     | '/grants'
     | '/hackathons'
+    | '/how-we-verify-opportunities'
     | '/internships'
     | '/jobs'
     | '/privacy'
+    | '/privacy-policy'
     | '/scholarships'
     | '/terms'
     | '/admin/blogs'
@@ -377,18 +426,22 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
+  AffiliateDisclosureRoute: typeof AffiliateDisclosureRoute
   BookmarksRoute: typeof BookmarksRoute
   CompetitionsRoute: typeof CompetitionsRoute
   ContactRoute: typeof ContactRoute
   CookiePolicyRoute: typeof CookiePolicyRoute
   CoursesRoute: typeof CoursesRoute
   DisclaimerRoute: typeof DisclaimerRoute
+  EditorialPolicyRoute: typeof EditorialPolicyRoute
   FaqRoute: typeof FaqRoute
   GrantsRoute: typeof GrantsRoute
   HackathonsRoute: typeof HackathonsRoute
+  HowWeVerifyOpportunitiesRoute: typeof HowWeVerifyOpportunitiesRoute
   InternshipsRoute: typeof InternshipsRoute
   JobsRoute: typeof JobsRoute
   PrivacyRoute: typeof PrivacyRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ScholarshipsRoute: typeof ScholarshipsRoute
   TermsRoute: typeof TermsRoute
   BlogSlugRoute: typeof BlogSlugRoute
@@ -413,6 +466,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScholarshipsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
@@ -434,6 +494,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InternshipsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/how-we-verify-opportunities': {
+      id: '/how-we-verify-opportunities'
+      path: '/how-we-verify-opportunities'
+      fullPath: '/how-we-verify-opportunities'
+      preLoaderRoute: typeof HowWeVerifyOpportunitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/hackathons': {
       id: '/hackathons'
       path: '/hackathons'
@@ -453,6 +520,13 @@ declare module '@tanstack/react-router' {
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/editorial-policy': {
+      id: '/editorial-policy'
+      path: '/editorial-policy'
+      fullPath: '/editorial-policy'
+      preLoaderRoute: typeof EditorialPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/disclaimer': {
@@ -495,6 +569,13 @@ declare module '@tanstack/react-router' {
       path: '/bookmarks'
       fullPath: '/bookmarks'
       preLoaderRoute: typeof BookmarksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/affiliate-disclosure': {
+      id: '/affiliate-disclosure'
+      path: '/affiliate-disclosure'
+      fullPath: '/affiliate-disclosure'
+      preLoaderRoute: typeof AffiliateDisclosureRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -633,18 +714,22 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
+  AffiliateDisclosureRoute: AffiliateDisclosureRoute,
   BookmarksRoute: BookmarksRoute,
   CompetitionsRoute: CompetitionsRoute,
   ContactRoute: ContactRoute,
   CookiePolicyRoute: CookiePolicyRoute,
   CoursesRoute: CoursesRoute,
   DisclaimerRoute: DisclaimerRoute,
+  EditorialPolicyRoute: EditorialPolicyRoute,
   FaqRoute: FaqRoute,
   GrantsRoute: GrantsRoute,
   HackathonsRoute: HackathonsRoute,
+  HowWeVerifyOpportunitiesRoute: HowWeVerifyOpportunitiesRoute,
   InternshipsRoute: InternshipsRoute,
   JobsRoute: JobsRoute,
   PrivacyRoute: PrivacyRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
   ScholarshipsRoute: ScholarshipsRoute,
   TermsRoute: TermsRoute,
   BlogSlugRoute: BlogSlugRoute,

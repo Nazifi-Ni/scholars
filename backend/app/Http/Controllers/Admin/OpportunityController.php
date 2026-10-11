@@ -36,7 +36,7 @@ class OpportunityController extends Controller
                 'country_id' => 'nullable|exists:countries,id',
                 'opportunity_type' => 'required|string',
                 'funding_type' => 'required|string',
-                'degree_levels' => 'required', // Can be string or array
+                'degree_levels' => 'nullable', // Can be null, string or array
                 'eligible_countries' => 'nullable', // Can be string or array
                 'deadline' => 'nullable|date',
                 'status' => 'required|string',
@@ -49,14 +49,33 @@ class OpportunityController extends Controller
                 'meta_title' => 'nullable|string|max:255',
                 'meta_description' => 'nullable|string',
                 'meta_keywords' => 'nullable|string',
-                'scholarsconnect_advice' => 'nullable|string'
+                'scholarsconnect_advice' => 'nullable|string',
+                'provider' => 'nullable|string|max:255',
+                'application_fee' => 'nullable|string|max:255',
+                'application_open_date' => 'nullable|date',
+                'verification_status' => 'nullable|string|max:50',
+                'official_source_url' => 'nullable|url',
+                'last_verified_at' => 'nullable|date',
+                'verified_by' => 'nullable|string|max:255',
+                'application_difficulty' => 'nullable|string|max:50',
+                'best_for' => 'nullable|string',
+                'not_suitable_for' => 'nullable|string',
+                'common_mistakes' => 'nullable|string',
+                'editorial_verdict' => 'nullable|string',
+                'is_sponsored' => 'nullable',
+                'is_expired' => 'nullable',
+                'is_verified' => 'nullable',
+                'focus_keyword' => 'nullable|string|max:255'
             ]);
 
-            $data['degree_levels'] = $this->handleJsonInput($data['degree_levels']);
+            $data['degree_levels'] = isset($data['degree_levels']) ? $this->handleJsonInput($data['degree_levels']) : [];
             if (isset($data['eligible_countries'])) {
                 $data['eligible_countries'] = $this->handleJsonInput($data['eligible_countries']);
             }
             $data['is_featured'] = filter_var($request->input('is_featured', false), FILTER_VALIDATE_BOOLEAN);
+            $data['is_sponsored'] = filter_var($request->input('is_sponsored', false), FILTER_VALIDATE_BOOLEAN);
+            $data['is_expired'] = filter_var($request->input('is_expired', false), FILTER_VALIDATE_BOOLEAN);
+            $data['is_verified'] = filter_var($request->input('is_verified', false), FILTER_VALIDATE_BOOLEAN) || ($request->input('verification_status') === 'verified');
 
             if ($request->hasFile('image')) {
                 if (env('CLOUDINARY_URL')) {
@@ -100,7 +119,7 @@ class OpportunityController extends Controller
             'country_id' => 'nullable|exists:countries,id',
             'opportunity_type' => 'required|string',
             'funding_type' => 'required|string',
-            'degree_levels' => 'required',
+            'degree_levels' => 'nullable',
             'eligible_countries' => 'nullable',
             'deadline' => 'nullable|date',
             'status' => 'required|string',
@@ -110,17 +129,36 @@ class OpportunityController extends Controller
             'official_website' => 'nullable|url',
             'required_documents' => 'nullable|string',
             'application_procedure' => 'nullable|string',
-                'meta_title' => 'nullable|string|max:255',
-                'meta_description' => 'nullable|string',
-                'meta_keywords' => 'nullable|string',
-                'scholarsconnect_advice' => 'nullable|string'
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+            'meta_keywords' => 'nullable|string',
+            'scholarsconnect_advice' => 'nullable|string',
+            'provider' => 'nullable|string|max:255',
+            'application_fee' => 'nullable|string|max:255',
+            'application_open_date' => 'nullable|date',
+            'verification_status' => 'nullable|string|max:50',
+            'official_source_url' => 'nullable|url',
+            'last_verified_at' => 'nullable|date',
+            'verified_by' => 'nullable|string|max:255',
+            'application_difficulty' => 'nullable|string|max:50',
+            'best_for' => 'nullable|string',
+            'not_suitable_for' => 'nullable|string',
+            'common_mistakes' => 'nullable|string',
+            'editorial_verdict' => 'nullable|string',
+            'is_sponsored' => 'nullable',
+            'is_expired' => 'nullable',
+            'is_verified' => 'nullable',
+            'focus_keyword' => 'nullable|string|max:255'
         ]);
 
-        $data['degree_levels'] = $this->handleJsonInput($data['degree_levels']);
+        $data['degree_levels'] = isset($data['degree_levels']) ? $this->handleJsonInput($data['degree_levels']) : [];
         if (isset($data['eligible_countries'])) {
             $data['eligible_countries'] = $this->handleJsonInput($data['eligible_countries']);
         }
         $data['is_featured'] = filter_var($request->input('is_featured', false), FILTER_VALIDATE_BOOLEAN);
+        $data['is_sponsored'] = filter_var($request->input('is_sponsored', false), FILTER_VALIDATE_BOOLEAN);
+        $data['is_expired'] = filter_var($request->input('is_expired', false), FILTER_VALIDATE_BOOLEAN);
+        $data['is_verified'] = filter_var($request->input('is_verified', false), FILTER_VALIDATE_BOOLEAN) || ($request->input('verification_status') === 'verified');
 
         if ($request->hasFile('image')) {
             if (env('CLOUDINARY_URL')) {

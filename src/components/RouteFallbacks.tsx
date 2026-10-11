@@ -8,7 +8,9 @@ export function RouteErrorFallback({ reset }: { error: Error; reset: () => void 
     <SiteLayout newsletter={false}>
       <div className="flex min-h-[50vh] flex-col items-center justify-center px-4 text-center">
         <h1 className="text-2xl font-bold text-foreground">Something went wrong</h1>
-        <p className="mt-2 text-sm text-muted-foreground">We couldn't load this page. Please try again.</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          We couldn't load this page. Please try again.
+        </p>
         <div className="mt-6 flex gap-3">
           <Button
             onClick={() => {

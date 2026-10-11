@@ -17,25 +17,25 @@ export function ScholarshipQuiz() {
     type: "",
     course: "",
     funding: "",
-    nationality: ""
+    nationality: "",
   });
 
-  const handleNext = () => setStep(s => s + 1);
-  const handlePrev = () => setStep(s => s - 1);
+  const handleNext = () => setStep((s) => s + 1);
+  const handlePrev = () => setStep((s) => s - 1);
 
   const calculateMatches = async () => {
     setLoading(true);
     try {
       const filters = {
         degree: form.degree ? form.degree.toLowerCase() : undefined,
-        type: form.type ? form.type.toLowerCase().replace(/s$/, '') : undefined,
+        type: form.type ? form.type.toLowerCase().replace(/s$/, "") : undefined,
         funding: form.funding ? form.funding : undefined,
-        q: form.course || undefined
+        q: form.course || undefined,
       };
-      
+
       // Artificial delay for better UX
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
       const res = await searchOpportunities({ data: filters });
       setMatchCount(res.count || 0);
     } catch (e) {
@@ -49,12 +49,15 @@ export function ScholarshipQuiz() {
   const handleViewMatches = () => {
     navigate({
       to: "/opportunities",
-      search: matchCount === 0 ? {} : {
-        degree: form.degree ? form.degree.toLowerCase() : undefined,
-        type: form.type ? form.type.toLowerCase().replace(/s$/, '') : undefined,
-        funding: form.funding ? form.funding : undefined,
-        q: form.course || undefined
-      }
+      search:
+        matchCount === 0
+          ? {}
+          : {
+              degree: form.degree ? form.degree.toLowerCase() : undefined,
+              type: form.type ? form.type.toLowerCase().replace(/s$/, "") : undefined,
+              funding: form.funding ? form.funding : undefined,
+              q: form.course || undefined,
+            },
     });
   };
 
@@ -65,8 +68,12 @@ export function ScholarshipQuiz() {
           <Search className="h-5 w-5 text-secondary" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-navy font-heading leading-tight">Scholarship Match Quiz</h3>
-          <p className="text-xs text-muted-foreground mt-0.5">Find your perfect fit in 60 seconds</p>
+          <h3 className="text-lg font-bold text-navy font-heading leading-tight">
+            Scholarship Match Quiz
+          </h3>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Find your perfect fit in 60 seconds
+          </p>
         </div>
       </div>
 
@@ -78,8 +85,8 @@ export function ScholarshipQuiz() {
               <span>{Math.round((step / 5) * 100)}%</span>
             </div>
             <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-secondary transition-all duration-500 ease-in-out" 
+              <div
+                className="h-full bg-secondary transition-all duration-500 ease-in-out"
                 style={{ width: `${(step / 5) * 100}%` }}
               ></div>
             </div>
@@ -88,12 +95,17 @@ export function ScholarshipQuiz() {
 
         {step === 1 && (
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <label className="block text-sm font-semibold text-navy mb-3">Which degree are you pursuing?</label>
+            <label className="block text-sm font-semibold text-navy mb-3">
+              Which degree are you pursuing?
+            </label>
             <div className="grid grid-cols-2 gap-2">
-              {['Undergraduate', 'Masters', 'PhD', 'Postdoc'].map(d => (
-                <button 
-                  key={d} 
-                  onClick={() => { setForm({ ...form, degree: d }); handleNext(); }}
+              {["Undergraduate", "Masters", "PhD", "Postdoc"].map((d) => (
+                <button
+                  key={d}
+                  onClick={() => {
+                    setForm({ ...form, degree: d });
+                    handleNext();
+                  }}
                   className="p-3 border border-border rounded-lg text-sm hover:border-secondary hover:bg-secondary/5 transition-all font-medium text-navy/80 hover:scale-[1.02] shadow-sm hover:shadow-md"
                 >
                   {d}
@@ -105,39 +117,55 @@ export function ScholarshipQuiz() {
 
         {step === 2 && (
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <label className="block text-sm font-semibold text-navy mb-3">What type of opportunity?</label>
+            <label className="block text-sm font-semibold text-navy mb-3">
+              What type of opportunity?
+            </label>
             <div className="grid grid-cols-2 gap-2">
-              {['Scholarships', 'Internships', 'Jobs', 'Grants', 'Hackathons', 'Courses'].map(d => (
-                <button 
-                  key={d} 
-                  onClick={() => { setForm({ ...form, type: d }); handleNext(); }}
-                  className="p-3 border border-border rounded-lg text-sm hover:border-secondary hover:bg-secondary/5 transition-all font-medium text-navy/80 hover:scale-[1.02] shadow-sm hover:shadow-md"
-                >
-                  {d}
-                </button>
-              ))}
+              {["Scholarships", "Internships", "Jobs", "Grants", "Hackathons", "Courses"].map(
+                (d) => (
+                  <button
+                    key={d}
+                    onClick={() => {
+                      setForm({ ...form, type: d });
+                      handleNext();
+                    }}
+                    className="p-3 border border-border rounded-lg text-sm hover:border-secondary hover:bg-secondary/5 transition-all font-medium text-navy/80 hover:scale-[1.02] shadow-sm hover:shadow-md"
+                  >
+                    {d}
+                  </button>
+                ),
+              )}
             </div>
-            <button onClick={handlePrev} className="mt-4 text-xs font-semibold text-muted-foreground hover:text-navy transition-colors">← Back</button>
+            <button
+              onClick={handlePrev}
+              className="mt-4 text-xs font-semibold text-muted-foreground hover:text-navy transition-colors"
+            >
+              ← Back
+            </button>
           </div>
         )}
 
         {step === 3 && (
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <label className="block text-sm font-semibold text-navy mb-3">What is your field of study?</label>
+            <label className="block text-sm font-semibold text-navy mb-3">
+              What is your field of study?
+            </label>
             <select
               className="w-full p-3 border border-border rounded-lg text-sm focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary mb-3 font-medium text-navy shadow-sm transition-all"
-              value={isOtherField ? 'Other' : (form.course || "")}
-              onChange={e => {
-                if (e.target.value === 'Other') {
+              value={isOtherField ? "Other" : form.course || ""}
+              onChange={(e) => {
+                if (e.target.value === "Other") {
                   setIsOtherField(true);
-                  setForm({ ...form, course: '' });
+                  setForm({ ...form, course: "" });
                 } else {
                   setIsOtherField(false);
                   setForm({ ...form, course: e.target.value });
                 }
               }}
             >
-              <option value="" disabled>Select your field</option>
+              <option value="" disabled>
+                Select your field
+              </option>
               <option value="Computer Science & IT">Computer Science & IT</option>
               <option value="Engineering">Engineering</option>
               <option value="Medicine & Health">Medicine & Health</option>
@@ -147,61 +175,88 @@ export function ScholarshipQuiz() {
               <option value="Other">Other (Type below)</option>
             </select>
             {isOtherField && (
-              <input 
-                type="text" 
-                placeholder="e.g. Architecture" 
+              <input
+                type="text"
+                placeholder="e.g. Architecture"
                 className="w-full p-3 border border-border rounded-lg text-sm focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary mb-3 font-medium text-navy shadow-sm transition-all animate-in fade-in"
                 value={form.course}
-                onChange={e => setForm({ ...form, course: e.target.value })}
-                onKeyDown={e => { if (e.key === 'Enter' && form.course.trim()) handleNext(); }}
+                onChange={(e) => setForm({ ...form, course: e.target.value })}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && form.course.trim()) handleNext();
+                }}
               />
             )}
             <div className="flex justify-between items-center mt-2">
-              <button onClick={handlePrev} className="text-xs font-semibold text-muted-foreground hover:text-navy transition-colors">← Back</button>
-              <Button onClick={handleNext} disabled={!form.course.trim()} className="bg-navy hover:bg-navy-light text-white text-xs h-9 px-6 rounded-full font-bold shadow-md transition-transform hover:scale-105">Next</Button>
+              <button
+                onClick={handlePrev}
+                className="text-xs font-semibold text-muted-foreground hover:text-navy transition-colors"
+              >
+                ← Back
+              </button>
+              <Button
+                onClick={handleNext}
+                disabled={!form.course.trim()}
+                className="bg-navy hover:bg-navy-light text-white text-xs h-9 px-6 rounded-full font-bold shadow-md transition-transform hover:scale-105"
+              >
+                Next
+              </Button>
             </div>
           </div>
         )}
 
         {step === 4 && (
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <label className="block text-sm font-semibold text-navy mb-3">Funding requirement?</label>
+            <label className="block text-sm font-semibold text-navy mb-3">
+              Funding requirement?
+            </label>
             <div className="grid grid-cols-1 gap-2">
               {[
-                { label: 'Fully Funded (Tuition + Stipend)', val: 'fully_funded' },
-                { label: 'Partially Funded / Tuition Only', val: 'partially_funded' },
-                { label: 'Any Funding', val: '' }
-              ].map(d => (
-                <button 
-                  key={d.label} 
-                  onClick={() => { setForm({ ...form, funding: d.val }); handleNext(); }}
+                { label: "Fully Funded (Tuition + Stipend)", val: "fully_funded" },
+                { label: "Partially Funded / Tuition Only", val: "partially_funded" },
+                { label: "Any Funding", val: "" },
+              ].map((d) => (
+                <button
+                  key={d.label}
+                  onClick={() => {
+                    setForm({ ...form, funding: d.val });
+                    handleNext();
+                  }}
                   className="p-3 border border-border rounded-lg text-sm hover:border-secondary hover:bg-secondary/5 transition-all text-left font-medium text-navy/80 hover:scale-[1.02] shadow-sm hover:shadow-md"
                 >
                   {d.label}
                 </button>
               ))}
             </div>
-            <button onClick={handlePrev} className="mt-4 text-xs font-semibold text-muted-foreground hover:text-navy transition-colors">← Back</button>
+            <button
+              onClick={handlePrev}
+              className="mt-4 text-xs font-semibold text-muted-foreground hover:text-navy transition-colors"
+            >
+              ← Back
+            </button>
           </div>
         )}
 
         {step === 5 && !loading && (
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <label className="block text-sm font-semibold text-navy mb-3">What is your nationality?</label>
+            <label className="block text-sm font-semibold text-navy mb-3">
+              What is your nationality?
+            </label>
             <select
               className="w-full p-3 border border-border rounded-lg text-sm focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary mb-3 font-medium text-navy shadow-sm transition-all"
-              value={isOtherNationality ? 'Other' : (form.nationality || "")}
-              onChange={e => {
-                if (e.target.value === 'Other') {
+              value={isOtherNationality ? "Other" : form.nationality || ""}
+              onChange={(e) => {
+                if (e.target.value === "Other") {
                   setIsOtherNationality(true);
-                  setForm({ ...form, nationality: '' });
+                  setForm({ ...form, nationality: "" });
                 } else {
                   setIsOtherNationality(false);
                   setForm({ ...form, nationality: e.target.value });
                 }
               }}
             >
-              <option value="" disabled>Select nationality</option>
+              <option value="" disabled>
+                Select nationality
+              </option>
               <option value="Nigerian">Nigerian</option>
               <option value="Indian">Indian</option>
               <option value="Kenyan">Kenyan</option>
@@ -211,18 +266,29 @@ export function ScholarshipQuiz() {
               <option value="Other">Other (Type below)</option>
             </select>
             {isOtherNationality && (
-              <input 
-                type="text" 
-                placeholder="e.g. South African, Egyptian..." 
+              <input
+                type="text"
+                placeholder="e.g. South African, Egyptian..."
                 className="w-full p-3 border border-border rounded-lg text-sm focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary mb-3 font-medium text-navy shadow-sm transition-all animate-in fade-in"
                 value={form.nationality}
-                onChange={e => setForm({ ...form, nationality: e.target.value })}
-                onKeyDown={e => { if (e.key === 'Enter' && form.nationality.trim()) calculateMatches(); }}
+                onChange={(e) => setForm({ ...form, nationality: e.target.value })}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && form.nationality.trim()) calculateMatches();
+                }}
               />
             )}
             <div className="flex justify-between items-center mt-2">
-              <button onClick={handlePrev} className="text-xs font-semibold text-muted-foreground hover:text-navy transition-colors">← Back</button>
-              <Button onClick={calculateMatches} disabled={!form.nationality.trim()} className="bg-secondary hover:bg-green-600 text-white font-bold h-9 px-6 rounded-full shadow-md transition-transform hover:scale-105">
+              <button
+                onClick={handlePrev}
+                className="text-xs font-semibold text-muted-foreground hover:text-navy transition-colors"
+              >
+                ← Back
+              </button>
+              <Button
+                onClick={calculateMatches}
+                disabled={!form.nationality.trim()}
+                className="bg-secondary hover:bg-green-600 text-white font-bold h-9 px-6 rounded-full shadow-md transition-transform hover:scale-105"
+              >
                 Find Matches
               </Button>
             </div>
@@ -239,7 +305,9 @@ export function ScholarshipQuiz() {
               </div>
             </div>
             <h4 className="text-lg font-bold text-navy animate-pulse">Analyzing Profile...</h4>
-            <p className="text-xs text-muted-foreground mt-2">Scanning 1,500+ opportunities across the globe</p>
+            <p className="text-xs text-muted-foreground mt-2">
+              Scanning 1,500+ opportunities across the globe
+            </p>
           </div>
         )}
 
@@ -252,14 +320,20 @@ export function ScholarshipQuiz() {
               {matchCount === 0 ? "No exact matches found" : `We found ${matchCount} matches!`}
             </h4>
             <p className="text-sm text-navy-foreground/70 mb-8 max-w-sm mx-auto">
-              {matchCount === 0 
-                ? "Try broadening your criteria or browse all available opportunities." 
+              {matchCount === 0
+                ? "Try broadening your criteria or browse all available opportunities."
                 : "Based on your profile, we've found highly relevant opportunities that fit your criteria perfectly."}
             </p>
-            <Button onClick={handleViewMatches} className="w-full bg-secondary hover:bg-green-600 text-white font-bold h-12 rounded-full text-base shadow-lg transition-transform hover:scale-[1.02]">
+            <Button
+              onClick={handleViewMatches}
+              className="w-full bg-secondary hover:bg-green-600 text-white font-bold h-12 rounded-full text-base shadow-lg transition-transform hover:scale-[1.02]"
+            >
               {matchCount === 0 ? "Browse All Opportunities" : "View Your Matches"}
             </Button>
-            <button onClick={() => setStep(1)} className="mt-6 text-sm font-semibold text-muted-foreground hover:text-navy transition-colors underline underline-offset-4">
+            <button
+              onClick={() => setStep(1)}
+              className="mt-6 text-sm font-semibold text-muted-foreground hover:text-navy transition-colors underline underline-offset-4"
+            >
               Start Over
             </button>
           </div>

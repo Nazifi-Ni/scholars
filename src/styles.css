@@ -75,33 +75,33 @@
 :root {
   --radius: 0.75rem;
   /* ScholarsConnect brand */
-  --background: #F1F5F9;
-  --foreground: #0D1B3D;
-  --card: #FFFFFF;
-  --card-foreground: #0D1B3D;
-  --popover: #FFFFFF;
-  --popover-foreground: #0D1B3D;
-  --primary: #0D1B3D;
-  --primary-foreground: #FFFFFF;
-  --primary-glow: #1E3A8A;
-  --secondary: #22C55E;
-  --secondary-foreground: #FFFFFF;
-  --muted: #E2E8F0;
-  --muted-foreground: #64748B;
-  --accent: #2563EB;
-  --accent-foreground: #FFFFFF;
-  --highlight: #FBBF24;
-  --highlight-foreground: #0D1B3D;
-  --success: #22C55E;
-  --success-foreground: #FFFFFF;
-  --navy: #0D1B3D;
-  --navy-light: #1E3A8A;
-  --navy-foreground: #FFFFFF;
-  --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
-  --border: #CBD5E1;
-  --input: #CBD5E1;
-  --ring: #2563EB;
+  --background: #f1f5f9;
+  --foreground: #0d1b3d;
+  --card: #ffffff;
+  --card-foreground: #0d1b3d;
+  --popover: #ffffff;
+  --popover-foreground: #0d1b3d;
+  --primary: #0d1b3d;
+  --primary-foreground: #ffffff;
+  --primary-glow: #1e3a8a;
+  --secondary: #22c55e;
+  --secondary-foreground: #ffffff;
+  --muted: #e2e8f0;
+  --muted-foreground: #64748b;
+  --accent: #2563eb;
+  --accent-foreground: #ffffff;
+  --highlight: #fbbf24;
+  --highlight-foreground: #0d1b3d;
+  --success: #22c55e;
+  --success-foreground: #ffffff;
+  --navy: #0d1b3d;
+  --navy-light: #1e3a8a;
+  --navy-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #cbd5e1;
+  --input: #cbd5e1;
+  --ring: #2563eb;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -117,7 +117,12 @@
   --sidebar-ring: oklch(0.704 0.04 256.788);
 
   /* Gradients & effects */
-  --gradient-hero: linear-gradient(140deg, oklch(0.22 0.07 268) 0%, oklch(0.3 0.09 266) 55%, oklch(0.36 0.12 262) 100%);
+  --gradient-hero: linear-gradient(
+    140deg,
+    oklch(0.22 0.07 268) 0%,
+    oklch(0.3 0.09 266) 55%,
+    oklch(0.36 0.12 262) 100%
+  );
   --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-glow));
   --gradient-green: linear-gradient(135deg, oklch(0.72 0.19 149.6), oklch(0.62 0.17 155));
   --gradient-cta: linear-gradient(120deg, oklch(0.55 0.2 262), oklch(0.72 0.19 149.6));
@@ -181,7 +186,12 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-heading);
   }
 }
@@ -227,7 +237,9 @@
   color: transparent;
 }
 @utility card-hover {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   &:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-card);

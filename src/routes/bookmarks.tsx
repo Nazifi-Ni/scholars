@@ -8,7 +8,7 @@ export const Route = createFileRoute("/bookmarks")({
     meta: [
       { title: "My Bookmarks — ScholarsConnect" },
       { name: "description", content: "View your saved scholarships and opportunities." },
-      { name: "robots", content: "noindex" } 
+      { name: "robots", content: "noindex" },
     ],
   }),
   component: BookmarksPage,
@@ -20,11 +20,15 @@ function BookmarksPage() {
   return (
     <SiteLayout>
       <section className="bg-gradient-hero px-4 py-12 lg:px-8 text-center border-b border-border">
-        <h1 className="text-3xl font-bold text-navy-foreground sm:text-4xl font-heading mb-3">Saved Bookmarks</h1>
+        <h1 className="text-3xl font-bold text-navy-foreground sm:text-4xl font-heading mb-3">
+          Saved Bookmarks
+        </h1>
         <p className="text-navy-foreground/70 max-w-2xl mx-auto">
           Your saved scholarships, internships, and opportunities.
           <br className="hidden sm:block" />
-          <span className="text-xs sm:text-sm italic mt-2 inline-block">Note: Bookmarks are securely saved in your current browser.</span>
+          <span className="text-xs sm:text-sm italic mt-2 inline-block">
+            Note: Bookmarks are securely saved in your current browser.
+          </span>
         </p>
       </section>
 
@@ -33,7 +37,8 @@ function BookmarksPage() {
           <div className="rounded-2xl border border-dashed border-border bg-card py-20 text-center shadow-sm">
             <h3 className="text-lg font-bold text-navy font-heading">No bookmarks yet</h3>
             <p className="mt-2 text-sm text-muted-foreground font-sans max-w-sm mx-auto">
-              When you find an opportunity you like, click the bookmark icon to save it here for later.
+              When you find an opportunity you like, click the bookmark icon to save it here for
+              later.
             </p>
           </div>
         ) : (
