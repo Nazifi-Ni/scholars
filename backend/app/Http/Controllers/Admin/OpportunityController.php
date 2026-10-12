@@ -40,7 +40,7 @@ class OpportunityController extends Controller
                 'eligible_countries' => 'nullable', // Can be string or array
                 'deadline' => 'nullable|date',
                 'status' => 'required|string',
-                'is_featured' => 'boolean',
+                'is_featured' => 'nullable',
                 'image' => 'nullable|image|max:2048', // 2MB Max
                 'application_link' => 'nullable|url',
                 'official_website' => 'nullable|url',
@@ -123,7 +123,7 @@ class OpportunityController extends Controller
             'eligible_countries' => 'nullable',
             'deadline' => 'nullable|date',
             'status' => 'required|string',
-            'is_featured' => 'boolean',
+            'is_featured' => 'nullable',
             'image' => 'nullable|image|max:2048',
             'application_link' => 'nullable|url',
             'official_website' => 'nullable|url',

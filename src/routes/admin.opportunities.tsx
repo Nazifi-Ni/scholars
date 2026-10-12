@@ -109,6 +109,7 @@ function AdminOpportunities() {
   // Form State
   const [editingId, setEditingId] = useState<number | null>(null);
   const [formData, setFormData] = useState<any>(INITIAL_FORM_STATE);
+  const [activeTab, setActiveTab] = useState("basic");
 
   const fetchData = async () => {
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000/api";
@@ -201,6 +202,7 @@ function AdminOpportunities() {
       meta_keywords: opp.meta_keywords || "",
       focus_keyword: opp.focus_keyword || "",
     });
+    setActiveTab("basic");
     setIsModalOpen(true);
   };
 
@@ -210,6 +212,7 @@ function AdminOpportunities() {
       ...INITIAL_FORM_STATE,
       last_verified_at: new Date().toISOString().split("T")[0],
     });
+    setActiveTab("basic");
     setIsModalOpen(true);
   };
 
@@ -260,6 +263,13 @@ function AdminOpportunities() {
             .filter(Boolean);
           formPayload.append("eligible_countries", JSON.stringify(arr));
         }
+      } else if (
+        key === "is_featured" ||
+        key === "is_sponsored" ||
+        key === "is_expired" ||
+        key === "is_verified"
+      ) {
+        formPayload.append(key, formData[key] ? "1" : "0");
       } else {
         formPayload.append(key, formData[key] ?? "");
       }
@@ -403,7 +413,7 @@ function AdminOpportunities() {
                     </div>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex justify-end gap-1.5 sm:gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                       <a
                         href={`/opportunities/${opp.slug}`}
                         target="_blank"
@@ -465,10 +475,10 @@ function AdminOpportunities() {
 
       {/* Create/Edit Modal with 8 Organized Sections */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-5xl max-h-[92vh] overflow-hidden flex flex-col p-0 gap-0 bg-gray-50">
-          <DialogHeader className="px-6 py-4 bg-white border-b border-gray-100 flex flex-row items-center justify-between">
+        <DialogContent className="w-[96vw] max-w-5xl max-h-[94vh] overflow-hidden flex flex-col p-0 gap-0 bg-gray-50 rounded-2xl shadow-2xl">
+          <DialogHeader className="px-4 sm:px-6 py-4 bg-white border-b border-gray-100 flex flex-row items-center justify-between">
             <div>
-              <DialogTitle className="text-xl font-heading">
+              <DialogTitle className="text-lg sm:text-xl font-heading">
                 {editingId ? "Edit Opportunity" : "Create Opportunity"}
               </DialogTitle>
               <p className="text-xs text-muted-foreground mt-0.5">
@@ -482,67 +492,67 @@ function AdminOpportunities() {
                 rel="noreferrer"
                 className="text-xs font-semibold text-indigo-600 hover:underline mr-8 flex items-center gap-1"
               >
-                View Live Page <Eye className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">View Live Page</span> <Eye className="h-3.5 w-3.5" />
               </a>
             )}
           </DialogHeader>
 
-          <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto font-sans">
-            <Tabs defaultValue="basic" className="w-full">
-              <div className="bg-white px-6 pt-2 border-b border-gray-100 sticky top-0 z-10 overflow-x-auto scrollbar-hide">
-                <TabsList className="w-full justify-start h-auto bg-transparent p-0 gap-5 text-xs">
+          <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto font-sans flex flex-col">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex-1 flex flex-col">
+              <div className="bg-white px-4 sm:px-6 pt-2 border-b border-gray-200 sticky top-0 z-10 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                <TabsList className="w-max sm:w-full justify-start h-auto bg-transparent p-0 gap-2 sm:gap-4 text-xs border-b-0">
                   <TabsTrigger
                     value="basic"
-                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent px-1 py-3 font-semibold"
+                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 data-[state=active]:bg-transparent px-2.5 sm:px-3 py-3 font-semibold text-gray-500 hover:text-gray-900 whitespace-nowrap transition-colors"
                   >
                     1. Basic Info
                   </TabsTrigger>
                   <TabsTrigger
                     value="eligibility"
-                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent px-1 py-3 font-semibold"
+                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 data-[state=active]:bg-transparent px-2.5 sm:px-3 py-3 font-semibold text-gray-500 hover:text-gray-900 whitespace-nowrap transition-colors"
                   >
                     2. Eligibility & Scope
                   </TabsTrigger>
                   <TabsTrigger
                     value="funding"
-                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent px-1 py-3 font-semibold"
+                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 data-[state=active]:bg-transparent px-2.5 sm:px-3 py-3 font-semibold text-gray-500 hover:text-gray-900 whitespace-nowrap transition-colors"
                   >
                     3. Funding & Benefits
                   </TabsTrigger>
                   <TabsTrigger
                     value="dates"
-                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent px-1 py-3 font-semibold"
+                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 data-[state=active]:bg-transparent px-2.5 sm:px-3 py-3 font-semibold text-gray-500 hover:text-gray-900 whitespace-nowrap transition-colors"
                   >
                     4. Dates & Links
                   </TabsTrigger>
                   <TabsTrigger
                     value="verification"
-                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent px-1 py-3 font-semibold"
+                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 data-[state=active]:bg-transparent px-2.5 sm:px-3 py-3 font-semibold text-gray-500 hover:text-gray-900 whitespace-nowrap transition-colors"
                   >
                     5. Verification
                   </TabsTrigger>
                   <TabsTrigger
                     value="editorial"
-                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent px-1 py-3 font-semibold"
+                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 data-[state=active]:bg-transparent px-2.5 sm:px-3 py-3 font-semibold text-gray-500 hover:text-gray-900 whitespace-nowrap transition-colors"
                   >
                     6. Editorial Analysis
                   </TabsTrigger>
                   <TabsTrigger
                     value="seo"
-                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent px-1 py-3 font-semibold"
+                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 data-[state=active]:bg-transparent px-2.5 sm:px-3 py-3 font-semibold text-gray-500 hover:text-gray-900 whitespace-nowrap transition-colors"
                   >
                     7. SEO
                   </TabsTrigger>
                   <TabsTrigger
                     value="publishing"
-                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent px-1 py-3 font-semibold"
+                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 data-[state=active]:bg-transparent px-2.5 sm:px-3 py-3 font-semibold text-gray-500 hover:text-gray-900 whitespace-nowrap transition-colors"
                   >
                     8. Publishing
                   </TabsTrigger>
                 </TabsList>
               </div>
 
-              <div className="p-6">
+              <div className="p-4 sm:p-6 flex-1">
                 {/* 1. Basic Info */}
                 <TabsContent value="basic" className="space-y-5 mt-0">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -1061,16 +1071,18 @@ function AdminOpportunities() {
               </div>
             </Tabs>
 
-            <div className="p-6 bg-white border-t border-gray-100 flex items-center justify-end gap-3 mt-auto sticky bottom-0">
+            <div className="p-4 sm:p-6 bg-white border-t border-gray-100 flex items-center justify-between gap-3 mt-auto sticky bottom-0 z-20">
               <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)}>
                 Cancel
               </Button>
-              <Button
-                type="submit"
-                className="bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-200"
-              >
-                {editingId ? "Save Opportunity" : "Create Opportunity"}
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  type="submit"
+                  className="bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-200 font-semibold"
+                >
+                  {editingId ? "Save Opportunity" : "Create Opportunity"}
+                </Button>
+              </div>
             </div>
           </form>
         </DialogContent>
