@@ -39,4 +39,16 @@ class BlogPost extends Model
         }
         return $value;
     }
+
+    public function getReadingMinutesAttribute($value)
+    {
+        $text = $this->content ?: $this->excerpt ?: '';
+        $clean = preg_replace('/!\[.*?\]\(.*?\)/', '', $text);
+        $clean = preg_replace('/\[(.*?)\]\(.*?\)/', '$1', $clean);
+        $clean = preg_replace('/```[\s\S]*?```/', '', $clean);
+        $clean = strip_tags($clean);
+        $clean = preg_replace('/[#*`_~>-]/', ' ', $clean);
+        $words = str_word_count(trim($clean));
+        return max(1, (int) ceil($words / 220));
+    }
 }

@@ -101,6 +101,10 @@ function AdminOpportunities() {
   const { token } = useAuth();
   const [opportunities, setOpportunities] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
+  const [filterTab, setFilterTab] = useState<
+    "all" | "needs_review" | "verified" | "expired" | "draft"
+  >("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Modals
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -305,6 +309,53 @@ function AdminOpportunities() {
     });
   };
 
+  const countNeedsReview = opportunities.filter(
+    (o) =>
+      !o.is_verified ||
+      o.verification_status === "needs_review" ||
+      o.verification_status === "unverified" ||
+      !o.editorial_verdict ||
+      !o.best_for ||
+      !o.official_source_url,
+  ).length;
+  const countVerified = opportunities.filter(
+    (o) => (o.verification_status === "verified" || o.is_verified) && !o.is_expired,
+  ).length;
+  const countExpired = opportunities.filter((o) => o.is_expired).length;
+  const countDraft = opportunities.filter((o) => o.status === "draft").length;
+
+  const filteredOpportunities = opportunities.filter((opp) => {
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      const match =
+        opp.title?.toLowerCase().includes(q) ||
+        opp.provider?.toLowerCase().includes(q) ||
+        opp.slug?.toLowerCase().includes(q);
+      if (!match) return false;
+    }
+
+    if (filterTab === "needs_review") {
+      return (
+        !opp.is_verified ||
+        opp.verification_status === "needs_review" ||
+        opp.verification_status === "unverified" ||
+        !opp.editorial_verdict ||
+        !opp.best_for ||
+        !opp.official_source_url
+      );
+    }
+    if (filterTab === "verified") {
+      return (opp.verification_status === "verified" || opp.is_verified) && !opp.is_expired;
+    }
+    if (filterTab === "expired") {
+      return opp.is_expired;
+    }
+    if (filterTab === "draft") {
+      return opp.status === "draft";
+    }
+    return true;
+  });
+
   return (
     <div className="space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Header */}
@@ -326,6 +377,72 @@ function AdminOpportunities() {
         </Button>
       </div>
 
+      {/* Filter Tabs & Search Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            type="button"
+            variant={filterTab === "all" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setFilterTab("all")}
+            className="rounded-full text-xs font-semibold"
+          >
+            All ({opportunities.length})
+          </Button>
+          <Button
+            type="button"
+            variant={filterTab === "needs_review" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setFilterTab("needs_review")}
+            className={`rounded-full text-xs font-semibold ${
+              filterTab === "needs_review"
+                ? "bg-amber-600 hover:bg-amber-700 text-white"
+                : "text-amber-700 border-amber-200 bg-amber-50 hover:bg-amber-100"
+            }`}
+          >
+            Needs Editorial Review ({countNeedsReview})
+          </Button>
+          <Button
+            type="button"
+            variant={filterTab === "verified" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setFilterTab("verified")}
+            className="rounded-full text-xs font-semibold"
+          >
+            Active Verified ({countVerified})
+          </Button>
+          <Button
+            type="button"
+            variant={filterTab === "expired" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setFilterTab("expired")}
+            className="rounded-full text-xs font-semibold"
+          >
+            Closed / Expired ({countExpired})
+          </Button>
+          {countDraft > 0 && (
+            <Button
+              type="button"
+              variant={filterTab === "draft" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setFilterTab("draft")}
+              className="rounded-full text-xs font-semibold"
+            >
+              Drafts ({countDraft})
+            </Button>
+          )}
+        </div>
+
+        <div className="w-full sm:w-72">
+          <Input
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search opportunities…"
+            className="bg-gray-50 border-gray-200 text-xs rounded-full px-4"
+          />
+        </div>
+      </div>
+
       {/* Table */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
@@ -340,7 +457,7 @@ function AdminOpportunities() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 font-sans">
-              {opportunities.map((opp) => (
+              {filteredOpportunities.map((opp) => (
                 <tr key={opp.id} className="hover:bg-gray-50/50 transition-colors group">
                   <td className="px-6 py-4">
                     <div className="font-semibold text-gray-900 line-clamp-1">{opp.title}</div>
@@ -443,10 +560,12 @@ function AdminOpportunities() {
                   </td>
                 </tr>
               ))}
-              {opportunities.length === 0 && (
+              {filteredOpportunities.length === 0 && (
                 <tr>
                   <td colSpan={5} className="px-6 py-12 text-center text-gray-500 font-sans">
-                    No opportunities found. Click "Create Opportunity" to add one.
+                    {opportunities.length === 0
+                      ? 'No opportunities found. Click "Create Opportunity" to add one.'
+                      : `No opportunities match the current "${filterTab}" filter or search query.`}
                   </td>
                 </tr>
               )}

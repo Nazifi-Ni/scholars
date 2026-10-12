@@ -366,6 +366,15 @@ function OpportunityDetailPage() {
                 </div>
               )}
 
+              {o.category?.name && (
+                <div className="p-3 rounded-xl bg-muted/40 border border-border/50">
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
+                    Category
+                  </span>
+                  <span className="font-bold text-navy mt-0.5 block">{o.category.name}</span>
+                </div>
+              )}
+
               {fundingLabel(o.funding_type) && (
                 <div className="p-3 rounded-xl bg-muted/40 border border-border/50">
                   <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
@@ -604,7 +613,8 @@ function OpportunityDetailPage() {
                 }
               }}
             >
-              Share Opportunity <ExternalLink className="ml-2 h-4 w-4" />
+              {o.opportunity_type === "scholarship" ? "Share Scholarship" : "Share Opportunity"}{" "}
+              <ExternalLink className="ml-2 h-4 w-4" />
             </Button>
           </div>
         </div>

@@ -212,7 +212,7 @@ export function calculateReadingTime(text: string | null | undefined): number {
   if (!text) return 1;
   const clean = text
     .replace(/!\[.*?\]\(.*?\)/g, "")
-    .replace(/\[.*?\]\(.*?\)/g, "$1")
+    .replace(/\[(.*?)\]\(.*?\)/g, "$1")
     .replace(/```[\s\S]*?```/g, "")
     .replace(/<[^>]*>/g, "")
     .replace(/[#*`_~>-]/g, " ")

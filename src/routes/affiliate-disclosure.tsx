@@ -82,8 +82,8 @@ function AffiliateDisclosurePage() {
               <strong>
                 Crucially, using our affiliate links never increases the price you pay.
               </strong>{" "}
-              In many instances, our partnerships enable us to negotiate exclusive tuition discounts
-              or fee waivers for African applicants.
+              Educational resources mentioned on ScholarsConnect are evaluated independently for
+              their genuine academic utility.
             </p>
           </section>
 
@@ -92,14 +92,15 @@ function AffiliateDisclosurePage() {
               2. Display Advertising (Google AdSense)
             </h2>
             <p className="mb-4">
-              We partner with third-party advertising networks, primarily Google AdSense, to display
-              banner advertisements across our website. These advertisements help fund our daily
-              operations.
+              ScholarsConnect may use third-party advertising networks, including Google AdSense, to
+              support the operation of the platform. If display advertising is introduced,
+              advertising will be presented in accordance with the provider’s policies.
             </p>
             <p className="mb-4">
-              Ads served via Google AdSense are automated and based on your interests or search
-              habits. ScholarsConnect does not endorse products or services appearing in automated
-              ad banners. For details on how advertising cookies function, please consult our{" "}
+              Any future advertisements served via third-party ad networks will be automated and
+              clearly labeled. ScholarsConnect does not endorse products or services appearing in
+              automated ad placements. For details on how advertising cookies function, please
+              consult our{" "}
               <Link to="/cookie-policy" className="text-primary font-semibold hover:underline">
                 Cookie Policy
               </Link>

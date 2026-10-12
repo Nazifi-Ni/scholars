@@ -101,7 +101,7 @@ function BrowsePage() {
             Browse Opportunities
           </h1>
           <p className="mt-2 text-navy-foreground/70">
-            {results.count.toLocaleString()} verified opportunities. Filter to find your perfect
+            {results.count.toLocaleString()} opportunities available. Filter to find your perfect
             match.
           </p>
           <form

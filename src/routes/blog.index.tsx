@@ -5,6 +5,7 @@ import { Clock, Tag } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { RouteErrorFallback } from "@/components/RouteFallbacks";
 import { blogListQuery } from "@/lib/queries";
+import { calculateReadingTime } from "@/lib/sc-shared";
 
 export const Route = createFileRoute("/blog/")({
   loader: ({ context }) => context.queryClient.ensureQueryData(blogListQuery),
@@ -73,7 +74,10 @@ function BlogPage() {
                 </span>
                 <span className="inline-flex items-center gap-1">
                   <Clock className="h-3.5 w-3.5" />
-                  {post.reading_minutes} min read
+                  {calculateReadingTime(post.content || post.excerpt) ||
+                    post.reading_minutes ||
+                    8}{" "}
+                  min read
                 </span>
               </div>
             </Link>

@@ -155,9 +155,9 @@ function EditorialPolicyPage() {
               5. Sponsored Content & Commercial Partnerships
             </h2>
             <p className="mb-4">
-              To keep our platform free for students across all 54 African countries, we display
-              advertisements and occasionally partner with accredited educational institutions. Our
-              guidelines for commercial content are rigid:
+              To keep our platform free for students across all 54 African countries,
+              ScholarsConnect may display advertisements and partner with accredited educational
+              institutions. Our guidelines for commercial content are rigid:
             </p>
             <ul className="list-disc pl-6 space-y-2 mb-4 text-foreground/85">
               <li>
