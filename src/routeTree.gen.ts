@@ -9,68 +9,108 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as ScholarshipsRouteImport } from './routes/scholarships'
-import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as JobsRouteImport } from './routes/jobs'
-import { Route as InternshipsRouteImport } from './routes/internships'
-import { Route as HowWeVerifyOpportunitiesRouteImport } from './routes/how-we-verify-opportunities'
-import { Route as HackathonsRouteImport } from './routes/hackathons'
-import { Route as GrantsRouteImport } from './routes/grants'
-import { Route as FaqRouteImport } from './routes/faq'
-import { Route as EditorialPolicyRouteImport } from './routes/editorial-policy'
-import { Route as DisclaimerRouteImport } from './routes/disclaimer'
-import { Route as CoursesRouteImport } from './routes/courses'
-import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CompetitionsRouteImport } from './routes/competitions'
-import { Route as BookmarksRouteImport } from './routes/bookmarks'
-import { Route as AffiliateDisclosureRouteImport } from './routes/affiliate-disclosure'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as OpportunitiesIndexRouteImport } from './routes/opportunities.index'
-import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AffiliateDisclosureRouteImport } from './routes/affiliate-disclosure'
+import { Route as BookmarksRouteImport } from './routes/bookmarks'
+import { Route as CompetitionsRouteImport } from './routes/competitions'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
+import { Route as CoursesRouteImport } from './routes/courses'
+import { Route as DisclaimerRouteImport } from './routes/disclaimer'
+import { Route as EditorialPolicyRouteImport } from './routes/editorial-policy'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as GrantsRouteImport } from './routes/grants'
+import { Route as HackathonsRouteImport } from './routes/hackathons'
+import { Route as HowWeVerifyOpportunitiesRouteImport } from './routes/how-we-verify-opportunities'
+import { Route as InternshipsRouteImport } from './routes/internships'
+import { Route as JobsRouteImport } from './routes/jobs'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as ScholarshipsRouteImport } from './routes/scholarships'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as OpportunitiesSlugRouteImport } from './routes/opportunities.$slug'
-import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
-import { Route as AdminUsersRouteImport } from './routes/admin.users'
-import { Route as AdminSubscribersRouteImport } from './routes/admin.subscribers'
-import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
-import { Route as AdminOpportunitiesRouteImport } from './routes/admin.opportunities'
-import { Route as AdminLoginRouteImport } from './routes/admin.login'
-import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
 import { Route as AdminBlogsRouteImport } from './routes/admin.blogs'
+import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminOpportunitiesRouteImport } from './routes/admin.opportunities'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminSubscribersRouteImport } from './routes/admin.subscribers'
+import { Route as AdminUsersRouteImport } from './routes/admin.users'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as OpportunitiesIndexRouteImport } from './routes/opportunities.index'
+import { Route as OpportunitiesSlugRouteImport } from './routes/opportunities.$slug'
 
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ScholarshipsRoute = ScholarshipsRouteImport.update({
-  id: '/scholarships',
-  path: '/scholarships',
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
-  id: '/privacy-policy',
-  path: '/privacy-policy',
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
+const AffiliateDisclosureRoute = AffiliateDisclosureRouteImport.update({
+  id: '/affiliate-disclosure',
+  path: '/affiliate-disclosure',
   getParentRoute: () => rootRouteImport,
 } as any)
-const JobsRoute = JobsRouteImport.update({
-  id: '/jobs',
-  path: '/jobs',
+const BookmarksRoute = BookmarksRouteImport.update({
+  id: '/bookmarks',
+  path: '/bookmarks',
   getParentRoute: () => rootRouteImport,
 } as any)
-const InternshipsRoute = InternshipsRouteImport.update({
-  id: '/internships',
-  path: '/internships',
+const CompetitionsRoute = CompetitionsRouteImport.update({
+  id: '/competitions',
+  path: '/competitions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CookiePolicyRoute = CookiePolicyRouteImport.update({
+  id: '/cookie-policy',
+  path: '/cookie-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoursesRoute = CoursesRouteImport.update({
+  id: '/courses',
+  path: '/courses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DisclaimerRoute = DisclaimerRouteImport.update({
+  id: '/disclaimer',
+  path: '/disclaimer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditorialPolicyRoute = EditorialPolicyRouteImport.update({
+  id: '/editorial-policy',
+  path: '/editorial-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GrantsRoute = GrantsRouteImport.update({
+  id: '/grants',
+  path: '/grants',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HackathonsRoute = HackathonsRouteImport.update({
+  id: '/hackathons',
+  path: '/hackathons',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HowWeVerifyOpportunitiesRoute =
@@ -79,84 +119,34 @@ const HowWeVerifyOpportunitiesRoute =
     path: '/how-we-verify-opportunities',
     getParentRoute: () => rootRouteImport,
   } as any)
-const HackathonsRoute = HackathonsRouteImport.update({
-  id: '/hackathons',
-  path: '/hackathons',
+const InternshipsRoute = InternshipsRouteImport.update({
+  id: '/internships',
+  path: '/internships',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GrantsRoute = GrantsRouteImport.update({
-  id: '/grants',
-  path: '/grants',
+const JobsRoute = JobsRouteImport.update({
+  id: '/jobs',
+  path: '/jobs',
   getParentRoute: () => rootRouteImport,
 } as any)
-const FaqRoute = FaqRouteImport.update({
-  id: '/faq',
-  path: '/faq',
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EditorialPolicyRoute = EditorialPolicyRouteImport.update({
-  id: '/editorial-policy',
-  path: '/editorial-policy',
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DisclaimerRoute = DisclaimerRouteImport.update({
-  id: '/disclaimer',
-  path: '/disclaimer',
+const ScholarshipsRoute = ScholarshipsRouteImport.update({
+  id: '/scholarships',
+  path: '/scholarships',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CoursesRoute = CoursesRouteImport.update({
-  id: '/courses',
-  path: '/courses',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CookiePolicyRoute = CookiePolicyRouteImport.update({
-  id: '/cookie-policy',
-  path: '/cookie-policy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CompetitionsRoute = CompetitionsRouteImport.update({
-  id: '/competitions',
-  path: '/competitions',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BookmarksRoute = BookmarksRouteImport.update({
-  id: '/bookmarks',
-  path: '/bookmarks',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AffiliateDisclosureRoute = AffiliateDisclosureRouteImport.update({
-  id: '/affiliate-disclosure',
-  path: '/affiliate-disclosure',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OpportunitiesIndexRoute = OpportunitiesIndexRouteImport.update({
-  id: '/opportunities/',
-  path: '/opportunities/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlogIndexRoute = BlogIndexRouteImport.update({
-  id: '/blog/',
-  path: '/blog/',
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -164,39 +154,9 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
-const OpportunitiesSlugRoute = OpportunitiesSlugRouteImport.update({
-  id: '/opportunities/$slug',
-  path: '/opportunities/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlogSlugRoute = BlogSlugRouteImport.update({
-  id: '/blog/$slug',
-  path: '/blog/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminUsersRoute = AdminUsersRouteImport.update({
-  id: '/users',
-  path: '/users',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminSubscribersRoute = AdminSubscribersRouteImport.update({
-  id: '/subscribers',
-  path: '/subscribers',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminSettingsRoute = AdminSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminOpportunitiesRoute = AdminOpportunitiesRouteImport.update({
-  id: '/opportunities',
-  path: '/opportunities',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminLoginRoute = AdminLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
+const AdminBlogsRoute = AdminBlogsRouteImport.update({
+  id: '/blogs',
+  path: '/blogs',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
@@ -204,10 +164,50 @@ const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
   path: '/categories',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminBlogsRoute = AdminBlogsRouteImport.update({
-  id: '/blogs',
-  path: '/blogs',
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => AdminRoute,
+} as any)
+const AdminOpportunitiesRoute = AdminOpportunitiesRouteImport.update({
+  id: '/opportunities',
+  path: '/opportunities',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSubscribersRoute = AdminSubscribersRouteImport.update({
+  id: '/subscribers',
+  path: '/subscribers',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AdminRoute,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpportunitiesIndexRoute = OpportunitiesIndexRouteImport.update({
+  id: '/opportunities/',
+  path: '/opportunities/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpportunitiesSlugRoute = OpportunitiesSlugRouteImport.update({
+  id: '/opportunities/$slug',
+  path: '/opportunities/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -452,137 +452,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/scholarships': {
-      id: '/scholarships'
-      path: '/scholarships'
-      fullPath: '/scholarships'
-      preLoaderRoute: typeof ScholarshipsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy-policy': {
-      id: '/privacy-policy'
-      path: '/privacy-policy'
-      fullPath: '/privacy-policy'
-      preLoaderRoute: typeof PrivacyPolicyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/jobs': {
-      id: '/jobs'
-      path: '/jobs'
-      fullPath: '/jobs'
-      preLoaderRoute: typeof JobsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/internships': {
-      id: '/internships'
-      path: '/internships'
-      fullPath: '/internships'
-      preLoaderRoute: typeof InternshipsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/how-we-verify-opportunities': {
-      id: '/how-we-verify-opportunities'
-      path: '/how-we-verify-opportunities'
-      fullPath: '/how-we-verify-opportunities'
-      preLoaderRoute: typeof HowWeVerifyOpportunitiesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/hackathons': {
-      id: '/hackathons'
-      path: '/hackathons'
-      fullPath: '/hackathons'
-      preLoaderRoute: typeof HackathonsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/grants': {
-      id: '/grants'
-      path: '/grants'
-      fullPath: '/grants'
-      preLoaderRoute: typeof GrantsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/faq': {
-      id: '/faq'
-      path: '/faq'
-      fullPath: '/faq'
-      preLoaderRoute: typeof FaqRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/editorial-policy': {
-      id: '/editorial-policy'
-      path: '/editorial-policy'
-      fullPath: '/editorial-policy'
-      preLoaderRoute: typeof EditorialPolicyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/disclaimer': {
-      id: '/disclaimer'
-      path: '/disclaimer'
-      fullPath: '/disclaimer'
-      preLoaderRoute: typeof DisclaimerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/courses': {
-      id: '/courses'
-      path: '/courses'
-      fullPath: '/courses'
-      preLoaderRoute: typeof CoursesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cookie-policy': {
-      id: '/cookie-policy'
-      path: '/cookie-policy'
-      fullPath: '/cookie-policy'
-      preLoaderRoute: typeof CookiePolicyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/competitions': {
-      id: '/competitions'
-      path: '/competitions'
-      fullPath: '/competitions'
-      preLoaderRoute: typeof CompetitionsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/bookmarks': {
-      id: '/bookmarks'
-      path: '/bookmarks'
-      fullPath: '/bookmarks'
-      preLoaderRoute: typeof BookmarksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/affiliate-disclosure': {
-      id: '/affiliate-disclosure'
-      path: '/affiliate-disclosure'
-      fullPath: '/affiliate-disclosure'
-      preLoaderRoute: typeof AffiliateDisclosureRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -592,25 +466,137 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/opportunities/': {
-      id: '/opportunities/'
-      path: '/opportunities'
-      fullPath: '/opportunities/'
-      preLoaderRoute: typeof OpportunitiesIndexRouteImport
+    '/affiliate-disclosure': {
+      id: '/affiliate-disclosure'
+      path: '/affiliate-disclosure'
+      fullPath: '/affiliate-disclosure'
+      preLoaderRoute: typeof AffiliateDisclosureRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blog/': {
-      id: '/blog/'
-      path: '/blog'
-      fullPath: '/blog/'
-      preLoaderRoute: typeof BlogIndexRouteImport
+    '/bookmarks': {
+      id: '/bookmarks'
+      path: '/bookmarks'
+      fullPath: '/bookmarks'
+      preLoaderRoute: typeof BookmarksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/competitions': {
+      id: '/competitions'
+      path: '/competitions'
+      fullPath: '/competitions'
+      preLoaderRoute: typeof CompetitionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookie-policy': {
+      id: '/cookie-policy'
+      path: '/cookie-policy'
+      fullPath: '/cookie-policy'
+      preLoaderRoute: typeof CookiePolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/courses': {
+      id: '/courses'
+      path: '/courses'
+      fullPath: '/courses'
+      preLoaderRoute: typeof CoursesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/disclaimer': {
+      id: '/disclaimer'
+      path: '/disclaimer'
+      fullPath: '/disclaimer'
+      preLoaderRoute: typeof DisclaimerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/editorial-policy': {
+      id: '/editorial-policy'
+      path: '/editorial-policy'
+      fullPath: '/editorial-policy'
+      preLoaderRoute: typeof EditorialPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/grants': {
+      id: '/grants'
+      path: '/grants'
+      fullPath: '/grants'
+      preLoaderRoute: typeof GrantsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hackathons': {
+      id: '/hackathons'
+      path: '/hackathons'
+      fullPath: '/hackathons'
+      preLoaderRoute: typeof HackathonsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/how-we-verify-opportunities': {
+      id: '/how-we-verify-opportunities'
+      path: '/how-we-verify-opportunities'
+      fullPath: '/how-we-verify-opportunities'
+      preLoaderRoute: typeof HowWeVerifyOpportunitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/internships': {
+      id: '/internships'
+      path: '/internships'
+      fullPath: '/internships'
+      preLoaderRoute: typeof InternshipsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jobs': {
+      id: '/jobs'
+      path: '/jobs'
+      fullPath: '/jobs'
+      preLoaderRoute: typeof JobsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scholarships': {
+      id: '/scholarships'
+      path: '/scholarships'
+      fullPath: '/scholarships'
+      preLoaderRoute: typeof ScholarshipsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -620,53 +606,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/opportunities/$slug': {
-      id: '/opportunities/$slug'
-      path: '/opportunities/$slug'
-      fullPath: '/opportunities/$slug'
-      preLoaderRoute: typeof OpportunitiesSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blog/$slug': {
-      id: '/blog/$slug'
-      path: '/blog/$slug'
-      fullPath: '/blog/$slug'
-      preLoaderRoute: typeof BlogSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/users': {
-      id: '/admin/users'
-      path: '/users'
-      fullPath: '/admin/users'
-      preLoaderRoute: typeof AdminUsersRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/subscribers': {
-      id: '/admin/subscribers'
-      path: '/subscribers'
-      fullPath: '/admin/subscribers'
-      preLoaderRoute: typeof AdminSubscribersRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/settings': {
-      id: '/admin/settings'
-      path: '/settings'
-      fullPath: '/admin/settings'
-      preLoaderRoute: typeof AdminSettingsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/opportunities': {
-      id: '/admin/opportunities'
-      path: '/opportunities'
-      fullPath: '/admin/opportunities'
-      preLoaderRoute: typeof AdminOpportunitiesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/login': {
-      id: '/admin/login'
-      path: '/login'
-      fullPath: '/admin/login'
-      preLoaderRoute: typeof AdminLoginRouteImport
+    '/admin/blogs': {
+      id: '/admin/blogs'
+      path: '/blogs'
+      fullPath: '/admin/blogs'
+      preLoaderRoute: typeof AdminBlogsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/categories': {
@@ -676,12 +620,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCategoriesRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/blogs': {
-      id: '/admin/blogs'
-      path: '/blogs'
-      fullPath: '/admin/blogs'
-      preLoaderRoute: typeof AdminBlogsRouteImport
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/admin/opportunities': {
+      id: '/admin/opportunities'
+      path: '/opportunities'
+      fullPath: '/admin/opportunities'
+      preLoaderRoute: typeof AdminOpportunitiesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/subscribers': {
+      id: '/admin/subscribers'
+      path: '/subscribers'
+      fullPath: '/admin/subscribers'
+      preLoaderRoute: typeof AdminSubscribersRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/opportunities/': {
+      id: '/opportunities/'
+      path: '/opportunities'
+      fullPath: '/opportunities/'
+      preLoaderRoute: typeof OpportunitiesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/opportunities/$slug': {
+      id: '/opportunities/$slug'
+      path: '/opportunities/$slug'
+      fullPath: '/opportunities/$slug'
+      preLoaderRoute: typeof OpportunitiesSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
