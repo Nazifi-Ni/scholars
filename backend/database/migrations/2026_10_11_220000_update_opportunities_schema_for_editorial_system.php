@@ -58,6 +58,12 @@ return new class extends Migration
                 $table->string('focus_keyword')->nullable();
             }
         });
+
+        // Drop rigid legacy check constraints on PostgreSQL so new types and funding models are allowed
+        if (\Illuminate\Support\Facades\DB::getDriverName() === 'pgsql') {
+            \Illuminate\Support\Facades\DB::statement("ALTER TABLE opportunities DROP CONSTRAINT IF EXISTS opportunities_funding_type_check;");
+            \Illuminate\Support\Facades\DB::statement("ALTER TABLE opportunities DROP CONSTRAINT IF EXISTS opportunities_opportunity_type_check;");
+        }
     }
 
     /**
