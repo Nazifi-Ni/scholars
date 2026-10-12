@@ -26,6 +26,7 @@ function AdminSettings() {
     twitter_url: "",
     linkedin_url: "",
     instagram_url: "",
+    whatsapp_community_url: "https://chat.whatsapp.com/EZHm6YGae3cLBgyoHoAVoB",
   });
 
   const fetchSettings = async () => {
@@ -53,6 +54,17 @@ function AdminSettings() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (formData.whatsapp_community_url?.trim()) {
+      const url = formData.whatsapp_community_url.trim();
+      if (!/^https:\/\/(chat\.whatsapp\.com|wa\.me)\/[A-Za-z0-9_-]+/i.test(url)) {
+        toast.error(
+          "Please enter a valid WhatsApp invite URL (e.g. https://chat.whatsapp.com/...)",
+        );
+        return;
+      }
+    }
+
     setIsSaving(true);
 
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000/api";
@@ -235,6 +247,24 @@ function AdminSettings() {
                         placeholder="https://instagram.com/..."
                         className="bg-gray-50"
                       />
+                    </div>
+                    <div className="space-y-2 md:col-span-2">
+                      <Label className="text-xs font-semibold text-gray-700">
+                        WhatsApp Community / Group Invite URL
+                      </Label>
+                      <Input
+                        value={formData.whatsapp_community_url || ""}
+                        onChange={(e) =>
+                          handleFieldChange("whatsapp_community_url", e.target.value)
+                        }
+                        placeholder="https://chat.whatsapp.com/..."
+                        className="bg-gray-50"
+                      />
+                      <p className="text-xs text-gray-500">
+                        Official ScholarsConnect WhatsApp group/community link used in share
+                        messages and community banners. Must start with https://chat.whatsapp.com/
+                        or https://wa.me/
+                      </p>
                     </div>
                   </div>
                 </div>

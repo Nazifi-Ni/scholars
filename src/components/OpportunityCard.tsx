@@ -18,6 +18,11 @@ import {
 } from "@/lib/sc-shared";
 import { cn } from "@/lib/utils";
 import { useBookmarks } from "@/hooks/use-bookmarks";
+import {
+  buildWhatsAppShareMessage,
+  openWhatsAppShare,
+  trackOpportunityShare,
+} from "@/lib/share-utils";
 
 export function OpportunityCard({ opportunity }: { opportunity: OpportunityCardData }) {
   const days = daysUntil(opportunity.deadline);
@@ -31,10 +36,9 @@ export function OpportunityCard({ opportunity }: { opportunity: OpportunityCardD
   const handleShare = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    const url = window.location.origin + "/opportunities/" + opportunity.slug;
-    const text = `Check out this ${opportunity.title} on ScholarsConnect!`;
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
-    window.open(whatsappUrl, "_blank");
+    const message = buildWhatsAppShareMessage(opportunity);
+    trackOpportunityShare(opportunity.id, opportunity.slug, "whatsapp_card");
+    openWhatsAppShare(message);
   };
 
   return (

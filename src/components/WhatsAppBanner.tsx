@@ -1,16 +1,19 @@
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { DEFAULT_WHATSAPP_COMMUNITY_URL } from "@/lib/share-utils";
 
 export function WhatsAppBanner({
   className,
   variant = "default",
+  link = DEFAULT_WHATSAPP_COMMUNITY_URL,
 }: {
   className?: string;
   variant?: "default" | "sidebar";
+  link?: string;
 }) {
   return (
     <a
-      href="https://chat.whatsapp.com/EZHm6YGae3cLBgyoHoAVoB"
+      href={link || DEFAULT_WHATSAPP_COMMUNITY_URL}
       target="_blank"
       rel="noopener noreferrer"
       className={cn(

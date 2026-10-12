@@ -46,6 +46,7 @@ import { WhatsAppBanner } from "@/components/WhatsAppBanner";
 import { NewsletterWidget } from "@/components/NewsletterWidget";
 import { AdBanner } from "@/components/AdBanner";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { ShareOpportunityModal } from "@/components/ShareOpportunityModal";
 
 export const Route = createFileRoute("/opportunities/$slug")({
   loader: async ({ context, params }) => {
@@ -603,24 +604,7 @@ function OpportunityDetailPage() {
               </Button>
             ) : null}
 
-            <Button
-              variant="outline"
-              className="w-full sm:w-auto rounded-xl px-7 py-6 text-sm font-semibold shadow-xs"
-              onClick={() => {
-                const url = window.location.href;
-                if (navigator.share) {
-                  navigator.share({ title: o.title, url });
-                } else {
-                  window.open(
-                    `https://api.whatsapp.com/send?text=${encodeURIComponent(o.title + " " + url)}`,
-                    "_blank",
-                  );
-                }
-              }}
-            >
-              {o.opportunity_type === "scholarship" ? "Share Scholarship" : "Share Opportunity"}{" "}
-              <ExternalLink className="ml-2 h-4 w-4" />
-            </Button>
+            <ShareOpportunityModal opportunity={o} />
           </div>
         </div>
 
