@@ -25,6 +25,7 @@ import {
   DollarSign,
   XCircle,
   ChevronRight,
+  Award,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SiteLayout } from "@/components/layout/SiteLayout";
