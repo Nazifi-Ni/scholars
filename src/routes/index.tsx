@@ -1,8 +1,18 @@
 // @ts-nocheck
-import { useState, Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Search, ChevronRight, Mail, Download, Clock, TrendingUp, BadgeCheck } from "lucide-react";
+import {
+  Search,
+  ChevronRight,
+  Mail,
+  Clock,
+  TrendingUp,
+  BadgeCheck,
+  Compass,
+  ArrowRight,
+  History,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { OpportunityCard } from "@/components/OpportunityCard";
@@ -64,15 +74,49 @@ export const Route = createFileRoute("/")({
   ),
 });
 
+const QUICK_CHIPS = [
+  { label: "Scholarships", search: { type: "scholarship" } },
+  { label: "Internships", search: { type: "internship" } },
+  { label: "Fully Funded", search: { funding: "fully_funded" } },
+  { label: "Grants", search: { type: "grant" } },
+  { label: "Competitions", search: { type: "competition" } },
+  { label: "Masters", search: { degree: "masters" } },
+] as const;
+
 function HomePage() {
   const { data } = useSuspenseQuery(homeQuery);
   const { data: blogData } = useSuspenseQuery(blogListQuery);
   const navigate = useNavigate();
   const [q, setQ] = useState("");
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
 
-  const submitSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    navigate({ to: "/opportunities", search: q.trim() ? { q: q.trim() } : {} });
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("sc_recent_searches");
+      if (stored) setRecentSearches(JSON.parse(stored).slice(0, 4));
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  const handleSearchSubmit = (e?: React.FormEvent, customTerm?: string) => {
+    if (e) e.preventDefault();
+    const query = (customTerm ?? q).trim();
+    if (query) {
+      try {
+        const next = [
+          query,
+          ...recentSearches.filter((s) => s.toLowerCase() !== query.toLowerCase()),
+        ].slice(0, 4);
+        setRecentSearches(next);
+        localStorage.setItem("sc_recent_searches", JSON.stringify(next));
+      } catch {
+        // ignore
+      }
+      navigate({ to: "/opportunities", search: { q: query } });
+    } else {
+      navigate({ to: "/opportunities" });
+    }
   };
 
   const latestOpportunities = data.latest as OpportunityCardData[];
@@ -94,7 +138,7 @@ function HomePage() {
     .sort((a, b) => b.views_count + b.bookmarks_count - (a.views_count + a.bookmarks_count))
     .slice(0, 4);
 
-  // Fake tabs for styling purposes, linking to actual filters
+  // Tabs for styling purposes, linking to actual filters
   const TABS = [
     { label: "All", search: {} },
     { label: "Scholarships", search: { type: "scholarship" } },
@@ -106,41 +150,88 @@ function HomePage() {
   return (
     <SiteLayout>
       <div className="bg-white">
-        {/* Refined Search Header blending with the Nav */}
-        {/* Refined Search Header blending with the Nav */}
-        <div className="bg-gradient-hero border-b border-navy-light pb-12 pt-8 shadow-inner relative overflow-hidden">
+        {/* Refined Discovery Hero Header */}
+        <div className="bg-gradient-hero border-b border-navy-light pb-12 pt-10 shadow-inner relative overflow-hidden">
           {/* Subtle background decoration */}
           <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10 mix-blend-overlay"></div>
 
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-6 font-heading tracking-tight animate-fade-up">
-              Find Your Next{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-highlight to-secondary">
-                Opportunity
+            {/* Small Trust Badge */}
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1 text-xs font-semibold text-emerald-300 backdrop-blur-md border border-white/15 mb-4 animate-fade-up">
+              <BadgeCheck className="h-4 w-4 text-emerald-400 shrink-0" />
+              <span>Verified opportunities for students and young professionals</span>
+            </div>
+
+            {/* Headline */}
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white mb-3 font-heading tracking-tight leading-tight max-w-3xl animate-fade-up">
+              Find Opportunities That{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-secondary">
+                Move You Forward.
               </span>
             </h1>
 
+            <p className="text-sm sm:text-base text-white/80 max-w-2xl mb-6 font-sans leading-relaxed animate-fade-up">
+              Discover verified scholarships, internships, fellowships, and academic grants curated
+              for ambitious students across Africa and worldwide.
+            </p>
+
+            {/* Discover Search Form */}
             <form
-              onSubmit={submitSearch}
-              className="flex flex-col sm:flex-row max-w-3xl gap-3 rounded-xl glass-dark p-2 sm:p-2.5 shadow-glow animate-fade-up"
-              style={{ animationDelay: "100ms" }}
+              onSubmit={handleSearchSubmit}
+              className="flex flex-col sm:flex-row max-w-2xl gap-2 rounded-xl bg-white p-2 shadow-lg animate-fade-up"
             >
-              <div className="flex flex-1 items-center gap-3 pl-3 pr-2 py-2 sm:py-0 bg-white/10 rounded-lg border border-white/20">
-                <Search className="h-5 w-5 shrink-0 text-white/70" />
+              <div className="flex flex-1 items-center gap-2.5 px-3 py-2 sm:py-0">
+                <Search className="h-5 w-5 shrink-0 text-muted-foreground" />
                 <input
                   value={q}
                   onChange={(e) => setQ(e.target.value)}
                   placeholder="Search scholarships, internships, countries…"
-                  className="w-full bg-transparent text-base text-white outline-none placeholder:text-white/60 placeholder:font-light"
+                  className="w-full bg-transparent text-sm sm:text-base text-navy outline-none placeholder:text-muted-foreground font-sans"
                 />
               </div>
               <Button
                 type="submit"
-                className="w-full sm:w-auto h-12 sm:h-auto rounded-lg bg-secondary px-8 text-base font-bold text-white shadow-sm hover:bg-green-600 transition-all hover:scale-[1.02]"
+                className="w-full sm:w-auto h-11 rounded-lg bg-navy px-7 text-sm font-bold text-white hover:bg-navy/90 transition-all"
               >
                 Search
               </Button>
             </form>
+
+            {/* Quick Filter Chips */}
+            <div className="mt-5 flex flex-wrap items-center gap-2">
+              <span className="text-xs font-semibold text-white/60 mr-1 hidden sm:inline">
+                Popular:
+              </span>
+              {QUICK_CHIPS.map((chip) => (
+                <Link
+                  key={chip.label}
+                  to="/opportunities"
+                  search={chip.search}
+                  className="rounded-full bg-white/10 hover:bg-white/20 border border-white/15 px-3 py-1 text-xs font-medium text-white transition-colors"
+                >
+                  {chip.label}
+                </Link>
+              ))}
+            </div>
+
+            {/* Recent Searches */}
+            {recentSearches.length > 0 && (
+              <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-white/70">
+                <span className="inline-flex items-center gap-1 text-white/50">
+                  <History className="h-3 w-3" /> Recent:
+                </span>
+                {recentSearches.map((term) => (
+                  <button
+                    key={term}
+                    type="button"
+                    onClick={() => handleSearchSubmit(undefined, term)}
+                    className="rounded-md bg-white/5 hover:bg-white/15 px-2 py-0.5 text-white/80 hover:text-white transition-colors cursor-pointer"
+                  >
+                    {term}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
@@ -150,194 +241,66 @@ function HomePage() {
         </div>
 
         {/* 70/30 Main Grid */}
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-12">
             {/* Left Column (67%) */}
             <div className="lg:col-span-8 space-y-10">
               {/* Latest Opportunities Section */}
               <section>
                 {/* Section Header with Tabs */}
-                <div className="mb-5 flex items-end justify-between border-b-2 border-border pb-1">
-                  <h2 className="text-xl font-bold text-navy uppercase tracking-wide border-b-4 border-navy -mb-[3px] pb-1 font-heading">
-                    Latest Opportunities
-                  </h2>
-                  <div className="hidden md:flex gap-4 text-sm font-medium text-muted-foreground pb-1 font-sans">
+                <div className="mb-6 flex items-end justify-between border-b border-border pb-2">
+                  <div>
+                    <span className="text-xs font-bold uppercase tracking-widest text-secondary block font-sans mb-1">
+                      Fresh Discoveries
+                    </span>
+                    <h2 className="text-xl font-bold text-navy uppercase tracking-wide font-heading">
+                      Latest Opportunities
+                    </h2>
+                  </div>
+                  <div className="hidden md:flex gap-4 text-xs font-semibold text-muted-foreground font-sans">
                     {TABS.map((tab, i) => (
                       <Link
                         key={tab.label}
                         to="/opportunities"
                         search={tab.search}
-                        className={`hover:text-secondary transition-colors ${i === 0 ? "text-navy" : ""}`}
+                        className={`hover:text-secondary transition-colors ${i === 0 ? "text-navy font-bold" : ""}`}
                       >
                         {tab.label}
                       </Link>
                     ))}
                     <Link
                       to="/opportunities"
-                      className="hover:text-secondary font-semibold transition-colors"
+                      className="hover:text-secondary font-bold text-secondary transition-colors"
                     >
-                      More ▾
+                      View All →
                     </Link>
                   </div>
                 </div>
 
                 {latestOpportunities.length > 0 ? (
                   <>
-                    {/* Big Responsive Editorial Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-8">
-                      {/* Left Main Hero Card */}
-                      <Link
-                        to="/opportunities/$slug"
-                        params={{ slug: latestOpportunities[0]?.slug || "not-found" }}
-                        className="md:col-span-7 lg:col-span-8 relative group rounded-2xl overflow-hidden shadow-sm hover:shadow-card border border-border bg-slate-900 min-h-[320px] sm:min-h-[380px] md:min-h-[420px] flex flex-col justify-end transition-all"
-                      >
-                        <img
-                          src={getImageUrl(
-                            latestOpportunities[0]?.featured_image ??
-                              latestOpportunities[0]?.image_url,
-                          )}
-                          alt={latestOpportunities[0]?.title}
-                          className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                          loading="eager"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/40 to-transparent pointer-events-none" />
-                        <div className="relative p-5 sm:p-7 z-10 w-full">
-                          <div className="flex flex-wrap items-center gap-2 mb-3">
-                            <span className="inline-block bg-highlight px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-navy rounded shadow-sm">
-                              {latestOpportunities[0]?.category?.name || "Featured"}
-                            </span>
-                            {latestOpportunities[0]?.is_verified && (
-                              <span className="inline-flex items-center gap-1 rounded bg-emerald-600 text-white px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider shadow-sm">
-                                <BadgeCheck className="h-3 w-3" />
-                                Verified
-                              </span>
-                            )}
-                            {fundingLabel(latestOpportunities[0]?.funding_type) && (
-                              <span className="inline-block bg-white/20 backdrop-blur-sm text-white px-2 py-0.5 text-[10px] font-semibold rounded">
-                                {fundingLabel(latestOpportunities[0]?.funding_type)}
-                              </span>
-                            )}
-                          </div>
-                          <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold leading-tight text-white group-hover:text-highlight transition-colors font-heading drop-shadow-sm">
-                            {latestOpportunities[0]?.title}
-                          </h3>
-                          <div className="mt-3 text-xs text-gray-300 font-sans flex items-center gap-2">
-                            <span className="font-bold text-white">ScholarsConnect</span>
-                            <span>•</span>
-                            <span>
-                              {latestOpportunities[0]
-                                ? new Date(latestOpportunities[0].created_at).toLocaleDateString()
-                                : ""}
-                            </span>
-                          </div>
-                        </div>
-                      </Link>
-
-                      {/* Right Stacked Cards */}
-                      <div className="md:col-span-5 lg:col-span-4 flex flex-col gap-4">
-                        {latestOpportunities.slice(1, 3).map((opp) => (
-                          <Link
-                            key={opp.id}
-                            to="/opportunities/$slug"
-                            params={{ slug: opp.slug }}
-                            className="relative group rounded-2xl overflow-hidden shadow-sm hover:shadow-card border border-border bg-slate-900 flex-1 min-h-[175px] sm:min-h-[195px] flex flex-col justify-end transition-all"
-                          >
-                            <img
-                              src={getImageUrl(opp.featured_image ?? opp.image_url)}
-                              alt={opp.title}
-                              className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                              loading="lazy"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/50 to-transparent pointer-events-none" />
-                            <div className="relative p-4 sm:p-5 z-10 w-full">
-                              <div className="flex items-center gap-2 mb-2">
-                                <span className="inline-block bg-secondary px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white rounded shadow-sm">
-                                  {opp.category?.name || "Latest"}
-                                </span>
-                                {opp.is_verified && (
-                                  <span className="inline-block bg-emerald-600 text-white px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded">
-                                    Verified
-                                  </span>
-                                )}
-                              </div>
-                              <h3 className="text-sm sm:text-base font-bold leading-snug text-white group-hover:text-highlight transition-colors font-heading line-clamp-2 drop-shadow-sm">
-                                {opp.title}
-                              </h3>
-                              <div className="mt-2 text-[11px] text-gray-300 font-sans flex items-center gap-2">
-                                <span>
-                                  {opp.created_at
-                                    ? new Date(opp.created_at).toLocaleDateString()
-                                    : ""}
-                                </span>
-                                {fundingLabel(opp.funding_type) && (
-                                  <>
-                                    <span>•</span>
-                                    <span className="text-emerald-300 font-medium">
-                                      {fundingLabel(opp.funding_type)}
-                                    </span>
-                                  </>
-                                )}
-                              </div>
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      {latestOpportunities.slice(0, 6).map((opp) => (
+                        <OpportunityCard key={opp.id} opportunity={opp} />
+                      ))}
                     </div>
 
-                    {/* Module Layout (Thumbnail left, text right) */}
-                    <div className="flex flex-col gap-4">
-                      {latestOpportunities.slice(3, 8).map((opp) => (
-                        <div
-                          key={opp.id}
-                          className="group flex flex-col sm:flex-row gap-3 sm:gap-4 bg-white p-3 sm:p-3.5 rounded-2xl border border-border shadow-sm hover:shadow-card transition-all"
-                        >
-                          <Link
-                            to="/opportunities/$slug"
-                            params={{ slug: opp.slug }}
-                            className="shrink-0 w-full sm:w-[200px] md:w-[220px] aspect-[16/10] sm:aspect-auto sm:h-[145px] overflow-hidden rounded-xl border border-border/50 bg-muted"
-                          >
-                            <img
-                              src={getImageUrl(opp.featured_image ?? opp.image_url)}
-                              alt={opp.title}
-                              className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                              loading="lazy"
-                            />
-                          </Link>
-                          <div className="flex flex-col justify-center flex-1">
-                            <div className="flex items-center gap-2 mb-1.5">
-                              <span className="text-[10px] sm:text-xs font-bold uppercase text-secondary tracking-wider font-sans">
-                                {opp.category?.name || "Opportunity"}
-                              </span>
-                              {opp.is_verified && (
-                                <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
-                                  <BadgeCheck className="h-3 w-3" />
-                                  Verified
-                                </span>
-                              )}
-                              {fundingLabel(opp.funding_type) && (
-                                <span className="text-[10px] font-semibold text-green-700 bg-green-50 px-1.5 py-0.5 rounded border border-green-200">
-                                  {fundingLabel(opp.funding_type)}
-                                </span>
-                              )}
-                            </div>
-                            <h4 className="text-base sm:text-lg font-bold leading-snug text-navy group-hover:text-secondary font-heading line-clamp-2">
-                              <Link to="/opportunities/$slug" params={{ slug: opp.slug }}>
-                                {opp.title}
-                              </Link>
-                            </h4>
-                            <div className="mt-2 text-[11px] sm:text-xs text-muted-foreground font-sans flex items-center gap-1.5 sm:gap-2">
-                              <span className="font-semibold text-navy/80">ScholarsConnect</span>
-                              <span className="text-border">•</span>
-                              <span>{new Date(opp.created_at).toLocaleDateString()}</span>
-                            </div>
-                            {opp.eligibility && (
-                              <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground line-clamp-2 hidden sm:block font-sans">
-                                {opp.eligibility.substring(0, 140)}...
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      ))}
+                    {/* View All Button */}
+                    <div className="mt-8 flex justify-center">
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="rounded-xl border-border px-6 py-2.5 text-xs font-bold text-navy hover:bg-navy hover:text-white hover:border-navy transition-all"
+                      >
+                        <Link to="/opportunities">
+                          Explore All{" "}
+                          {latestOpportunities.length > 0
+                            ? `${data.stats?.total_opportunities ?? "Verified"}`
+                            : ""}{" "}
+                          Opportunities
+                          <ArrowRight className="h-3.5 w-3.5 ml-1.5" />
+                        </Link>
+                      </Button>
                     </div>
                   </>
                 ) : (
@@ -348,10 +311,21 @@ function HomePage() {
               {/* Browse By Country Section */}
               {data.featured_countries && data.featured_countries.length > 0 && (
                 <section className="pt-4">
-                  <div className="mb-5 border-b-2 border-border pb-1 flex justify-between items-end">
-                    <h2 className="inline-block text-xl font-bold text-navy uppercase tracking-wide border-b-4 border-highlight -mb-[3px] pb-1 font-heading">
-                      Study Destinations
-                    </h2>
+                  <div className="mb-5 border-b border-border pb-2 flex justify-between items-end">
+                    <div>
+                      <span className="text-xs font-bold uppercase tracking-widest text-secondary block font-sans mb-1">
+                        Global Reach
+                      </span>
+                      <h2 className="text-xl font-bold text-navy uppercase tracking-wide font-heading">
+                        Study Destinations
+                      </h2>
+                    </div>
+                    <Link
+                      to="/opportunities"
+                      className="text-xs font-bold text-secondary hover:underline"
+                    >
+                      All Countries →
+                    </Link>
                   </div>
                   <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
                     {data.featured_countries.map((country) => (
@@ -359,9 +333,9 @@ function HomePage() {
                         key={country.id}
                         to="/opportunities"
                         search={{ country: country.slug }}
-                        className="group flex flex-col items-center justify-center rounded-2xl border border-border bg-white py-4 px-2 shadow-sm hover:border-secondary hover:shadow-card hover:bg-secondary/5 transition-all"
+                        className="group flex flex-col items-center justify-center rounded-xl border border-border/80 bg-white py-4 px-2 shadow-sm hover:border-secondary hover:shadow hover:bg-secondary/5 transition-all duration-200"
                       >
-                        <div className="h-12 w-12 rounded-full bg-muted/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-inner overflow-hidden border border-border/50">
+                        <div className="h-11 w-11 rounded-full bg-muted/40 flex items-center justify-center mb-2.5 group-hover:scale-105 transition-transform overflow-hidden border border-border/50">
                           {country.code ? (
                             <img
                               src={`https://flagsapi.com/${country.code.toUpperCase()}/flat/64.png`}
@@ -383,26 +357,26 @@ function HomePage() {
 
               {/* Browse By Category Section */}
               <section className="pt-4">
-                <div className="mb-5 border-b-2 border-border pb-1">
-                  <h2 className="inline-block text-xl font-bold text-navy uppercase tracking-wide border-b-4 border-highlight -mb-[3px] pb-1 font-heading">
+                <div className="mb-5 border-b border-border pb-2">
+                  <span className="text-xs font-bold uppercase tracking-widest text-secondary block font-sans mb-1">
+                    Specializations
+                  </span>
+                  <h2 className="text-xl font-bold text-navy uppercase tracking-wide font-heading">
                     Categories
                   </h2>
                 </div>
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-4">
                   {data.categories.map((cat) => (
                     <Link
                       key={cat.slug}
                       to="/opportunities"
                       search={{ category: cat.slug }}
-                      className="group flex flex-col items-center justify-center rounded-2xl bg-white p-5 hover:bg-secondary/5 transition-all relative overflow-hidden"
+                      className="group flex flex-col items-center justify-center rounded-xl border border-border/80 bg-white p-4 hover:border-secondary hover:shadow hover:bg-secondary/5 transition-all duration-200"
                     >
-                      {/* Interactive background glow effect */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-highlight/0 to-highlight/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-
-                      <div className="h-16 w-16 mb-3 rounded-full bg-gradient-to-br from-navy/5 to-navy/10 flex items-center justify-center shadow-inner group-hover:scale-110 group-hover:shadow-md transition-all duration-300">
-                        <span className="text-3xl drop-shadow-sm">{cat.icon || "🎓"}</span>
+                      <div className="h-12 w-12 mb-2 rounded-full bg-navy/5 flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <span className="text-2xl">{cat.icon || "🎓"}</span>
                       </div>
-                      <p className="font-bold text-navy text-center group-hover:text-secondary font-heading text-sm relative z-10">
+                      <p className="font-bold text-navy text-center group-hover:text-secondary font-heading text-xs sm:text-sm">
                         {cat.name}
                       </p>
                     </Link>

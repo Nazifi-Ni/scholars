@@ -20,16 +20,20 @@ export function TypeLandingPage({
 
   return (
     <SiteLayout>
-      <section className="bg-gradient-hero px-4 py-14 lg:px-8">
+      <section className="bg-gradient-hero px-4 py-12 lg:px-8 border-b border-navy-light shadow-inner">
         <div className="mx-auto max-w-7xl">
-          <h1 className="text-3xl font-bold text-navy-foreground sm:text-4xl">{title}</h1>
-          <p className="mt-3 max-w-2xl text-navy-foreground/75">{description}</p>
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-white font-heading tracking-tight mb-2">
+            {title}
+          </h1>
+          <p className="text-sm sm:text-base text-white/80 max-w-2xl font-sans leading-relaxed">
+            {description}
+          </p>
           <Button
             asChild
-            className="mt-6 rounded-full bg-gradient-green px-6 font-semibold text-success-foreground shadow-glow"
+            className="mt-6 rounded-xl bg-secondary hover:bg-green-600 px-6 font-bold text-white shadow-sm text-xs sm:text-sm"
           >
             <Link to="/opportunities" search={{ type }}>
-              Search & Filter {title} <ArrowRight className="ml-1 h-4 w-4" />
+              Search & Filter {title} <ArrowRight className="ml-1.5 h-4 w-4" />
             </Link>
           </Button>
         </div>

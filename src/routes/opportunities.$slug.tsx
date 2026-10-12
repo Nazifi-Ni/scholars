@@ -298,7 +298,7 @@ function OpportunityDetailPage() {
       </section>
 
       {/* Main Grid */}
-      <section className="mx-auto grid max-w-7xl gap-10 px-4 py-12 lg:grid-cols-12 lg:px-8">
+      <section className="mx-auto grid max-w-7xl gap-10 px-4 py-8 sm:py-12 pb-24 lg:pb-12 lg:grid-cols-12 lg:px-8">
         {/* Main Content Area (67%) */}
         <div className="lg:col-span-8">
           {/* Verification Badge */}
@@ -508,11 +508,16 @@ function OpportunityDetailPage() {
 
           {/* ScholarsConnect Advice */}
           {o.scholarsconnect_advice && (
-            <div className="my-8 border-l-4 border-amber-500 bg-amber-50/60 p-6 sm:p-8 rounded-r-2xl shadow-sm relative overflow-hidden">
-              <h2 className="mb-3 flex items-center font-heading text-xl sm:text-2xl font-bold text-amber-900">
-                <span className="mr-2 text-2xl">💡</span> ScholarsConnect Strategic Advice
-              </h2>
-              <div className="prose prose-amber prose-sm sm:prose-base max-w-none text-amber-950 leading-relaxed font-sans">
+            <div className="my-8 rounded-xl border border-secondary/30 bg-emerald-50/50 p-6 sm:p-7 shadow-sm relative overflow-hidden">
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="h-8 w-8 rounded-lg bg-secondary/15 flex items-center justify-center text-secondary shrink-0">
+                  <span className="text-lg">💡</span>
+                </div>
+                <h2 className="font-heading text-lg sm:text-xl font-bold text-navy">
+                  ScholarsConnect Strategic Advice
+                </h2>
+              </div>
+              <div className="prose prose-slate prose-sm sm:prose-base max-w-none text-slate-800 leading-relaxed font-sans pl-0 sm:pl-10">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {o.scholarsconnect_advice}
                 </ReactMarkdown>
@@ -731,6 +736,55 @@ function OpportunityDetailPage() {
           </div>
         </aside>
       </section>
+
+      {/* Mobile Sticky Floating Action Bar */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-border px-4 py-3 shadow-lg flex items-center gap-3">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => toggleBookmark(o)}
+          className={cn(
+            "rounded-xl h-11 px-3.5 border-border shrink-0 transition-colors",
+            bookmarked && "bg-secondary/10 text-secondary border-secondary/30",
+          )}
+          aria-label={bookmarked ? "Bookmarked" : "Save bookmark"}
+        >
+          <Bookmark className={cn("h-5 w-5", bookmarked && "fill-secondary")} />
+        </Button>
+        {isClosed ? (
+          <Button
+            disabled
+            className="flex-1 rounded-xl h-11 font-bold text-xs uppercase bg-gray-300 text-gray-600"
+          >
+            Applications Closed
+          </Button>
+        ) : o.application_link ? (
+          <Button
+            asChild
+            className="flex-1 rounded-xl h-11 bg-secondary hover:bg-green-600 font-bold text-xs sm:text-sm text-white shadow-sm uppercase tracking-wider"
+          >
+            <a href={o.application_link} target="_blank" rel="noopener noreferrer nofollow">
+              Apply on Official Portal <ExternalLink className="h-4 w-4 ml-1.5" />
+            </a>
+          </Button>
+        ) : o.official_website ? (
+          <Button
+            asChild
+            className="flex-1 rounded-xl h-11 bg-secondary hover:bg-green-600 font-bold text-xs sm:text-sm text-white shadow-sm uppercase tracking-wider"
+          >
+            <a href={o.official_website} target="_blank" rel="noopener noreferrer nofollow">
+              Visit Official Website <ExternalLink className="h-4 w-4 ml-1.5" />
+            </a>
+          </Button>
+        ) : (
+          <Button
+            disabled
+            className="flex-1 rounded-xl h-11 font-bold text-xs uppercase bg-gray-200 text-gray-500"
+          >
+            Details Above
+          </Button>
+        )}
+      </div>
     </SiteLayout>
   );
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 import type { OpportunityCardData } from "@/lib/sc-shared";
 
 export function useBookmarks() {
@@ -26,8 +27,16 @@ export function useBookmarks() {
       let updated;
       if (exists) {
         updated = prev.filter((b) => b.id !== opportunity.id);
+        toast.info("Removed from bookmarks", {
+          description: opportunity.title,
+          duration: 2500,
+        });
       } else {
         updated = [...prev, opportunity];
+        toast.success("Saved to bookmarks!", {
+          description: "Access your saved opportunities anytime from the Bookmarks tab.",
+          duration: 3000,
+        });
       }
       localStorage.setItem("sc_bookmarks", JSON.stringify(updated));
       // Dispatch storage event for other components in the same window to re-render

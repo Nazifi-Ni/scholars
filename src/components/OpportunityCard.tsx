@@ -3,9 +3,8 @@ import {
   BadgeCheck,
   Bookmark,
   Timer,
-  Building2,
+  Clock,
   GraduationCap,
-  MapPin,
   DollarSign,
   BookOpen,
   Share2,
@@ -27,6 +26,8 @@ export function OpportunityCard({ opportunity }: { opportunity: OpportunityCardD
   const { isBookmarked, toggleBookmark } = useBookmarks();
   const bookmarked = isBookmarked(opportunity.id);
 
+  const isClosed = opportunity.is_expired || (days !== null && days < 0);
+
   const handleShare = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -40,25 +41,25 @@ export function OpportunityCard({ opportunity }: { opportunity: OpportunityCardD
     <Link
       to="/opportunities/$slug"
       params={{ slug: opportunity.slug }}
-      className="group flex flex-col bg-white rounded-2xl border border-border shadow-sm hover:shadow-card hover:border-border/80 transition-all overflow-hidden relative h-full"
+      className="group flex flex-col bg-white rounded-xl border border-border/80 shadow-sm hover:shadow-md hover:border-navy/20 transition-all duration-200 overflow-hidden relative h-full"
     >
       {/* Top Featured Cover Image Banner */}
-      <div className="relative w-full aspect-[16/10] sm:aspect-video bg-muted overflow-hidden shrink-0 border-b border-border">
-        {opportunity.featured_image ? (
+      <div className="relative w-full aspect-[16/10] bg-muted/60 overflow-hidden shrink-0 border-b border-border/60">
+        {opportunity.featured_image || opportunity.image_url ? (
           <img
-            src={getImageUrl(opportunity.featured_image)}
+            src={getImageUrl(opportunity.featured_image ?? opportunity.image_url)}
             alt={opportunity.title}
-            className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+            className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
             loading="lazy"
           />
         ) : (
           <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-navy/10 via-navy/5 to-secondary/10">
-            <GraduationCap className="h-12 w-12 text-navy/30" />
+            <GraduationCap className="h-10 w-10 text-navy/30" />
           </div>
         )}
 
-        {/* Subtle Dark Vignette Gradient for Badge Readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
+        {/* Subtle Gradient Vignette */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
 
         {/* Top-left: Opportunity Type Badge */}
         <span
@@ -96,33 +97,43 @@ export function OpportunityCard({ opportunity }: { opportunity: OpportunityCardD
               Featured
             </span>
           )}
-          {(opportunity.is_expired || (days !== null && days < 0)) && (
-            <span className="rounded-md bg-gray-900/90 text-white px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider shadow-sm backdrop-blur-md">
+          {isClosed ? (
+            <span className="rounded-md bg-slate-900/90 text-white px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider shadow-sm backdrop-blur-md">
               Closed
             </span>
-          )}
+          ) : days !== null && days <= 3 ? (
+            <span className="rounded-md bg-rose-600/95 text-white px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider shadow-sm backdrop-blur-md flex items-center gap-1">
+              <Timer className="h-3 w-3" />
+              {days === 0 ? "Today" : `${days}d left`}
+            </span>
+          ) : days !== null && days <= 14 ? (
+            <span className="rounded-md bg-amber-600/95 text-white px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider shadow-sm backdrop-blur-md flex items-center gap-1">
+              <Clock className="h-3 w-3" />
+              {days}d left
+            </span>
+          ) : null}
         </div>
       </div>
 
-      <div className="flex flex-col flex-1 p-5">
+      <div className="flex flex-col flex-1 p-4 sm:p-5">
         {provider && (
           <span className="text-xs font-semibold text-secondary uppercase tracking-wider mb-1 line-clamp-1">
             {provider}
           </span>
         )}
-        <h3 className="line-clamp-2 text-base sm:text-lg font-bold leading-snug text-navy transition-colors group-hover:text-secondary font-heading mb-3">
+        <h3 className="line-clamp-2 text-[15px] sm:text-base font-bold leading-snug text-navy transition-colors group-hover:text-secondary font-heading mb-3">
           {opportunity.title}
         </h3>
 
         {/* Tags Row: Country, Funding, Degree Level, Difficulty */}
         <div className="flex flex-wrap gap-1.5 mb-4 mt-auto">
           {opportunity.country && (
-            <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-1 text-[11px] font-semibold text-muted-foreground border border-border/50">
+            <span className="inline-flex items-center gap-1 rounded-md bg-muted/60 px-2 py-1 text-[11px] font-semibold text-muted-foreground border border-border/40">
               {opportunity.country.flag_emoji} {opportunity.country.name}
             </span>
           )}
           {fundingLabel(opportunity.funding_type) && (
-            <span className="inline-flex items-center gap-1 rounded-md bg-green-50 px-2 py-1 text-[11px] font-semibold text-green-700 border border-green-200">
+            <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-[11px] font-semibold text-emerald-700 border border-emerald-200/60">
               <DollarSign className="h-3 w-3" /> {fundingLabel(opportunity.funding_type)}
             </span>
           )}
@@ -130,7 +141,7 @@ export function OpportunityCard({ opportunity }: { opportunity: OpportunityCardD
             opportunity.degree_levels.length > 0 &&
             opportunity.degree_levels[0] !== "not_applicable" &&
             opportunity.degree_levels[0] !== "Not Applicable" && (
-              <span className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-1 text-[11px] font-semibold text-blue-700 border border-blue-200">
+              <span className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-1 text-[11px] font-semibold text-blue-700 border border-blue-200/60">
                 <BookOpen className="h-3 w-3" /> {opportunity.degree_levels[0]}
                 {opportunity.degree_levels.length > 1 && (
                   <span className="opacity-70 ml-0.5">+{opportunity.degree_levels.length - 1}</span>
@@ -138,7 +149,7 @@ export function OpportunityCard({ opportunity }: { opportunity: OpportunityCardD
               </span>
             )}
           {opportunity.application_difficulty && (
-            <span className="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-[11px] font-semibold text-purple-700 border border-purple-200">
+            <span className="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-[11px] font-semibold text-purple-700 border border-purple-200/60">
               {opportunity.application_difficulty}
             </span>
           )}
@@ -146,7 +157,7 @@ export function OpportunityCard({ opportunity }: { opportunity: OpportunityCardD
 
         {/* Action Row: Save, Share, Deadline */}
         <div className="pt-3 flex items-center justify-between border-t border-border/60">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <button
               type="button"
               onClick={(e) => {
@@ -154,7 +165,8 @@ export function OpportunityCard({ opportunity }: { opportunity: OpportunityCardD
                 e.stopPropagation();
                 toggleBookmark(opportunity);
               }}
-              className="flex items-center gap-1.5 rounded-md hover:bg-muted px-2 py-1 text-xs font-semibold text-muted-foreground transition-colors hover:text-navy"
+              className="flex items-center gap-1.5 rounded-lg hover:bg-muted/70 px-2 py-1 text-xs font-semibold text-muted-foreground transition-colors hover:text-navy min-h-[32px]"
+              aria-label={bookmarked ? "Remove bookmark" : "Save bookmark"}
             >
               <Bookmark
                 className={cn(
@@ -167,7 +179,8 @@ export function OpportunityCard({ opportunity }: { opportunity: OpportunityCardD
             <button
               type="button"
               onClick={handleShare}
-              className="flex items-center gap-1.5 rounded-md hover:bg-muted px-2 py-1 text-xs font-semibold text-muted-foreground transition-colors hover:text-green-600"
+              className="flex items-center gap-1.5 rounded-lg hover:bg-muted/70 px-2 py-1 text-xs font-semibold text-muted-foreground transition-colors hover:text-emerald-600 min-h-[32px]"
+              aria-label="Share via WhatsApp"
             >
               <Share2 className="h-4 w-4" />
               <span className="hidden sm:inline">Share</span>
@@ -177,8 +190,12 @@ export function OpportunityCard({ opportunity }: { opportunity: OpportunityCardD
           {days !== null && days >= 0 ? (
             <span
               className={cn(
-                "inline-flex items-center gap-1.5 text-xs font-bold",
-                days < 7 ? "text-destructive" : "text-muted-foreground",
+                "inline-flex items-center gap-1 text-xs font-bold",
+                days <= 3
+                  ? "text-rose-600"
+                  : days <= 14
+                    ? "text-amber-600"
+                    : "text-muted-foreground",
               )}
             >
               <Timer className="h-3.5 w-3.5" />

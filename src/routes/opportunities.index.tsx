@@ -1,8 +1,8 @@
 // @ts-nocheck
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Search, SlidersHorizontal, X } from "lucide-react";
+import { Search, SlidersHorizontal, X, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -19,9 +19,12 @@ import {
   OPPORTUNITY_TYPES,
   FUNDING_TYPES,
   DEGREE_LEVELS,
+  typeLabel,
+  fundingLabel,
   type OpportunityCardData,
   type SearchFilters,
 } from "@/lib/sc-shared";
+import { cn } from "@/lib/utils";
 
 const SORTS = [
   { value: "newest", label: "Newest" },
@@ -95,34 +98,51 @@ function BrowsePage() {
 
   return (
     <SiteLayout>
-      <section className="bg-gradient-hero px-4 py-12 lg:px-8">
+      {/* Header Search Banner */}
+      <section className="bg-gradient-hero px-4 py-12 lg:px-8 border-b border-navy-light shadow-inner">
         <div className="mx-auto max-w-7xl">
-          <h1 className="text-3xl font-bold text-navy-foreground sm:text-4xl">
-            Browse Opportunities
-          </h1>
-          <p className="mt-2 text-navy-foreground/70">
-            {results.count.toLocaleString()} opportunities available. Filter to find your perfect
-            match.
-          </p>
+          <div className="max-w-3xl">
+            <h1 className="text-2xl sm:text-4xl font-extrabold text-white font-heading tracking-tight mb-2">
+              Browse Opportunities
+            </h1>
+            <p className="text-sm sm:text-base text-white/80 font-sans">
+              {results.count.toLocaleString()} opportunities available. Filter by destination,
+              degree level, and funding category.
+            </p>
+          </div>
+
           <form
             onSubmit={(e) => {
               e.preventDefault();
               update({ q: keyword.trim() || undefined, page: undefined });
             }}
-            className="mt-6 flex flex-col sm:flex-row max-w-2xl gap-2 rounded-2xl sm:rounded-full glass p-2 shadow-card"
+            className="mt-6 flex flex-col sm:flex-row max-w-2xl gap-2 rounded-xl bg-white p-2 shadow-lg"
           >
-            <div className="flex flex-1 items-center gap-2 pl-4 py-2 sm:py-0">
+            <div className="flex flex-1 items-center gap-2.5 px-3 py-2 sm:py-0">
               <Search className="h-5 w-5 shrink-0 text-muted-foreground" />
               <input
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
-                placeholder="Search by keyword…"
-                className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
+                placeholder="Search by keyword, university, program…"
+                className="w-full bg-transparent text-sm sm:text-base text-navy outline-none placeholder:text-muted-foreground font-sans"
               />
+              {keyword && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setKeyword("");
+                    update({ q: undefined, page: undefined });
+                  }}
+                  className="p-1 text-muted-foreground hover:text-navy"
+                  aria-label="Clear keyword"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
             </div>
             <Button
               type="submit"
-              className="w-full sm:w-auto rounded-xl sm:rounded-full bg-gradient-cta px-8 py-6 sm:py-2 font-bold uppercase tracking-wider text-white shadow-md"
+              className="w-full sm:w-auto h-11 rounded-lg bg-navy px-7 text-sm font-bold text-white hover:bg-navy/90 transition-all"
             >
               Search
             </Button>
@@ -130,31 +150,55 @@ function BrowsePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-        <div className="flex flex-col lg:flex-row gap-8">
+      {/* Main Filter & Results Section */}
+      <section className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
+        {/* Mobile Filter Toggle Button */}
+        <div className="lg:hidden mb-4">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => setShowFilters(!showFilters)}
+            className="w-full flex items-center justify-between rounded-xl border-border/80 bg-white h-11 px-4 text-xs font-bold text-navy shadow-sm"
+          >
+            <span className="flex items-center gap-2">
+              <SlidersHorizontal className="h-4 w-4 text-secondary" />
+              {showFilters ? "Hide Filter Options" : "Show Filter Options"}
+            </span>
+            {activeFilterCount > 0 && (
+              <span className="rounded-full bg-secondary text-white text-[10px] font-bold px-2 py-0.5">
+                {activeFilterCount} active
+              </span>
+            )}
+          </Button>
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
           {/* Filter Sidebar */}
-          <aside className="w-full lg:w-64 shrink-0">
-            <div className="sticky top-24 bg-white rounded-xl border border-border p-5 shadow-sm">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-bold text-navy text-lg flex items-center gap-2">
-                  <SlidersHorizontal className="h-5 w-5" /> Filters{" "}
-                  {activeFilterCount > 0 && `(${activeFilterCount})`}
+          <aside className={cn("w-full lg:w-64 shrink-0", !showFilters && "hidden lg:block")}>
+            <div className="sticky top-24 bg-white rounded-xl border border-border/80 p-5 shadow-sm">
+              <div className="flex items-center justify-between mb-4 pb-3 border-b border-border/60">
+                <h3 className="font-bold text-navy text-base flex items-center gap-2 font-heading">
+                  <SlidersHorizontal className="h-4 w-4 text-secondary" /> Filters
+                  {activeFilterCount > 0 && (
+                    <span className="text-xs bg-navy/10 text-navy px-1.5 py-0.5 rounded-full font-sans font-bold">
+                      {activeFilterCount}
+                    </span>
+                  )}
                 </h3>
                 {activeFilterCount > 0 && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 px-2 text-xs text-muted-foreground hover:text-red-600"
+                  <button
+                    type="button"
                     onClick={() => navigate({ search: { q: search.q, sort: search.sort } })}
+                    className="text-xs font-semibold text-rose-600 hover:underline flex items-center gap-1"
                   >
-                    Clear All
-                  </Button>
+                    <RotateCcw className="h-3 w-3" /> Reset
+                  </button>
                 )}
               </div>
 
               <div className="space-y-4">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-sans">
                     Type
                   </label>
                   <FilterSelect
@@ -165,7 +209,7 @@ function BrowsePage() {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-sans">
                     Category
                   </label>
                   <FilterSelect
@@ -176,7 +220,7 @@ function BrowsePage() {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-sans">
                     Country
                   </label>
                   <FilterSelect
@@ -190,7 +234,7 @@ function BrowsePage() {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-sans">
                     Funding
                   </label>
                   <FilterSelect
@@ -201,7 +245,7 @@ function BrowsePage() {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-sans">
                     Degree Level
                   </label>
                   <FilterSelect
@@ -215,13 +259,14 @@ function BrowsePage() {
             </div>
           </aside>
 
-          {/* Main Content */}
-          <div className="flex-1">
-            <div className="mb-6 flex items-center justify-between">
+          {/* Main Content Area */}
+          <div className="flex-1 w-full min-w-0">
+            {/* Control Bar: Active Count & Sort */}
+            <div className="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-border/60">
               <p className="text-sm text-muted-foreground font-sans">
-                Showing <strong>{results.count}</strong> opportunities
+                Showing <strong className="text-navy">{results.count}</strong> opportunities
               </p>
-              <div className="w-48">
+              <div className="w-full sm:w-48">
                 <FilterSelect
                   value={search.sort}
                   placeholder="Sort: Newest"
@@ -231,17 +276,109 @@ function BrowsePage() {
               </div>
             </div>
 
+            {/* Active Filter Chips */}
+            {activeFilterCount > 0 && (
+              <div className="flex flex-wrap items-center gap-2 mb-6">
+                <span className="text-xs text-muted-foreground font-semibold">Active:</span>
+                {search.type && (
+                  <button
+                    type="button"
+                    onClick={() => update({ type: undefined, page: undefined })}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-navy/5 hover:bg-navy/10 px-3 py-1 text-xs font-semibold text-navy border border-navy/10 transition-colors"
+                  >
+                    <span>Type: {typeLabel(search.type)}</span>
+                    <X className="h-3 w-3 opacity-60 hover:opacity-100" />
+                  </button>
+                )}
+                {search.category && (
+                  <button
+                    type="button"
+                    onClick={() => update({ category: undefined, page: undefined })}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-navy/5 hover:bg-navy/10 px-3 py-1 text-xs font-semibold text-navy border border-navy/10 transition-colors"
+                  >
+                    <span>
+                      Category:{" "}
+                      {options.categories.find((c) => c.slug === search.category)?.name ??
+                        search.category}
+                    </span>
+                    <X className="h-3 w-3 opacity-60 hover:opacity-100" />
+                  </button>
+                )}
+                {search.country && (
+                  <button
+                    type="button"
+                    onClick={() => update({ country: undefined, page: undefined })}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-navy/5 hover:bg-navy/10 px-3 py-1 text-xs font-semibold text-navy border border-navy/10 transition-colors"
+                  >
+                    <span>
+                      Country:{" "}
+                      {options.countries.find((c) => c.slug === search.country)?.name ??
+                        search.country}
+                    </span>
+                    <X className="h-3 w-3 opacity-60 hover:opacity-100" />
+                  </button>
+                )}
+                {search.funding && (
+                  <button
+                    type="button"
+                    onClick={() => update({ funding: undefined, page: undefined })}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-navy/5 hover:bg-navy/10 px-3 py-1 text-xs font-semibold text-navy border border-navy/10 transition-colors"
+                  >
+                    <span>Funding: {fundingLabel(search.funding)}</span>
+                    <X className="h-3 w-3 opacity-60 hover:opacity-100" />
+                  </button>
+                )}
+                {search.degree && (
+                  <button
+                    type="button"
+                    onClick={() => update({ degree: undefined, page: undefined })}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-navy/5 hover:bg-navy/10 px-3 py-1 text-xs font-semibold text-navy border border-navy/10 transition-colors"
+                  >
+                    <span>Degree: {search.degree}</span>
+                    <X className="h-3 w-3 opacity-60 hover:opacity-100" />
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => navigate({ search: { q: search.q, sort: search.sort } })}
+                  className="text-xs font-bold text-rose-600 hover:underline ml-1"
+                >
+                  Clear all
+                </button>
+              </div>
+            )}
+
+            {/* Results Grid or Rich Empty State */}
             {results.items.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-border bg-card py-20 text-center">
-                <p className="text-lg font-semibold text-foreground font-heading">
-                  No opportunities found
+              <div className="rounded-2xl border border-dashed border-border bg-card p-10 sm:p-14 text-center max-w-lg mx-auto font-sans shadow-sm">
+                <div className="h-12 w-12 rounded-full bg-navy/5 flex items-center justify-center mx-auto mb-4 text-navy">
+                  <Search className="h-6 w-6 text-muted-foreground" />
+                </div>
+                <h3 className="text-lg font-bold text-navy font-heading mb-1.5">
+                  No opportunities match these filters yet
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-6 font-sans">
+                  Try broadening your search keyword or clearing selected degree levels and funding
+                  categories.
                 </p>
-                <p className="mt-1 text-sm text-muted-foreground font-sans">
-                  Try removing some filters or using a different keyword.
-                </p>
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <Button
+                    onClick={() => navigate({ search: {} })}
+                    className="rounded-xl bg-navy text-white text-xs font-bold px-5"
+                  >
+                    Clear All Filters
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="rounded-xl border-border text-xs font-bold px-5"
+                  >
+                    <Link to="/opportunities">Browse All Opportunities</Link>
+                  </Button>
+                </div>
               </div>
             ) : (
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {(results.items as OpportunityCardData[]).map((opp) => (
                   <OpportunityCard key={opp.id} opportunity={opp} />
                 ))}
@@ -254,19 +391,19 @@ function BrowsePage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="rounded-full"
+                  className="rounded-xl border-border text-xs font-bold"
                   disabled={results.page === 0}
                   onClick={() => update({ page: results.page - 1 || undefined })}
                 >
                   Previous
                 </Button>
-                <span className="px-3 text-sm text-muted-foreground">
+                <span className="px-3 text-xs font-semibold text-muted-foreground font-sans">
                   Page {results.page + 1} of {totalPages}
                 </span>
                 <Button
                   variant="outline"
                   size="sm"
-                  className="rounded-full"
+                  className="rounded-xl border-border text-xs font-bold"
                   disabled={results.page + 1 >= totalPages}
                   onClick={() => update({ page: results.page + 1 })}
                 >

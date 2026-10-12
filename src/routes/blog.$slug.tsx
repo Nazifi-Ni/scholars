@@ -248,7 +248,7 @@ function BlogPostPage() {
           </div>
         </header>
 
-        <div className="mx-auto max-w-4xl px-4 py-10 lg:px-8">
+        <div className="mx-auto max-w-3xl px-4 py-10 lg:px-8">
           <div className="flex items-center justify-between gap-4 mb-8">
             <Link
               to="/blog"
@@ -276,7 +276,7 @@ function BlogPostPage() {
           {toc.length >= 3 && (
             <nav
               aria-label="Table of contents"
-              className="mb-10 rounded-2xl border border-border bg-muted/30 p-6 font-sans"
+              className="mb-10 rounded-xl border border-border/80 bg-muted/30 p-5 font-sans"
             >
               <h2 className="text-base font-bold text-navy font-heading mb-3 flex items-center gap-2">
                 <ListOrdered className="h-4 w-4 text-secondary" /> Table of Contents
@@ -291,7 +291,7 @@ function BlogPostPage() {
                         : "text-foreground font-medium"
                     }
                   >
-                    <a href={`#${item.id}`} className="hover:text-primary hover:underline">
+                    <a href={`#${item.id}`} className="hover:text-secondary hover:underline">
                       {item.text}
                     </a>
                   </li>
@@ -301,7 +301,7 @@ function BlogPostPage() {
           )}
 
           {/* Article Body */}
-          <div className="prose prose-base sm:prose-lg prose-navy max-w-none font-sans leading-relaxed prose-a:text-primary prose-a:font-semibold hover:prose-a:underline mb-12 prose-headings:font-heading prose-headings:text-navy">
+          <div className="prose prose-base sm:prose-lg max-w-none font-sans leading-relaxed text-slate-800 prose-headings:font-heading prose-headings:text-navy prose-a:text-secondary hover:prose-a:underline mb-12">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
           </div>
 
