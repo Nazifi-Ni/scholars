@@ -131,12 +131,12 @@ gtag('config', 'G-C1D0KLJM9L');`,
           "@graph": [
             {
               "@type": "Organization",
-              "@id": "https://scholarsconnect.com.ng/#organization",
+              "@id": "https://www.scholarsconnect.com.ng/#organization",
               name: "ScholarsConnect",
-              url: "https://scholarsconnect.com.ng",
+              url: "https://www.scholarsconnect.com.ng",
               logo: {
                 "@type": "ImageObject",
-                url: "https://scholarsconnect.com.ng/logo.png",
+                url: "https://www.scholarsconnect.com.ng/logo.png",
               },
               contactPoint: {
                 "@type": "ContactPoint",
@@ -147,17 +147,17 @@ gtag('config', 'G-C1D0KLJM9L');`,
             },
             {
               "@type": "WebSite",
-              "@id": "https://scholarsconnect.com.ng/#website",
-              url: "https://scholarsconnect.com.ng",
+              "@id": "https://www.scholarsconnect.com.ng/#website",
+              url: "https://www.scholarsconnect.com.ng",
               name: "ScholarsConnect",
               publisher: {
-                "@id": "https://scholarsconnect.com.ng/#organization",
+                "@id": "https://www.scholarsconnect.com.ng/#organization",
               },
               description:
                 "Connecting Dreams to Opportunities — verified scholarships, internships and grants for African students.",
               potentialAction: {
                 "@type": "SearchAction",
-                target: "https://scholarsconnect.com.ng/opportunities?q={search_term_string}",
+                target: "https://www.scholarsconnect.com.ng/opportunities?q={search_term_string}",
                 "query-input": "required name=search_term_string",
               },
             },

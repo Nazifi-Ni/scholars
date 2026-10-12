@@ -73,7 +73,7 @@ export function TypeLandingPage({
 }
 
 export function typeLandingHead(path: string, title: string, description: string) {
-  const canonicalUrl = `https://scholarsconnect.com.ng${path.startsWith("/") ? path : "/" + path}`;
+  const canonicalUrl = `https://www.scholarsconnect.com.ng${path.startsWith("/") ? path : "/" + path}`;
   return {
     meta: [
       { title: `${title} for African Students — ScholarsConnect` },

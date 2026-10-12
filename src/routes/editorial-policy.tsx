@@ -17,9 +17,9 @@ export const Route = createFileRoute("/editorial-policy")({
         content:
           "Learn about our strict editorial principles, fact-checking processes, and integrity standards.",
       },
-      { property: "og:url", content: "https://scholarsconnect.com.ng/editorial-policy" },
+      { property: "og:url", content: "https://www.scholarsconnect.com.ng/editorial-policy" },
     ],
-    links: [{ rel: "canonical", href: "https://scholarsconnect.com.ng/editorial-policy" }],
+    links: [{ rel: "canonical", href: "https://www.scholarsconnect.com.ng/editorial-policy" }],
   }),
   component: EditorialPolicyPage,
 });

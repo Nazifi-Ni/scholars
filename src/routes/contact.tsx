@@ -16,9 +16,9 @@ export const Route = createFileRoute("/contact")({
         property: "og:description",
         content: "Questions, partnerships and opportunity listings — talk to us.",
       },
-      { property: "og:url", content: "/contact" },
+      { property: "og:url", content: "https://www.scholarsconnect.com.ng/contact" },
     ],
-    links: [{ rel: "canonical", href: "/contact" }],
+    links: [{ rel: "canonical", href: "https://www.scholarsconnect.com.ng/contact" }],
   }),
   component: ContactPage,
 });

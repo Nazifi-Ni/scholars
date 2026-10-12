@@ -1016,7 +1016,7 @@ export function AdminOpportunities() {
                       <p className="text-[11px] text-gray-400">
                         Public URL:{" "}
                         <span className="text-emerald-600 font-mono">
-                          scholarsconnect.com.ng/opportunities/{formData.slug || "your-slug"}
+                          www.scholarsconnect.com.ng/opportunities/{formData.slug || "your-slug"}
                         </span>
                       </p>
                     </div>
@@ -1835,7 +1835,7 @@ export function AdminOpportunities() {
                         Google Search Preview
                       </div>
                       <div className="text-xs text-emerald-800 font-mono">
-                        scholarsconnect.com.ng › opportunities › {formData.slug || "slug"}
+                        www.scholarsconnect.com.ng › opportunities › {formData.slug || "slug"}
                       </div>
                       <div className="text-sm font-semibold text-blue-700 hover:underline cursor-pointer line-clamp-1">
                         {formData.meta_title || formData.title || "Opportunity Title Preview"}

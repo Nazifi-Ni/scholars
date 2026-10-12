@@ -18,13 +18,13 @@ export const Route = createFileRoute("/how-we-verify-opportunities")({
       },
       {
         property: "og:url",
-        content: "https://scholarsconnect.com.ng/how-we-verify-opportunities",
+        content: "https://www.scholarsconnect.com.ng/how-we-verify-opportunities",
       },
     ],
     links: [
       {
         rel: "canonical",
-        href: "https://scholarsconnect.com.ng/how-we-verify-opportunities",
+        href: "https://www.scholarsconnect.com.ng/how-we-verify-opportunities",
       },
     ],
   }),

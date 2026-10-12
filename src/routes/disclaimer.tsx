@@ -10,9 +10,9 @@ export const Route = createFileRoute("/disclaimer")({
         content:
           "Important legal disclaimers regarding the information provided on ScholarsConnect.",
       },
-      { property: "og:url", content: "/disclaimer" },
+      { property: "og:url", content: "https://www.scholarsconnect.com.ng/disclaimer" },
     ],
-    links: [{ rel: "canonical", href: "/disclaimer" }],
+    links: [{ rel: "canonical", href: "https://www.scholarsconnect.com.ng/disclaimer" }],
   }),
   component: DisclaimerPage,
 });

@@ -9,9 +9,9 @@ export const Route = createFileRoute("/privacy")({
         name: "description",
         content: "How ScholarsConnect collects, uses, and protects your personal information.",
       },
-      { property: "og:url", content: "/privacy" },
+      { property: "og:url", content: "https://www.scholarsconnect.com.ng/privacy" },
     ],
-    links: [{ rel: "canonical", href: "/privacy" }],
+    links: [{ rel: "canonical", href: "https://www.scholarsconnect.com.ng/privacy" }],
   }),
   component: PrivacyPage,
 });

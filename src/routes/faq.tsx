@@ -22,9 +22,9 @@ export const Route = createFileRoute("/faq")({
         content:
           "Comprehensive answers to common questions about scholarships and using ScholarsConnect.",
       },
-      { property: "og:url", content: "/faq" },
+      { property: "og:url", content: "https://www.scholarsconnect.com.ng/faq" },
     ],
-    links: [{ rel: "canonical", href: "/faq" }],
+    links: [{ rel: "canonical", href: "https://www.scholarsconnect.com.ng/faq" }],
   }),
   component: FaqPage,
 });

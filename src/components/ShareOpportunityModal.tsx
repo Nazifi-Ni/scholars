@@ -155,7 +155,7 @@ export function ShareOpportunityModal({
             {opportunity.title}
           </p>
           <p className="text-[11px] text-muted-foreground mt-1 truncate">
-            https://scholarsconnect.com.ng/opportunities/{opportunity.slug}
+            https://www.scholarsconnect.com.ng/opportunities/{opportunity.slug}
           </p>
         </div>
 

@@ -10,9 +10,9 @@ export const Route = createFileRoute("/cookie-policy")({
         content:
           "Detailed explanation of how ScholarsConnect uses cookies and tracking technologies.",
       },
-      { property: "og:url", content: "/cookie-policy" },
+      { property: "og:url", content: "https://www.scholarsconnect.com.ng/cookie-policy" },
     ],
-    links: [{ rel: "canonical", href: "/cookie-policy" }],
+    links: [{ rel: "canonical", href: "https://www.scholarsconnect.com.ng/cookie-policy" }],
   }),
   component: CookiePolicyPage,
 });

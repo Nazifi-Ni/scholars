@@ -66,10 +66,10 @@ export const Route = createFileRoute("/opportunities/")({
           content:
             "Discover verified scholarships, internships, grants, and fellowships for African students.",
         },
-        { property: "og:url", content: "https://scholarsconnect.com.ng/opportunities" },
+        { property: "og:url", content: "https://www.scholarsconnect.com.ng/opportunities" },
         ...(hasSearchQuery ? [{ name: "robots", content: "noindex, follow" }] : []),
       ],
-      links: [{ rel: "canonical", href: "https://scholarsconnect.com.ng/opportunities" }],
+      links: [{ rel: "canonical", href: "https://www.scholarsconnect.com.ng/opportunities" }],
     };
   },
   errorComponent: RouteErrorFallback,

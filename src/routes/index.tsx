@@ -49,9 +49,9 @@ export const Route = createFileRoute("/")({
         { name: "keywords", content: siteKeywords },
         { property: "og:title", content: siteTitle },
         { property: "og:description", content: siteDesc },
-        { property: "og:url", content: "https://scholarsconnect.com.ng" },
+        { property: "og:url", content: "https://www.scholarsconnect.com.ng" },
       ],
-      links: [{ rel: "canonical", href: "https://scholarsconnect.com.ng" }],
+      links: [{ rel: "canonical", href: "https://www.scholarsconnect.com.ng" }],
     };
   },
   component: HomePage,

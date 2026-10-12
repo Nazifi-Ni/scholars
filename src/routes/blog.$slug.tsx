@@ -47,7 +47,7 @@ export const Route = createFileRoute("/blog/$slug")({
         ],
       };
     const p = loaderData.post;
-    const canonicalUrl = `https://scholarsconnect.com.ng/blog/${params.slug}`;
+    const canonicalUrl = `https://www.scholarsconnect.com.ng/blog/${params.slug}`;
     const imageUrl = getImageUrl(p.featured_image ?? p.image_url);
     const title = p.meta_title ?? `${p.title} — ScholarsConnect`;
     const desc =
@@ -82,13 +82,13 @@ export const Route = createFileRoute("/blog/$slug")({
                 "@type": "ListItem",
                 position: 1,
                 name: "Home",
-                item: "https://scholarsconnect.com.ng",
+                item: "https://www.scholarsconnect.com.ng",
               },
               {
                 "@type": "ListItem",
                 position: 2,
                 name: "Blog",
-                item: "https://scholarsconnect.com.ng/blog",
+                item: "https://www.scholarsconnect.com.ng/blog",
               },
               {
                 "@type": "ListItem",
@@ -112,14 +112,14 @@ export const Route = createFileRoute("/blog/$slug")({
             author: {
               "@type": "Organization",
               name: "ScholarsConnect Editorial Team",
-              url: "https://scholarsconnect.com.ng/editorial-policy",
+              url: "https://www.scholarsconnect.com.ng/editorial-policy",
             },
             publisher: {
               "@type": "Organization",
               name: "ScholarsConnect",
               logo: {
                 "@type": "ImageObject",
-                url: "https://scholarsconnect.com.ng/logo.png",
+                url: "https://www.scholarsconnect.com.ng/logo.png",
               },
             },
             mainEntityOfPage: {

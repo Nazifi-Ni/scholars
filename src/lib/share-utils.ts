@@ -6,7 +6,7 @@
 
 export const DEFAULT_WHATSAPP_COMMUNITY_URL = "https://chat.whatsapp.com/EZHm6YGae3cLBgyoHoAVoB";
 
-export const CANONICAL_BASE_URL = "https://scholarsconnect.com.ng";
+export const CANONICAL_BASE_URL = "https://www.scholarsconnect.com.ng";
 
 /**
  * Strips HTML tags, Markdown symbols, and excessive formatting for plain-text platforms like WhatsApp.

@@ -9,9 +9,9 @@ export const Route = createFileRoute("/terms")({
         name: "description",
         content: "The terms and conditions governing your use of the ScholarsConnect platform.",
       },
-      { property: "og:url", content: "/terms" },
+      { property: "og:url", content: "https://www.scholarsconnect.com.ng/terms" },
     ],
-    links: [{ rel: "canonical", href: "/terms" }],
+    links: [{ rel: "canonical", href: "https://www.scholarsconnect.com.ng/terms" }],
   }),
   component: TermsPage,
 });
