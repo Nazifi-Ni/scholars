@@ -2,7 +2,7 @@
 import { useState, Fragment } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Search, ChevronRight, Mail, Download, Clock, TrendingUp } from "lucide-react";
+import { Search, ChevronRight, Mail, Download, Clock, TrendingUp, BadgeCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { OpportunityCard } from "@/components/OpportunityCard";
@@ -10,7 +10,7 @@ import { ScholarshipQuiz } from "@/components/ScholarshipQuiz";
 import { AdBanner } from "@/components/AdBanner";
 import { homeQuery, blogListQuery } from "@/lib/queries";
 import { Loader2 } from "lucide-react";
-import { getImageUrl, daysUntil, type OpportunityCardData } from "@/lib/sc-shared";
+import { getImageUrl, daysUntil, fundingLabel, type OpportunityCardData } from "@/lib/sc-shared";
 
 export const Route = createFileRoute("/")({
   loader: async ({ context }) => {
@@ -183,13 +183,13 @@ function HomePage() {
 
                 {latestOpportunities.length > 0 ? (
                   <>
-                    {/* Big Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-1 mb-8 rounded-lg overflow-hidden shadow-card">
-                      {/* Left Hero */}
+                    {/* Big Responsive Editorial Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-8">
+                      {/* Left Main Hero Card */}
                       <Link
                         to="/opportunities/$slug"
                         params={{ slug: latestOpportunities[0]?.slug || "not-found" }}
-                        className="md:col-span-2 relative group h-[300px] md:h-[400px] bg-muted overflow-hidden"
+                        className="md:col-span-7 lg:col-span-8 relative group rounded-2xl overflow-hidden shadow-sm hover:shadow-card border border-border bg-slate-900 min-h-[320px] sm:min-h-[380px] md:min-h-[420px] flex flex-col justify-end transition-all"
                       >
                         <img
                           src={getImageUrl(
@@ -197,17 +197,31 @@ function HomePage() {
                               latestOpportunities[0]?.image_url,
                           )}
                           alt={latestOpportunities[0]?.title}
-                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                          loading="eager"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/30 to-transparent" />
-                        <div className="absolute bottom-0 left-0 p-5 md:p-6 w-full">
-                          <span className="mb-3 inline-block bg-highlight px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-navy shadow-sm">
-                            {latestOpportunities[0]?.category?.name || "Featured"}
-                          </span>
-                          <h3 className="text-2xl md:text-3xl font-bold leading-tight text-white group-hover:underline font-heading">
+                        <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/40 to-transparent pointer-events-none" />
+                        <div className="relative p-5 sm:p-7 z-10 w-full">
+                          <div className="flex flex-wrap items-center gap-2 mb-3">
+                            <span className="inline-block bg-highlight px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-navy rounded shadow-sm">
+                              {latestOpportunities[0]?.category?.name || "Featured"}
+                            </span>
+                            {latestOpportunities[0]?.is_verified && (
+                              <span className="inline-flex items-center gap-1 rounded bg-emerald-600 text-white px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                                <BadgeCheck className="h-3 w-3" />
+                                Verified
+                              </span>
+                            )}
+                            {fundingLabel(latestOpportunities[0]?.funding_type) && (
+                              <span className="inline-block bg-white/20 backdrop-blur-sm text-white px-2 py-0.5 text-[10px] font-semibold rounded">
+                                {fundingLabel(latestOpportunities[0]?.funding_type)}
+                              </span>
+                            )}
+                          </div>
+                          <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold leading-tight text-white group-hover:text-highlight transition-colors font-heading drop-shadow-sm">
                             {latestOpportunities[0]?.title}
                           </h3>
-                          <div className="mt-2 md:mt-3 text-xs text-gray-300 font-sans flex items-center gap-2">
+                          <div className="mt-3 text-xs text-gray-300 font-sans flex items-center gap-2">
                             <span className="font-bold text-white">ScholarsConnect</span>
                             <span>•</span>
                             <span>
@@ -219,28 +233,51 @@ function HomePage() {
                         </div>
                       </Link>
 
-                      {/* Right Stacked */}
-                      <div className="grid grid-rows-2 gap-1 h-[300px] md:h-[400px]">
+                      {/* Right Stacked Cards */}
+                      <div className="md:col-span-5 lg:col-span-4 flex flex-col gap-4">
                         {latestOpportunities.slice(1, 3).map((opp) => (
                           <Link
                             key={opp.id}
                             to="/opportunities/$slug"
                             params={{ slug: opp.slug }}
-                            className="relative group bg-muted overflow-hidden h-full"
+                            className="relative group rounded-2xl overflow-hidden shadow-sm hover:shadow-card border border-border bg-slate-900 flex-1 min-h-[175px] sm:min-h-[195px] flex flex-col justify-end transition-all"
                           >
                             <img
                               src={getImageUrl(opp.featured_image ?? opp.image_url)}
                               alt={opp.title}
-                              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                              className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                              loading="lazy"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/40 to-transparent" />
-                            <div className="absolute bottom-0 left-0 p-4 w-full">
-                              <span className="mb-2 inline-block bg-secondary px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-white">
-                                {opp.category?.name || "Latest"}
-                              </span>
-                              <h3 className="text-sm md:text-base font-bold leading-tight text-white group-hover:underline font-heading line-clamp-3 md:line-clamp-2">
+                            <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/50 to-transparent pointer-events-none" />
+                            <div className="relative p-4 sm:p-5 z-10 w-full">
+                              <div className="flex items-center gap-2 mb-2">
+                                <span className="inline-block bg-secondary px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white rounded shadow-sm">
+                                  {opp.category?.name || "Latest"}
+                                </span>
+                                {opp.is_verified && (
+                                  <span className="inline-block bg-emerald-600 text-white px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded">
+                                    Verified
+                                  </span>
+                                )}
+                              </div>
+                              <h3 className="text-sm sm:text-base font-bold leading-snug text-white group-hover:text-highlight transition-colors font-heading line-clamp-2 drop-shadow-sm">
                                 {opp.title}
                               </h3>
+                              <div className="mt-2 text-[11px] text-gray-300 font-sans flex items-center gap-2">
+                                <span>
+                                  {opp.created_at
+                                    ? new Date(opp.created_at).toLocaleDateString()
+                                    : ""}
+                                </span>
+                                {fundingLabel(opp.funding_type) && (
+                                  <>
+                                    <span>•</span>
+                                    <span className="text-emerald-300 font-medium">
+                                      {fundingLabel(opp.funding_type)}
+                                    </span>
+                                  </>
+                                )}
+                              </div>
                             </div>
                           </Link>
                         ))}
@@ -248,40 +285,54 @@ function HomePage() {
                     </div>
 
                     {/* Module Layout (Thumbnail left, text right) */}
-                    <div className="flex flex-col gap-5">
+                    <div className="flex flex-col gap-4">
                       {latestOpportunities.slice(3, 8).map((opp) => (
                         <div
                           key={opp.id}
-                          className="group flex gap-4 bg-white p-2.5 sm:p-3 rounded-lg border border-border shadow-sm hover:shadow-card transition-all"
+                          className="group flex flex-col sm:flex-row gap-3 sm:gap-4 bg-white p-3 sm:p-3.5 rounded-2xl border border-border shadow-sm hover:shadow-card transition-all"
                         >
                           <Link
                             to="/opportunities/$slug"
                             params={{ slug: opp.slug }}
-                            className="shrink-0 w-[110px] h-[110px] sm:w-[220px] sm:h-[160px] overflow-hidden rounded border border-border/50 bg-muted"
+                            className="shrink-0 w-full sm:w-[200px] md:w-[220px] aspect-[16/10] sm:aspect-auto sm:h-[145px] overflow-hidden rounded-xl border border-border/50 bg-muted"
                           >
                             <img
                               src={getImageUrl(opp.featured_image ?? opp.image_url)}
                               alt={opp.title}
-                              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                              className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                              loading="lazy"
                             />
                           </Link>
                           <div className="flex flex-col justify-center flex-1">
-                            <span className="text-[10px] sm:text-xs font-bold uppercase text-secondary mb-1 sm:mb-1.5 tracking-wider font-sans">
-                              {opp.category?.name || "Opportunity"}
-                            </span>
-                            <h4 className="text-base sm:text-xl font-bold leading-snug text-navy group-hover:text-secondary font-heading line-clamp-2 sm:line-clamp-3">
+                            <div className="flex items-center gap-2 mb-1.5">
+                              <span className="text-[10px] sm:text-xs font-bold uppercase text-secondary tracking-wider font-sans">
+                                {opp.category?.name || "Opportunity"}
+                              </span>
+                              {opp.is_verified && (
+                                <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                                  <BadgeCheck className="h-3 w-3" />
+                                  Verified
+                                </span>
+                              )}
+                              {fundingLabel(opp.funding_type) && (
+                                <span className="text-[10px] font-semibold text-green-700 bg-green-50 px-1.5 py-0.5 rounded border border-green-200">
+                                  {fundingLabel(opp.funding_type)}
+                                </span>
+                              )}
+                            </div>
+                            <h4 className="text-base sm:text-lg font-bold leading-snug text-navy group-hover:text-secondary font-heading line-clamp-2">
                               <Link to="/opportunities/$slug" params={{ slug: opp.slug }}>
                                 {opp.title}
                               </Link>
                             </h4>
-                            <div className="mt-1.5 sm:mt-2 text-[11px] sm:text-sm text-muted-foreground font-sans flex items-center gap-1.5 sm:gap-2">
+                            <div className="mt-2 text-[11px] sm:text-xs text-muted-foreground font-sans flex items-center gap-1.5 sm:gap-2">
                               <span className="font-semibold text-navy/80">ScholarsConnect</span>
                               <span className="text-border">•</span>
                               <span>{new Date(opp.created_at).toLocaleDateString()}</span>
                             </div>
                             {opp.eligibility && (
-                              <p className="mt-2.5 text-[13px] sm:text-[15px] leading-relaxed text-muted-foreground line-clamp-2 hidden sm:block font-sans">
-                                {opp.eligibility.substring(0, 150)}...
+                              <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground line-clamp-2 hidden sm:block font-sans">
+                                {opp.eligibility.substring(0, 140)}...
                               </p>
                             )}
                           </div>

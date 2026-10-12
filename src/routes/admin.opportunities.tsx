@@ -492,13 +492,18 @@ function AdminOpportunities() {
                 rel="noreferrer"
                 className="text-xs font-semibold text-indigo-600 hover:underline mr-8 flex items-center gap-1"
               >
-                <span className="hidden sm:inline">View Live Page</span> <Eye className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">View Live Page</span>{" "}
+                <Eye className="h-3.5 w-3.5" />
               </a>
             )}
           </DialogHeader>
 
           <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto font-sans flex flex-col">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex-1 flex flex-col">
+            <Tabs
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className="w-full flex-1 flex flex-col"
+            >
               <div className="bg-white px-4 sm:px-6 pt-2 border-b border-gray-200 sticky top-0 z-10 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 <TabsList className="w-max sm:w-full justify-start h-auto bg-transparent p-0 gap-2 sm:gap-4 text-xs border-b-0">
                   <TabsTrigger
