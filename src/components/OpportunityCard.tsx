@@ -137,17 +137,20 @@ export function OpportunityCard({ opportunity }: { opportunity: OpportunityCardD
               <DollarSign className="h-3 w-3" /> {fundingLabel(opportunity.funding_type)}
             </span>
           )}
-          {opportunity.degree_levels &&
-            opportunity.degree_levels.length > 0 &&
-            opportunity.degree_levels[0] !== "not_applicable" &&
-            opportunity.degree_levels[0] !== "Not Applicable" && (
+          {(() => {
+            const validDegrees = (opportunity.degree_levels || []).filter(
+              (d: string) => d && d.toLowerCase() !== "not_applicable" && d !== "Not Applicable",
+            );
+            if (validDegrees.length === 0) return null;
+            return (
               <span className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-1 text-[11px] font-semibold text-blue-700 border border-blue-200/60">
-                <BookOpen className="h-3 w-3" /> {opportunity.degree_levels[0]}
-                {opportunity.degree_levels.length > 1 && (
-                  <span className="opacity-70 ml-0.5">+{opportunity.degree_levels.length - 1}</span>
+                <BookOpen className="h-3 w-3" /> {validDegrees[0]}
+                {validDegrees.length > 1 && (
+                  <span className="opacity-70 ml-0.5">+{validDegrees.length - 1}</span>
                 )}
               </span>
-            )}
+            );
+          })()}
           {opportunity.application_difficulty && (
             <span className="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-[11px] font-semibold text-purple-700 border border-purple-200/60">
               {opportunity.application_difficulty}

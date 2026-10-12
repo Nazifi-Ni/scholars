@@ -47,12 +47,12 @@ export function TypeLandingPage({
             <p className="text-sm text-muted-foreground leading-relaxed mb-6">
               Our editorial desk is actively vetting new {title.toLowerCase()} for the upcoming
               application cycle. We confirm deadlines and eligibility directly with awarding bodies
-              before publishing to ensure students receive 100% verified opportunities.
+              before publishing to ensure students receive carefully vetted opportunities.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Button asChild className="rounded-xl bg-primary text-white">
                 <Link to="/opportunities">
-                  Browse All Verified Opportunities <ArrowRight className="ml-1.5 h-4 w-4" />
+                  Browse All Opportunities <ArrowRight className="ml-1.5 h-4 w-4" />
                 </Link>
               </Button>
               <Button asChild variant="outline" className="rounded-xl">

@@ -18,13 +18,13 @@ export const Route = createFileRoute("/how-we-verify-opportunities")({
       },
       {
         property: "og:url",
-        content: "https://www.scholarsconnect.com.ng/how-we-verify-opportunities",
+        content: "https://scholarsconnect.com.ng/how-we-verify-opportunities",
       },
     ],
     links: [
       {
         rel: "canonical",
-        href: "https://www.scholarsconnect.com.ng/how-we-verify-opportunities",
+        href: "https://scholarsconnect.com.ng/how-we-verify-opportunities",
       },
     ],
   }),
@@ -71,7 +71,7 @@ function HowWeVerifyPage() {
             How ScholarsConnect Verifies Opportunities
           </h1>
           <p className="mt-4 text-base sm:text-lg text-navy-foreground/80 max-w-2xl mx-auto leading-relaxed">
-            Every scholarship listing on ScholarsConnect undergoes human editorial review before
+            Every opportunity published on ScholarsConnect undergoes human editorial review before
             publication. Here is our exact verification process.
           </p>
         </div>

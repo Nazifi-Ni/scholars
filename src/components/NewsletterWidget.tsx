@@ -68,7 +68,7 @@ export function NewsletterWidget({
             variant === "default" ? "text-muted-foreground" : "text-white/80",
           )}
         >
-          Keep an eye on your inbox for the latest scholarship alerts.
+          Keep an eye on your inbox for the latest opportunity alerts.
         </p>
         <Button
           variant={variant === "default" ? "outline" : "secondary"}
@@ -94,7 +94,7 @@ export function NewsletterWidget({
             Never Miss an Opportunity!
           </h3>
           <p className="text-sm text-muted-foreground mb-6 font-sans">
-            Join students across Africa receiving verified scholarship alerts directly in their
+            Join students across Africa receiving verified opportunity alerts directly in their
             inbox.
           </p>
         </>

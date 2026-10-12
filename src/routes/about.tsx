@@ -27,9 +27,9 @@ export const Route = createFileRoute("/about")({
         content:
           "Connecting Dreams to Opportunities for ambitious students across the African continent.",
       },
-      { property: "og:url", content: "/about" },
+      { property: "og:url", content: "https://scholarsconnect.com.ng/about" },
     ],
-    links: [{ rel: "canonical", href: "/about" }],
+    links: [{ rel: "canonical", href: "https://scholarsconnect.com.ng/about" }],
   }),
   component: AboutPage,
 });

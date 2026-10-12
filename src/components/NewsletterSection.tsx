@@ -41,8 +41,8 @@ export function NewsletterSection() {
           Never Miss a Deadline Again
         </h2>
         <p className="mt-5 text-lg md:text-xl text-white/70 max-w-2xl mx-auto font-sans leading-relaxed">
-          Join <strong className="text-white">85,000+</strong> ambitious students getting the newest
-          scholarships, internships, and grants delivered straight to their inbox every single week.
+          Join ambitious students getting the newest scholarships, internships, and grants delivered
+          straight to their inbox every single week.
         </p>
 
         {state === "done" ? (

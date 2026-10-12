@@ -19,13 +19,13 @@ export const Route = createFileRoute("/affiliate-disclosure")({
       },
       {
         property: "og:url",
-        content: "https://www.scholarsconnect.com.ng/affiliate-disclosure",
+        content: "https://scholarsconnect.com.ng/affiliate-disclosure",
       },
     ],
     links: [
       {
         rel: "canonical",
-        href: "https://www.scholarsconnect.com.ng/affiliate-disclosure",
+        href: "https://scholarsconnect.com.ng/affiliate-disclosure",
       },
     ],
   }),

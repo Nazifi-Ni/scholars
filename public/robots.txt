@@ -11,4 +11,4 @@ Disallow: /opportunities?q=*
 Disallow: /opportunities?*q=*
 
 # Canonical Sitemap
-Sitemap: https://www.scholarsconnect.com.ng/sitemap.xml
+Sitemap: https://scholarsconnect.com.ng/sitemap.xml

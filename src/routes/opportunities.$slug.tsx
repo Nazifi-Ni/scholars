@@ -68,7 +68,7 @@ export const Route = createFileRoute("/opportunities/$slug")({
       o.meta_description ??
       o.summary ??
       "Verified opportunity for African students on ScholarsConnect.";
-    const canonicalUrl = `https://www.scholarsconnect.com.ng/opportunities/${params.slug}`;
+    const canonicalUrl = `https://scholarsconnect.com.ng/opportunities/${params.slug}`;
     const imageUrl = getImageUrl(o.featured_image ?? o.image_url);
 
     const isClosed = o.is_expired || (o.deadline && new Date(o.deadline).getTime() < Date.now());
@@ -100,13 +100,13 @@ export const Route = createFileRoute("/opportunities/$slug")({
                 "@type": "ListItem",
                 position: 1,
                 name: "Home",
-                item: "https://www.scholarsconnect.com.ng",
+                item: "https://scholarsconnect.com.ng",
               },
               {
                 "@type": "ListItem",
                 position: 2,
                 name: "Opportunities",
-                item: "https://www.scholarsconnect.com.ng/opportunities",
+                item: "https://scholarsconnect.com.ng/opportunities",
               },
               {
                 "@type": "ListItem",
