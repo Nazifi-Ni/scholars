@@ -5,7 +5,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 async function generate() {
   console.log("Generating dynamic sitemap...");
   const API = "https://scholars-api.onrender.com/api";
-  const BASE_URL = "https://scholarsconnect.com.ng";
+  const BASE_URL = "https://www.scholarsconnect.com.ng";
 
   const staticRoutes = [
     { loc: `${BASE_URL}/`, changefreq: 'daily', priority: '1.0' },

@@ -17,9 +17,17 @@ export const Route = createFileRoute("/affiliate-disclosure")({
         content:
           "Learn how ScholarsConnect monetizes its free platform ethically and transparently.",
       },
-      { property: "og:url", content: "/affiliate-disclosure" },
+      {
+        property: "og:url",
+        content: "https://www.scholarsconnect.com.ng/affiliate-disclosure",
+      },
     ],
-    links: [{ rel: "canonical", href: "/affiliate-disclosure" }],
+    links: [
+      {
+        rel: "canonical",
+        href: "https://www.scholarsconnect.com.ng/affiliate-disclosure",
+      },
+    ],
   }),
   component: AffiliateDisclosurePage,
 });

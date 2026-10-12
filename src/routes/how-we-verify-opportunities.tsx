@@ -16,9 +16,17 @@ export const Route = createFileRoute("/how-we-verify-opportunities")({
         property: "og:description",
         content: "Our editorial methodology for verifying scholarships, internships, and grants.",
       },
-      { property: "og:url", content: "/how-we-verify-opportunities" },
+      {
+        property: "og:url",
+        content: "https://www.scholarsconnect.com.ng/how-we-verify-opportunities",
+      },
     ],
-    links: [{ rel: "canonical", href: "/how-we-verify-opportunities" }],
+    links: [
+      {
+        rel: "canonical",
+        href: "https://www.scholarsconnect.com.ng/how-we-verify-opportunities",
+      },
+    ],
   }),
   component: HowWeVerifyPage,
 });
