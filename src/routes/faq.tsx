@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Accordion,
   AccordionContent,
@@ -80,12 +80,12 @@ const STATIC_FAQS = [
 function FaqPage() {
   return (
     <SiteLayout>
-      <section className="bg-gradient-hero px-4 py-16 lg:px-8">
+      <section className="bg-gradient-hero px-4 py-10 sm:py-16 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
-          <h1 className="text-4xl font-bold text-navy-foreground sm:text-5xl">
+          <h1 className="text-2xl font-bold text-navy-foreground sm:text-4xl lg:text-5xl">
             Frequently Asked Questions
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-navy-foreground/80 leading-relaxed">
+          <p className="mx-auto mt-3 sm:mt-6 max-w-2xl text-sm sm:text-base md:text-lg text-navy-foreground/85 leading-relaxed">
             Navigating the world of international scholarships and applications can be overwhelming.
             We've compiled comprehensive answers to the most common questions African students ask
             us to help you apply with confidence.
@@ -93,35 +93,35 @@ function FaqPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-3xl px-4 py-16 lg:px-8">
-        <Accordion type="single" collapsible className="space-y-4">
+      <section className="mx-auto max-w-3xl px-4 py-10 sm:py-16 lg:px-8">
+        <Accordion type="single" collapsible className="space-y-3 sm:space-y-4">
           {STATIC_FAQS.map((f, i) => (
             <AccordionItem
               key={i}
               value={`f-${i}`}
-              className="rounded-2xl border border-border bg-card px-6 py-2 shadow-sm transition-all hover:shadow-md"
+              className="rounded-2xl border border-border bg-card px-4 sm:px-6 py-1 sm:py-2 shadow-soft transition-all hover:shadow-md"
             >
-              <AccordionTrigger className="text-left text-base font-bold hover:no-underline text-foreground py-4 leading-snug">
+              <AccordionTrigger className="text-left text-sm sm:text-base font-semibold sm:font-bold hover:no-underline text-foreground py-3.5 sm:py-4 leading-snug">
                 {f.question}
               </AccordionTrigger>
-              <AccordionContent className="text-base text-muted-foreground leading-relaxed pb-4 pt-2 border-t border-border/50 mt-2">
+              <AccordionContent className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed pb-4 pt-2 border-t border-border/50 mt-1">
                 {f.answer}
               </AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
 
-        <div className="mt-16 text-center bg-muted/30 p-8 rounded-3xl border border-border">
-          <h3 className="text-xl font-bold text-foreground mb-3">Still have questions?</h3>
-          <p className="text-muted-foreground mb-6">
+        <div className="mt-10 sm:mt-16 text-center bg-muted/30 p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-border">
+          <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2 sm:mb-3">Still have questions?</h3>
+          <p className="text-xs sm:text-sm text-muted-foreground mb-5 sm:mb-6">
             If you couldn't find the answer you were looking for, our team is always here to help.
           </p>
-          <a
-            href="/contact"
-            className="inline-flex h-11 items-center justify-center rounded-full bg-primary px-8 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+          <Link
+            to="/contact"
+            className="inline-flex h-10 sm:h-11 items-center justify-center rounded-full bg-primary px-6 sm:px-8 text-xs sm:text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
           >
             Contact Support
-          </a>
+          </Link>
         </div>
       </section>
     </SiteLayout>

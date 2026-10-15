@@ -138,7 +138,7 @@ export function ShareOpportunityModal({
         )}
       </DialogTrigger>
 
-      <DialogContent className="max-w-md rounded-2xl p-6 sm:p-7 shadow-xl border border-border">
+      <DialogContent className="w-[calc(100vw-2rem)] max-w-md rounded-2xl p-4 sm:p-7 shadow-xl border border-border">
         <DialogHeader className="text-left space-y-1.5 pb-2">
           <DialogTitle className="text-xl font-bold font-heading text-navy flex items-center gap-2">
             <Share2 className="h-5 w-5 text-secondary" />
@@ -235,7 +235,7 @@ export function ShareOpportunityModal({
 
           {showPreview && (
             <div className="mt-3 space-y-2 animate-in fade-in-50 duration-200">
-              <div className="rounded-xl bg-slate-900 text-slate-100 p-3.5 text-xs font-mono whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto border border-slate-800">
+              <div className="rounded-xl bg-slate-900 text-slate-100 p-3 sm:p-3.5 text-xs font-mono whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto border border-slate-800 break-words">
                 {message}
               </div>
               <Button

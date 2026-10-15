@@ -20,13 +20,13 @@ export const Route = createFileRoute("/disclaimer")({
 function DisclaimerPage() {
   return (
     <SiteLayout newsletter={false}>
-      <section className="mx-auto max-w-4xl px-4 py-14 lg:px-8">
-        <h1 className="text-4xl font-bold text-foreground mb-4">Disclaimer</h1>
-        <p className="text-sm text-muted-foreground mb-8">Last updated: September 2026</p>
+      <section className="mx-auto max-w-4xl px-4 py-8 sm:py-14 lg:px-8">
+        <h1 className="text-2xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">Disclaimer</h1>
+        <p className="text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8">Last updated: September 2026</p>
 
-        <div className="space-y-8 text-base leading-relaxed text-foreground/90">
+        <div className="space-y-6 sm:space-y-8 text-sm sm:text-base leading-relaxed text-foreground/90">
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
               1. General Information Disclaimer
             </h2>
             <p className="mb-4">
@@ -52,7 +52,7 @@ function DisclaimerPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
               2. External Links Disclaimer
             </h2>
             <p className="mb-4">
@@ -78,7 +78,7 @@ function DisclaimerPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
               3. Professional Advice Disclaimer
             </h2>
             <p className="mb-4">
@@ -96,7 +96,7 @@ function DisclaimerPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
               4. Opportunity Listings and Scholarships Disclaimer
             </h2>
             <p className="mb-4">
@@ -126,7 +126,7 @@ function DisclaimerPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">5. Fraud and Scam Warning</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">5. Fraud and Scam Warning</h2>
             <p className="mb-4">
               Unfortunately, the education sector is frequently targeted by scammers who create fake
               scholarship offers to extract application fees or steal personal identities.
@@ -160,7 +160,7 @@ function DisclaimerPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
               6. Affiliates and Advertising Disclaimer
             </h2>
             <p className="mb-4">
@@ -182,7 +182,7 @@ function DisclaimerPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">7. Contact Us</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">7. Contact Us</h2>
             <p className="mb-4">
               If you require any more information or have any questions about our site's disclaimer,
               please feel free to contact us:

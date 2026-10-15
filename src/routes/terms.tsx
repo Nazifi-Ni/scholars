@@ -19,13 +19,13 @@ export const Route = createFileRoute("/terms")({
 function TermsPage() {
   return (
     <SiteLayout newsletter={false}>
-      <section className="mx-auto max-w-4xl px-4 py-14 lg:px-8">
-        <h1 className="text-4xl font-bold text-foreground mb-4">Terms of Service</h1>
-        <p className="text-sm text-muted-foreground mb-8">Last updated: September 2026</p>
+      <section className="mx-auto max-w-4xl px-4 py-8 sm:py-14 lg:px-8">
+        <h1 className="text-2xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">Terms of Service</h1>
+        <p className="text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8">Last updated: September 2026</p>
 
-        <div className="space-y-8 text-base leading-relaxed text-foreground/90">
+        <div className="space-y-6 sm:space-y-8 text-sm sm:text-base leading-relaxed text-foreground/90">
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">1. Agreement to Terms</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">1. Agreement to Terms</h2>
             <p className="mb-4">
               Welcome to ScholarsConnect. These Terms of Service ("Terms") constitute a legally
               binding agreement made between you, whether personally or on behalf of an entity
@@ -52,7 +52,7 @@ function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">2. Nature of the Platform</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">2. Nature of the Platform</h2>
             <p className="mb-4">
               ScholarsConnect operates as a free, informational discovery platform. Our primary
               mission is to aggregate, organize, and present verified opportunities including
@@ -78,7 +78,7 @@ function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
               3. User Representations and Accounts
             </h2>
             <p className="mb-4">
@@ -107,7 +107,7 @@ function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">4. Prohibited Activities</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">4. Prohibited Activities</h2>
             <p className="mb-4">
               You may not access or use the Platform for any purpose other than that for which we
               make the Platform available. As a user of the Platform, you agree not to:
@@ -154,7 +154,7 @@ function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
               5. Intellectual Property Rights
             </h2>
             <p className="mb-4">
@@ -176,7 +176,7 @@ function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
               6. Third-Party Websites and Content
             </h2>
             <p className="mb-4">
@@ -204,7 +204,7 @@ function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
               7. Disclaimer of Warranties and Limitation of Liability
             </h2>
             <p className="mb-4">
@@ -224,7 +224,7 @@ function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
               8. Governing Law and Dispute Resolution
             </h2>
             <p className="mb-4">
@@ -236,7 +236,7 @@ function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">9. Contact Information</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">9. Contact Information</h2>
             <p className="mb-4">
               If you have a complaint regarding the Platform or wish to receive further information
               regarding use of the Platform, please contact us at:

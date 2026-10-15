@@ -41,7 +41,7 @@ function BookmarksPage() {
 
       <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
         {bookmarks.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-border bg-card p-10 sm:p-16 text-center max-w-md mx-auto shadow-sm">
+          <div className="rounded-2xl border border-dashed border-border bg-card p-6 sm:p-12 text-center max-w-md mx-auto shadow-soft">
             <div className="h-12 w-12 rounded-full bg-navy/5 flex items-center justify-center mx-auto mb-4 text-navy">
               <Bookmark className="h-6 w-6 text-muted-foreground" />
             </div>

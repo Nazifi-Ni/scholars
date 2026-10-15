@@ -327,7 +327,7 @@ function HomePage() {
                       All Countries →
                     </Link>
                   </div>
-                  <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
                     {data.featured_countries.map((country) => (
                       <Link
                         key={country.id}

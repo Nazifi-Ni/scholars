@@ -25,6 +25,7 @@ import {
   DollarSign,
   XCircle,
   ChevronRight,
+  Share2,
   Award,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -722,48 +723,73 @@ function OpportunityDetailPage() {
       </section>
 
       {/* Mobile Sticky Floating Action Bar */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-border px-4 py-3 shadow-lg flex items-center gap-3">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-border px-3 sm:px-4 py-3 shadow-lg flex items-center gap-2 sm:gap-3">
         <Button
           type="button"
           variant="outline"
           onClick={() => toggleBookmark(o)}
           className={cn(
-            "rounded-xl h-11 px-3.5 border-border shrink-0 transition-colors",
+            "rounded-xl h-11 px-3 sm:px-3.5 border-border shrink-0 transition-colors",
             bookmarked && "bg-secondary/10 text-secondary border-secondary/30",
           )}
           aria-label={bookmarked ? "Bookmarked" : "Save bookmark"}
         >
           <Bookmark className={cn("h-5 w-5", bookmarked && "fill-secondary")} />
         </Button>
+        <ShareOpportunityModal
+          opportunity={o}
+          trigger={
+            <Button
+              type="button"
+              variant="outline"
+              className="rounded-xl h-11 px-3 sm:px-3.5 border-border shrink-0 transition-colors text-muted-foreground hover:text-emerald-600"
+              aria-label="Share opportunity"
+            >
+              <Share2 className="h-5 w-5" />
+            </Button>
+          }
+        />
         {isClosed ? (
           <Button
             disabled
-            className="flex-1 rounded-xl h-11 font-bold text-xs uppercase bg-gray-300 text-gray-600"
+            className="flex-1 rounded-xl h-11 font-bold text-xs uppercase bg-gray-300 text-gray-600 truncate"
           >
             Applications Closed
           </Button>
         ) : o.application_link ? (
           <Button
             asChild
-            className="flex-1 rounded-xl h-11 bg-secondary hover:bg-green-600 font-bold text-xs sm:text-sm text-white shadow-sm uppercase tracking-wider"
+            className="flex-1 rounded-xl h-11 bg-secondary hover:bg-green-600 font-bold text-xs sm:text-sm text-white shadow-sm uppercase tracking-wider min-w-0"
           >
-            <a href={o.application_link} target="_blank" rel="noopener noreferrer nofollow">
-              Apply on Official Portal <ExternalLink className="h-4 w-4 ml-1.5" />
+            <a
+              href={o.application_link}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              className="flex items-center justify-center gap-1.5 px-2"
+            >
+              <span className="truncate">Apply on Official Portal</span>
+              <ExternalLink className="h-4 w-4 shrink-0" />
             </a>
           </Button>
         ) : o.official_website ? (
           <Button
             asChild
-            className="flex-1 rounded-xl h-11 bg-secondary hover:bg-green-600 font-bold text-xs sm:text-sm text-white shadow-sm uppercase tracking-wider"
+            className="flex-1 rounded-xl h-11 bg-secondary hover:bg-green-600 font-bold text-xs sm:text-sm text-white shadow-sm uppercase tracking-wider min-w-0"
           >
-            <a href={o.official_website} target="_blank" rel="noopener noreferrer nofollow">
-              Visit Official Website <ExternalLink className="h-4 w-4 ml-1.5" />
+            <a
+              href={o.official_website}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              className="flex items-center justify-center gap-1.5 px-2"
+            >
+              <span className="truncate">Visit Official Website</span>
+              <ExternalLink className="h-4 w-4 shrink-0" />
             </a>
           </Button>
         ) : (
           <Button
             disabled
-            className="flex-1 rounded-xl h-11 font-bold text-xs uppercase bg-gray-200 text-gray-500"
+            className="flex-1 rounded-xl h-11 font-bold text-xs uppercase bg-gray-200 text-gray-500 truncate"
           >
             Details Above
           </Button>

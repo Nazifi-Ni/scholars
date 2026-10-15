@@ -1,8 +1,9 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useSuspenseQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
   ArrowLeft,
   Clock,
@@ -143,17 +144,38 @@ function BlogPostPage() {
   const post = data?.post;
   const related = data?.related || [];
   const comments = post?.comments || [];
-
+  const [localComments, setLocalComments] = useState<any[]>(post?.comments || []);
   const [commentForm, setCommentForm] = useState({ author_name: "", content: "" });
+
+  useEffect(() => {
+    if (post?.comments) {
+      setLocalComments(post.comments);
+    }
+  }, [post?.comments]);
 
   const submitComment = useMutation({
     mutationFn: () =>
       addBlogComment({
-        data: { slug, author_name: commentForm.author_name, content: commentForm.content },
+        data: {
+          slug,
+          author_name: commentForm.author_name.trim(),
+          content: commentForm.content.trim(),
+        },
       }),
-    onSuccess: () => {
+    onSuccess: (result: any) => {
+      toast.success("Thank you! Your comment has been posted.");
+      const newComment = result?.comment || {
+        id: Date.now(),
+        author_name: commentForm.author_name.trim(),
+        content: commentForm.content.trim(),
+        created_at: new Date().toISOString(),
+      };
+      setLocalComments((prev) => [newComment, ...prev]);
       setCommentForm({ author_name: "", content: "" });
       queryClient.invalidateQueries({ queryKey: ["blog", slug] });
+    },
+    onError: (err: any) => {
+      toast.error(err.message || "Failed to post comment. Please try again.");
     },
   });
 
@@ -301,7 +323,7 @@ function BlogPostPage() {
           )}
 
           {/* Article Body */}
-          <div className="prose prose-base sm:prose-lg max-w-none font-sans leading-relaxed text-slate-800 prose-headings:font-heading prose-headings:text-navy prose-a:text-secondary hover:prose-a:underline mb-12">
+          <div className="prose prose-base sm:prose-lg max-w-none font-sans leading-relaxed text-slate-800 prose-headings:font-heading prose-headings:text-navy prose-a:text-secondary hover:prose-a:underline mb-12 overflow-hidden break-words prose-pre:overflow-x-auto prose-table:overflow-x-auto">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
           </div>
 
@@ -342,18 +364,20 @@ function BlogPostPage() {
           <WhatsAppBanner className="mb-14" />
 
           {/* Comments Section */}
-          <div className="border-t border-border pt-12">
-            <h3 className="text-2xl font-bold text-navy font-heading flex items-center gap-2 mb-8">
-              <MessageCircle className="h-6 w-6 text-secondary" />
-              Comments ({comments.length})
+          <div className="border-t border-border pt-10 sm:pt-12">
+            <h3 className="text-xl sm:text-2xl font-bold text-navy font-heading flex items-center gap-2 mb-6 sm:mb-8">
+              <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6 text-secondary" />
+              Comments ({localComments.length})
             </h3>
 
-            <div className="bg-muted/30 rounded-2xl p-6 mb-10 border border-border font-sans">
-              <h4 className="text-lg font-bold text-navy mb-4">Leave a Reply</h4>
+            <div className="bg-muted/30 rounded-2xl p-4 sm:p-6 mb-8 sm:mb-10 border border-border font-sans">
+              <h4 className="text-base sm:text-lg font-bold text-navy mb-4">Leave a Reply</h4>
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  if (commentForm.author_name && commentForm.content) submitComment.mutate();
+                  if (commentForm.author_name.trim() && commentForm.content.trim()) {
+                    submitComment.mutate();
+                  }
                 }}
                 className="space-y-4"
               >
@@ -362,7 +386,7 @@ function BlogPostPage() {
                     required
                     type="text"
                     placeholder="Your Name"
-                    className="w-full sm:max-w-sm rounded-lg border border-border bg-white px-4 py-2.5 text-sm focus:border-secondary focus:outline-none focus:ring-1 focus:ring-secondary"
+                    className="w-full sm:max-w-sm rounded-lg border border-border bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-muted-foreground focus:border-secondary focus:outline-none focus:ring-1 focus:ring-secondary"
                     value={commentForm.author_name}
                     onChange={(e) =>
                       setCommentForm({ ...commentForm, author_name: e.target.value })
@@ -374,7 +398,7 @@ function BlogPostPage() {
                     required
                     rows={4}
                     placeholder="Write your comment or question about this guide..."
-                    className="w-full rounded-lg border border-border bg-white px-4 py-3 text-sm focus:border-secondary focus:outline-none focus:ring-1 focus:ring-secondary resize-none"
+                    className="w-full rounded-lg border border-border bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-muted-foreground focus:border-secondary focus:outline-none focus:ring-1 focus:ring-secondary resize-none"
                     value={commentForm.content}
                     onChange={(e) => setCommentForm({ ...commentForm, content: e.target.value })}
                   />
@@ -382,7 +406,7 @@ function BlogPostPage() {
                 <Button
                   type="submit"
                   disabled={submitComment.isPending}
-                  className="bg-primary hover:bg-primary/90 font-semibold px-6 rounded-xl"
+                  className="w-full sm:w-auto bg-primary hover:bg-primary/90 font-semibold px-6 py-2.5 rounded-xl text-white"
                 >
                   {submitComment.isPending ? (
                     "Posting..."
@@ -395,15 +419,15 @@ function BlogPostPage() {
               </form>
             </div>
 
-            <div className="space-y-5 font-sans">
-              {comments.map((comment: any) => (
+            <div className="space-y-4 font-sans">
+              {localComments.map((comment: any) => (
                 <div
                   key={comment.id}
-                  className="bg-white border border-border rounded-xl p-5 shadow-xs"
+                  className="bg-white border border-border rounded-xl p-4 sm:p-5 shadow-xs"
                 >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-bold text-navy">{comment.author_name}</span>
-                    <span className="text-xs text-muted-foreground">
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <span className="font-bold text-navy text-sm sm:text-base">{comment.author_name}</span>
+                    <span className="text-xs text-muted-foreground shrink-0">
                       {new Date(comment.created_at).toLocaleDateString("en-GB", {
                         day: "numeric",
                         month: "short",
@@ -411,12 +435,12 @@ function BlogPostPage() {
                       })}
                     </span>
                   </div>
-                  <p className="text-navy-foreground/80 text-sm whitespace-pre-wrap leading-relaxed">
+                  <p className="text-slate-800 text-sm whitespace-pre-wrap leading-relaxed break-words">
                     {comment.content}
                   </p>
                 </div>
               ))}
-              {comments.length === 0 && (
+              {localComments.length === 0 && (
                 <p className="text-muted-foreground text-sm italic font-sans">
                   No comments yet. Have a question about this guide? Leave a reply above!
                 </p>

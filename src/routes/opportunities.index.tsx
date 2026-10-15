@@ -350,7 +350,7 @@ function BrowsePage() {
 
             {/* Results Grid or Rich Empty State */}
             {results.items.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-border bg-card p-10 sm:p-14 text-center max-w-lg mx-auto font-sans shadow-sm">
+              <div className="rounded-2xl border border-dashed border-border bg-card p-6 sm:p-12 text-center max-w-lg mx-auto font-sans shadow-soft">
                 <div className="h-12 w-12 rounded-full bg-navy/5 flex items-center justify-center mx-auto mb-4 text-navy">
                   <Search className="h-6 w-6 text-muted-foreground" />
                 </div>

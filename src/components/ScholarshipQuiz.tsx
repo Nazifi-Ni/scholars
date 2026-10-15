@@ -62,13 +62,13 @@ export function ScholarshipQuiz() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-border p-6 font-sans">
-      <div className="flex items-center gap-3 mb-6 border-b border-border pb-4">
+    <div className="bg-white rounded-2xl shadow-soft border border-border p-4 sm:p-6 font-sans">
+      <div className="flex items-center gap-3 mb-4 sm:mb-6 border-b border-border pb-3 sm:pb-4">
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary/10 shrink-0">
           <Search className="h-5 w-5 text-secondary" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-navy font-heading leading-tight">
+          <h3 className="text-base sm:text-lg font-bold text-navy font-heading leading-tight">
             Scholarship Match Quiz
           </h3>
           <p className="text-xs text-muted-foreground mt-0.5">
@@ -106,7 +106,7 @@ export function ScholarshipQuiz() {
                     setForm({ ...form, degree: d });
                     handleNext();
                   }}
-                  className="p-3 border border-border rounded-lg text-sm hover:border-secondary hover:bg-secondary/5 transition-all font-medium text-navy/80 hover:scale-[1.02] shadow-sm hover:shadow-md"
+                  className="p-2.5 sm:p-3 border border-border rounded-xl text-xs sm:text-sm hover:border-secondary hover:bg-secondary/5 transition-all font-medium text-navy/80 hover:scale-[1.02] shadow-sm hover:shadow-md"
                 >
                   {d}
                 </button>
@@ -129,7 +129,7 @@ export function ScholarshipQuiz() {
                       setForm({ ...form, type: d });
                       handleNext();
                     }}
-                    className="p-3 border border-border rounded-lg text-sm hover:border-secondary hover:bg-secondary/5 transition-all font-medium text-navy/80 hover:scale-[1.02] shadow-sm hover:shadow-md"
+                    className="p-2.5 sm:p-3 border border-border rounded-xl text-xs sm:text-sm hover:border-secondary hover:bg-secondary/5 transition-all font-medium text-navy/80 hover:scale-[1.02] shadow-sm hover:shadow-md"
                   >
                     {d}
                   </button>
@@ -313,26 +313,26 @@ export function ScholarshipQuiz() {
 
         {step === 6 && (
           <div className="animate-in fade-in zoom-in-95 duration-500 text-center py-4">
-            <div className="h-20 w-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <span className="text-4xl">{matchCount === 0 ? "🧐" : "🎉"}</span>
+            <div className="h-16 w-16 sm:h-20 sm:w-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+              <span className="text-3xl sm:text-4xl">{matchCount === 0 ? "🧐" : "🎉"}</span>
             </div>
-            <h4 className="text-2xl font-bold text-navy font-heading mb-3">
+            <h4 className="text-xl sm:text-2xl font-bold text-navy font-heading mb-2 sm:mb-3">
               {matchCount === 0 ? "No exact matches found" : `We found ${matchCount} matches!`}
             </h4>
-            <p className="text-sm text-navy-foreground/70 mb-8 max-w-sm mx-auto">
+            <p className="text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8 max-w-sm mx-auto leading-relaxed">
               {matchCount === 0
                 ? "Try broadening your criteria or browse all available opportunities."
                 : "Based on your profile, we've found highly relevant opportunities that fit your criteria perfectly."}
             </p>
             <Button
               onClick={handleViewMatches}
-              className="w-full bg-secondary hover:bg-green-600 text-white font-bold h-12 rounded-full text-base shadow-lg transition-transform hover:scale-[1.02]"
+              className="w-full bg-secondary hover:bg-green-600 text-white font-bold h-11 sm:h-12 rounded-full text-sm sm:text-base shadow-lg transition-transform hover:scale-[1.02]"
             >
               {matchCount === 0 ? "Browse All Opportunities" : "View Your Matches"}
             </Button>
             <button
               onClick={() => setStep(1)}
-              className="mt-6 text-sm font-semibold text-muted-foreground hover:text-navy transition-colors underline underline-offset-4"
+              className="mt-5 sm:mt-6 text-xs sm:text-sm font-semibold text-muted-foreground hover:text-navy transition-colors underline underline-offset-4"
             >
               Start Over
             </button>

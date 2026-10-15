@@ -19,13 +19,13 @@ export const Route = createFileRoute("/privacy")({
 function PrivacyPage() {
   return (
     <SiteLayout newsletter={false}>
-      <section className="mx-auto max-w-4xl px-4 py-14 lg:px-8">
-        <h1 className="text-4xl font-bold text-foreground mb-4">Privacy Policy</h1>
-        <p className="text-sm text-muted-foreground mb-8">Last updated: September 2026</p>
+      <section className="mx-auto max-w-4xl px-4 py-8 sm:py-14 lg:px-8">
+        <h1 className="text-2xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">Privacy Policy</h1>
+        <p className="text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8">Last updated: September 2026</p>
 
-        <div className="space-y-8 text-base leading-relaxed text-foreground/90">
+        <div className="space-y-6 sm:space-y-8 text-sm sm:text-base leading-relaxed text-foreground/90">
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">1. Introduction and Scope</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">1. Introduction and Scope</h2>
             <p className="mb-4">
               At ScholarsConnect ("we," "us," or "our"), we are deeply committed to protecting your
               personal information and your right to privacy. This extensive Privacy Policy is
@@ -50,7 +50,7 @@ function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">2. Information We Collect</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">2. Information We Collect</h2>
             <p className="mb-4">
               To provide you with the most relevant and personalized experience, we collect various
               types of information. This collection occurs through direct interactions, automated
@@ -93,7 +93,7 @@ function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
               3. How We Use Your Information
             </h2>
             <p className="mb-4">
@@ -138,7 +138,7 @@ function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
               4. How We Share Your Information
             </h2>
             <p className="mb-4">
@@ -181,7 +181,7 @@ function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
               5. Data Security and Retention
             </h2>
             <p className="mb-4">
@@ -209,7 +209,7 @@ function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">6. Your Privacy Rights</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">6. Your Privacy Rights</h2>
             <p className="mb-4">
               Depending on your location and applicable data protection laws, you possess certain
               rights regarding your personal data. We are committed to facilitating the exercise of
@@ -247,7 +247,7 @@ function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">7. Children's Privacy</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">7. Children's Privacy</h2>
             <p className="mb-4">
               ScholarsConnect is designed for university students, graduates, and young
               professionals. We do not knowingly solicit data from or market to children under the
@@ -260,7 +260,7 @@ function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
               8. Changes to This Privacy Policy
             </h2>
             <p className="mb-4">
@@ -276,7 +276,7 @@ function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">9. Contact Us</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">9. Contact Us</h2>
             <p className="mb-4">
               If you have any questions, comments, or concerns about this Privacy Policy, our data
               collection practices, or if you would like to exercise any of your privacy rights,

@@ -8,7 +8,7 @@ export function Footer() {
       {/* Subtle Background Glow */}
       <div className="absolute right-0 bottom-0 translate-x-1/3 translate-y-1/3 w-[500px] h-[500px] bg-secondary/10 blur-[120px] rounded-full pointer-events-none"></div>
 
-      <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:grid-cols-2 lg:grid-cols-12 lg:px-8">
+      <div className="relative z-10 mx-auto grid max-w-7xl gap-8 sm:gap-12 px-4 py-12 sm:py-16 sm:grid-cols-2 lg:grid-cols-12 lg:px-8">
         <div className="lg:col-span-4 pr-4">
           <div className="flex items-center bg-white/5 p-3 rounded-lg border border-white/10 w-fit">
             <img src="/logo.png" alt="ScholarsConnect Logo" className="h-10 w-auto" />
@@ -226,7 +226,7 @@ export function Footer() {
           <ul className="mt-6 space-y-4 text-[15px] font-sans text-white/70">
             <li className="flex items-start gap-3">
               <Mail className="h-5 w-5 text-secondary shrink-0 mt-0.5" />
-              <span>admin@scholarsconnect.com.ng</span>
+              <span className="break-all">admin@scholarsconnect.com.ng</span>
             </li>
             <li className="flex items-start gap-3">
               <MapPin className="h-5 w-5 text-secondary shrink-0 mt-0.5" />

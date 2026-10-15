@@ -70,15 +70,15 @@ const VALUES = [
 function AboutPage() {
   return (
     <SiteLayout>
-      <section className="bg-gradient-hero px-4 py-20 lg:px-8 border-b border-border/40">
+      <section className="bg-gradient-hero px-4 py-12 sm:py-20 lg:px-8 border-b border-border/40">
         <div className="mx-auto max-w-4xl text-center">
-          <span className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary font-semibold text-sm mb-6 tracking-wide uppercase">
+          <span className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary font-semibold text-xs sm:text-sm mb-4 sm:mb-6 tracking-wide uppercase">
             Our Story
           </span>
-          <h1 className="text-4xl font-bold text-navy-foreground sm:text-6xl mb-6">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-navy-foreground mb-4 sm:mb-6 leading-tight">
             Connecting Dreams to Opportunities
           </h1>
-          <p className="mx-auto mt-4 max-w-3xl text-navy-foreground/80 text-lg leading-relaxed">
+          <p className="mx-auto mt-2 sm:mt-4 max-w-3xl text-navy-foreground/80 text-sm sm:text-base md:text-lg leading-relaxed">
             ScholarsConnect exists to fundamentally level the playing field. We believe that
             brilliant talent is evenly distributed across the African continent—but access to
             world-class opportunity is not. Our platform is dedicated to bridging that gap by
@@ -88,9 +88,9 @@ function AboutPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-4xl px-4 py-16 lg:px-8 text-lg leading-relaxed text-foreground/90 space-y-8">
+      <section className="mx-auto max-w-4xl px-4 py-10 sm:py-16 lg:px-8 text-sm sm:text-base leading-relaxed text-foreground/90 space-y-8 font-sans">
         <div>
-          <h2 className="text-3xl font-bold text-foreground mb-4">The Problem We Are Solving</h2>
+          <h2 className="text-xl sm:text-3xl font-bold text-foreground mb-3 sm:mb-4 font-heading">The Problem We Are Solving</h2>
           <p className="mb-4">
             Every year, billions of dollars in global scholarships, research grants, and
             international fellowships go unclaimed or underutilized. At the same time, millions of

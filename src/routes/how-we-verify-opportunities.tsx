@@ -62,26 +62,26 @@ const STEPS = [
 function HowWeVerifyPage() {
   return (
     <SiteLayout newsletter={false}>
-      <section className="bg-gradient-hero px-4 py-16 lg:px-8 border-b border-border">
+      <section className="bg-gradient-hero px-4 py-10 sm:py-16 lg:px-8 border-b border-border">
         <div className="mx-auto max-w-4xl text-center">
-          <span className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary font-semibold text-xs uppercase tracking-wider mb-4">
+          <span className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary font-semibold text-xs uppercase tracking-wider mb-3 sm:mb-4">
             Our Verification Methodology
           </span>
-          <h1 className="text-3xl sm:text-5xl font-extrabold text-navy-foreground font-heading">
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-navy-foreground font-heading">
             How ScholarsConnect Verifies Opportunities
           </h1>
-          <p className="mt-4 text-base sm:text-lg text-navy-foreground/80 max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-navy-foreground/80 max-w-2xl mx-auto leading-relaxed">
             Every opportunity published on ScholarsConnect undergoes human editorial review before
             publication. Here is our exact verification process.
           </p>
         </div>
       </section>
 
-      <section className="mx-auto max-w-4xl px-4 py-14 lg:px-8">
-        <div className="space-y-12 text-foreground/90 font-sans text-base leading-relaxed">
-          <div className="rounded-2xl border border-amber-200/80 bg-amber-50/70 p-6 flex items-start gap-4 text-amber-950">
-            <AlertTriangle className="h-6 w-6 text-amber-700 shrink-0 mt-0.5" />
-            <div className="text-sm leading-relaxed">
+      <section className="mx-auto max-w-4xl px-4 py-10 sm:py-14 lg:px-8">
+        <div className="space-y-8 sm:space-y-12 text-foreground/90 font-sans text-sm sm:text-base leading-relaxed">
+          <div className="rounded-2xl border border-amber-200/80 bg-amber-50/70 p-4 sm:p-6 flex items-start gap-3 sm:gap-4 text-amber-950">
+            <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 text-amber-700 shrink-0 mt-0.5" />
+            <div className="text-xs sm:text-sm leading-relaxed">
               <strong className="font-bold">Important Applicant Advisory:</strong> While
               ScholarsConnect takes rigorous steps to verify program details against official
               guidelines, institutional deadlines and terms can change without advance notice. We
@@ -91,21 +91,21 @@ function HowWeVerifyPage() {
           </div>
 
           <section>
-            <h2 className="text-2xl font-bold text-navy font-heading mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-navy font-heading mb-4 sm:mb-6">
               Our 5-Step Editorial Review Process
             </h2>
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {STEPS.map((s) => (
                 <div
                   key={s.step}
-                  className="p-6 rounded-2xl border border-border bg-card shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row gap-5 items-start"
+                  className="p-4 sm:p-6 rounded-2xl border border-border bg-card shadow-soft hover:shadow-md transition-all flex flex-col sm:flex-row gap-3 sm:gap-5 items-start"
                 >
-                  <div className="h-12 w-12 rounded-xl bg-primary/10 text-primary font-bold font-heading flex items-center justify-center shrink-0 text-lg">
+                  <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-primary/10 text-primary font-bold font-heading flex items-center justify-center shrink-0 text-base sm:text-lg">
                     {s.step}
                   </div>
                   <div>
-                    <h3 className="font-heading font-bold text-lg text-navy mb-2">{s.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
+                    <h3 className="font-heading font-bold text-base sm:text-lg text-navy mb-1 sm:mb-2">{s.title}</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
                   </div>
                 </div>
               ))}
@@ -113,7 +113,7 @@ function HowWeVerifyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-navy font-heading mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-navy font-heading mb-3 sm:mb-4">
               Handling Expired Listings
             </h2>
             <p className="mb-4">
@@ -126,7 +126,7 @@ function HowWeVerifyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-navy font-heading mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-navy font-heading mb-3 sm:mb-4">
               Sponsored Opportunities & Commercial Content
             </h2>
             <p className="mb-4">
@@ -153,7 +153,7 @@ function HowWeVerifyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-navy font-heading mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-navy font-heading mb-3 sm:mb-4">
               Reporting Outdated or Inaccurate Information
             </h2>
             <p className="mb-4">

@@ -35,30 +35,30 @@ export const Route = createFileRoute("/affiliate-disclosure")({
 function AffiliateDisclosurePage() {
   return (
     <SiteLayout newsletter={false}>
-      <section className="bg-gradient-hero px-4 py-16 lg:px-8 border-b border-border">
+      <section className="bg-gradient-hero px-4 py-10 sm:py-16 lg:px-8 border-b border-border">
         <div className="mx-auto max-w-4xl text-center">
-          <span className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary font-semibold text-xs uppercase tracking-wider mb-4">
+          <span className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary font-semibold text-xs uppercase tracking-wider mb-3 sm:mb-4">
             Transparency & Monetization Disclosure
           </span>
-          <h1 className="text-3xl sm:text-5xl font-extrabold text-navy-foreground font-heading">
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-navy-foreground font-heading">
             Affiliate & Commercial Disclosure
           </h1>
-          <p className="mt-4 text-base sm:text-lg text-navy-foreground/80 max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-navy-foreground/80 max-w-2xl mx-auto leading-relaxed">
             ScholarsConnect is completely free for all students. Here is full transparency on how we
             finance our operations and maintain editorial independence.
           </p>
         </div>
       </section>
 
-      <section className="mx-auto max-w-4xl px-4 py-14 lg:px-8">
-        <div className="space-y-12 text-foreground/90 font-sans text-base leading-relaxed">
-          <div className="bg-muted/30 border border-border p-6 rounded-2xl flex items-start gap-4">
-            <Info className="h-7 w-7 text-secondary shrink-0 mt-1" />
+      <section className="mx-auto max-w-4xl px-4 py-10 sm:py-14 lg:px-8">
+        <div className="space-y-8 sm:space-y-12 text-foreground/90 font-sans text-sm sm:text-base leading-relaxed">
+          <div className="bg-muted/30 border border-border p-4 sm:p-6 rounded-2xl flex items-start gap-3 sm:gap-4">
+            <Info className="h-6 w-6 sm:h-7 sm:w-7 text-secondary shrink-0 mt-0.5 sm:mt-1" />
             <div>
-              <h2 className="text-lg font-bold text-navy font-heading mb-1">
+              <h2 className="text-base sm:text-lg font-bold text-navy font-heading mb-1">
                 Our Free Access Commitment
               </h2>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                 We believe financial constraints should never stand between an ambitious student and
                 educational opportunities. Browsing opportunities, reading our guides, and accessing
                 scholarship links will always be 100% free of charge for students.
@@ -67,7 +67,7 @@ function AffiliateDisclosurePage() {
           </div>
 
           <section>
-            <h2 className="text-2xl font-bold text-navy font-heading mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-navy font-heading mb-3 sm:mb-4">
               1. Affiliate Partnerships
             </h2>
             <p className="mb-4">
@@ -88,7 +88,7 @@ function AffiliateDisclosurePage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-navy font-heading mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-navy font-heading mb-3 sm:mb-4">
               2. Display Advertising (Google AdSense)
             </h2>
             <p className="mb-4">
@@ -109,7 +109,7 @@ function AffiliateDisclosurePage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-navy font-heading mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-navy font-heading mb-3 sm:mb-4">
               3. Sponsored Content & Educational Partners
             </h2>
             <p className="mb-4">
@@ -124,7 +124,7 @@ function AffiliateDisclosurePage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-navy font-heading mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-navy font-heading mb-3 sm:mb-4">
               4. Editorial Independence
             </h2>
             <p className="mb-4">
@@ -144,7 +144,7 @@ function AffiliateDisclosurePage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-navy font-heading mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-navy font-heading mb-3 sm:mb-4">
               5. Questions & Feedback
             </h2>
             <p className="mb-4">
@@ -152,7 +152,7 @@ function AffiliateDisclosurePage() {
               partnerships, please reach out directly:
             </p>
             <p className="font-semibold text-navy">Email: admin@scholarsconnect.com.ng</p>
-            <p className="font-semibold text-navy">Phone: 07065274251</p>
+            <p className="font-semibold text-navy">Phone: +234 706 527 4251</p>
           </section>
         </div>
       </section>

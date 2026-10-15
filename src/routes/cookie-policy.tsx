@@ -20,13 +20,13 @@ export const Route = createFileRoute("/cookie-policy")({
 function CookiePolicyPage() {
   return (
     <SiteLayout newsletter={false}>
-      <section className="mx-auto max-w-4xl px-4 py-14 lg:px-8">
-        <h1 className="text-4xl font-bold text-foreground mb-4">Cookie Policy</h1>
-        <p className="text-sm text-muted-foreground mb-8">Last updated: September 2026</p>
+      <section className="mx-auto max-w-4xl px-4 py-8 sm:py-14 lg:px-8">
+        <h1 className="text-2xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">Cookie Policy</h1>
+        <p className="text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8">Last updated: September 2026</p>
 
-        <div className="space-y-8 text-base leading-relaxed text-foreground/90">
+        <div className="space-y-6 sm:space-y-8 text-sm sm:text-base leading-relaxed text-foreground/90">
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">1. Introduction</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">1. Introduction</h2>
             <p className="mb-4">
               This Cookie Policy is an integral part of our broader Privacy Policy and explains how
               ScholarsConnect ("we," "us," or "our") uses cookies, web beacons, tracking pixels, and
@@ -45,7 +45,7 @@ function CookiePolicyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">2. What Are Cookies?</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">2. What Are Cookies?</h2>
             <p className="mb-4">
               Cookies are small text files, often containing unique identifiers, that are downloaded
               to your computer, tablet, smartphone, or other device when you access certain
@@ -67,7 +67,7 @@ function CookiePolicyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">3. How We Use Cookies</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">3. How We Use Cookies</h2>
             <p className="mb-4">
               When you use and access the Site, we may place a number of cookie files in your web
               browser. We use cookies for the following purposes:
@@ -106,7 +106,7 @@ function CookiePolicyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
               4. Third-Party Cookies and Google AdSense
             </h2>
             <p className="mb-4">
@@ -156,7 +156,7 @@ function CookiePolicyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
               5. Managing and Disabling Cookies
             </h2>
             <p className="mb-4">
@@ -193,7 +193,7 @@ function CookiePolicyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">6. Updates to This Policy</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">6. Updates to This Policy</h2>
             <p className="mb-4">
               We may update this Cookie Policy from time to time in order to reflect, for example,
               changes to the cookies we use or for other operational, legal, or regulatory reasons.
@@ -203,7 +203,7 @@ function CookiePolicyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-foreground mb-4">7. Contact Us</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">7. Contact Us</h2>
             <p className="mb-4">
               If you have any questions or comments about our use of cookies, please contact us at:
             </p>
