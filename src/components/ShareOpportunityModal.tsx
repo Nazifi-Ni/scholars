@@ -138,10 +138,10 @@ export function ShareOpportunityModal({
         )}
       </DialogTrigger>
 
-      <DialogContent className="w-[calc(100vw-1.5rem)] sm:w-full max-w-md rounded-2xl p-4 sm:p-6 shadow-xl border border-border max-h-[calc(100dvh-2rem)] overflow-y-auto">
-        <DialogHeader className="text-left space-y-1 pb-1 pr-9">
-          <DialogTitle className="text-lg sm:text-xl font-bold font-heading text-navy flex items-center gap-2">
-            <Share2 className="h-5 w-5 text-secondary shrink-0" />
+      <DialogContent className="w-[calc(100%-2rem)] sm:w-full max-w-[390px] rounded-2xl p-4 sm:p-5 shadow-2xl border border-border max-h-[calc(100dvh-2.5rem)] overflow-y-auto flex flex-col gap-3 min-w-0">
+        <DialogHeader className="text-left space-y-1 pb-0.5 pr-8 min-w-0">
+          <DialogTitle className="text-base sm:text-lg font-bold font-heading text-navy flex items-center gap-2 leading-tight">
+            <Share2 className="h-4 w-4 sm:h-5 sm:w-5 text-secondary shrink-0" />
             <span>Share Opportunity</span>
           </DialogTitle>
           <p className="text-xs text-muted-foreground font-sans">
@@ -150,22 +150,22 @@ export function ShareOpportunityModal({
         </DialogHeader>
 
         {/* Opportunity Card Preview Header */}
-        <div className="rounded-xl border border-border/80 bg-muted/30 p-3 my-0.5">
+        <div className="rounded-xl border border-border/80 bg-muted/40 p-3 min-w-0 overflow-hidden">
           <p className="text-xs font-bold text-navy font-heading line-clamp-2 leading-snug break-words">
             {opportunity.title}
           </p>
-          <p className="text-[11px] text-muted-foreground mt-1 truncate">
+          <p className="text-[11px] text-muted-foreground mt-1 truncate block break-all">
             https://www.scholarsconnect.com.ng/opportunities/{opportunity.slug}
           </p>
         </div>
 
         {/* Actions Stack */}
-        <div className="space-y-2.5 pt-1">
+        <div className="space-y-2 pt-0.5 min-w-0">
           {/* Primary: Share via WhatsApp */}
           <Button
             type="button"
             onClick={handleWhatsAppShare}
-            className="w-full h-11 sm:h-12 rounded-xl bg-[#25D366] hover:bg-[#1faa53] text-white font-bold text-xs sm:text-sm shadow-sm flex items-center justify-center gap-2 transition-all"
+            className="w-full h-11 rounded-xl bg-[#25D366] hover:bg-[#1faa53] text-white font-bold text-xs sm:text-sm shadow-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
             aria-label="Share opportunity via WhatsApp"
           >
             <svg
@@ -183,7 +183,7 @@ export function ShareOpportunityModal({
             type="button"
             variant="outline"
             onClick={handleCopyLink}
-            className="w-full h-10 sm:h-11 rounded-xl font-semibold text-xs sm:text-sm border-border flex items-center justify-center gap-2 hover:bg-muted/50"
+            className="w-full h-10 rounded-xl font-semibold text-xs sm:text-sm border-border flex items-center justify-center gap-2 hover:bg-muted/50 transition-colors cursor-pointer"
             aria-label="Copy opportunity link"
           >
             {copiedLink ? (
@@ -205,7 +205,7 @@ export function ShareOpportunityModal({
               type="button"
               variant="outline"
               onClick={handleNativeShare}
-              className="w-full h-10 sm:h-11 rounded-xl font-semibold text-xs sm:text-sm border-border flex items-center justify-center gap-2 hover:bg-muted/50"
+              className="w-full h-10 rounded-xl font-semibold text-xs sm:text-sm border-border flex items-center justify-center gap-2 hover:bg-muted/50 transition-colors cursor-pointer"
               aria-label="Share via device options"
             >
               <Smartphone className="h-4 w-4 text-muted-foreground shrink-0" />
@@ -215,7 +215,7 @@ export function ShareOpportunityModal({
         </div>
 
         {/* Message Preview Accordion */}
-        <div className="pt-2 border-t border-border/60 mt-1">
+        <div className="pt-2 border-t border-border/60 min-w-0">
           <button
             type="button"
             onClick={() => setShowPreview(!showPreview)}
@@ -234,8 +234,8 @@ export function ShareOpportunityModal({
           </button>
 
           {showPreview && (
-            <div className="mt-2.5 space-y-2 animate-in fade-in-50 duration-200">
-              <div className="rounded-xl bg-slate-900 text-slate-100 p-2.5 sm:p-3 text-[11px] sm:text-xs font-mono whitespace-pre-wrap leading-relaxed max-h-36 sm:max-h-44 overflow-y-auto border border-slate-800 break-words">
+            <div className="mt-2 space-y-2 animate-in fade-in-50 duration-200 min-w-0">
+              <div className="rounded-xl bg-slate-900 text-slate-100 p-2.5 sm:p-3 text-[11px] font-mono whitespace-pre-wrap break-all leading-relaxed max-h-36 overflow-y-auto border border-slate-800">
                 {message}
               </div>
               <Button

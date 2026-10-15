@@ -375,3 +375,130 @@ export function trackOpportunityShare(
     }
   }
 }
+
+export interface BlogPostShareData {
+  id?: number | string;
+  title: string;
+  slug: string;
+  excerpt?: string | null;
+  content?: string | null;
+  category?: string | null;
+  reading_minutes?: number | null;
+}
+
+/**
+ * Constructs the WhatsApp share message for a blog post or educational guide.
+ */
+export function buildBlogWhatsAppShareMessage(
+  post: BlogPostShareData,
+  whatsappCommunityUrl: string = DEFAULT_WHATSAPP_COMMUNITY_URL,
+): string {
+  const parts: string[] = [];
+
+  // Article Title
+  parts.push(`📖 *${post.title.trim()}*`);
+
+  // Short Excerpt / Summary (120-180 chars)
+  const summary = formatSummary(post.excerpt || post.content);
+  if (summary) {
+    parts.push(summary);
+  }
+
+  // Topic & Reading Time Metadata Block
+  const metadataLines: string[] = [];
+  if (post.category && post.category.trim()) {
+    metadataLines.push(`🏷️ *Topic:* ${post.category.trim()}`);
+  }
+
+  const readingMins =
+    post.reading_minutes ||
+    (post.content ? Math.max(1, Math.ceil(post.content.trim().split(/\s+/).length / 200)) : null);
+  if (readingMins) {
+    metadataLines.push(`⏱️ *Reading Time:* ${readingMins} min read`);
+  }
+
+  if (metadataLines.length > 0) {
+    parts.push(metadataLines.join("\n"));
+  }
+
+  // Direct Blog Guide Link (Canonical production URL)
+  const blogUrl = `${CANONICAL_BASE_URL}/blog/${post.slug}`;
+  parts.push(`🔗 *Read full guide:*\n${blogUrl}`);
+
+  // WhatsApp Community Invite
+  const cleanCommunityUrl = whatsappCommunityUrl?.trim() || DEFAULT_WHATSAPP_COMMUNITY_URL;
+  parts.push(
+    `📲 *Join the ScholarsConnect WhatsApp Community for more scholarships, internships, grants and student opportunities:*\n${cleanCommunityUrl}`,
+  );
+
+  // ScholarsConnect Branding
+  parts.push("🎓 *ScholarsConnect*\n_Connecting Dreams to Opportunities._");
+
+  return parts.join("\n\n");
+}
+
+/**
+ * Copies the canonical blog URL to clipboard.
+ */
+export async function copyBlogUrl(slug: string): Promise<boolean> {
+  const url = `${CANONICAL_BASE_URL}/blog/${slug}`;
+  if (navigator?.clipboard?.writeText) {
+    await navigator.clipboard.writeText(url);
+    return true;
+  }
+  // Fallback
+  const textarea = document.createElement("textarea");
+  textarea.value = url;
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
+  document.body.appendChild(textarea);
+  textarea.select();
+  const successful = document.execCommand("copy");
+  document.body.removeChild(textarea);
+  return successful;
+}
+
+/**
+ * Native device share sheet for blog guides.
+ */
+export async function shareBlogViaNativeDevice(post: BlogPostShareData): Promise<boolean> {
+  const url = `${CANONICAL_BASE_URL}/blog/${post.slug}`;
+  const summary = formatSummary(post.excerpt || post.content);
+
+  if (typeof navigator !== "undefined" && navigator.share) {
+    try {
+      await navigator.share({
+        title: `${post.title} — ScholarsConnect`,
+        text: summary || post.title,
+        url,
+      });
+      return true;
+    } catch (e: any) {
+      if (e.name === "AbortError") return false;
+      throw e;
+    }
+  }
+  return false;
+}
+
+/**
+ * Analytics tracking for blog shares.
+ */
+export function trackBlogShare(
+  postId: number | string | undefined,
+  slug: string,
+  platform: string,
+): void {
+  if (typeof window !== "undefined" && (window as any).gtag) {
+    try {
+      (window as any).gtag("event", "blog_share", {
+        platform,
+        post_id: postId,
+        slug,
+      });
+    } catch {
+      // ignore
+    }
+  }
+}
+

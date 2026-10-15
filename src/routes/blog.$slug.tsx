@@ -27,6 +27,7 @@ import { getImageUrl, calculateReadingTime } from "@/lib/sc-shared";
 import { addBlogComment } from "@/lib/public.functions";
 import { WhatsAppBanner } from "@/components/WhatsAppBanner";
 import { AdBanner } from "@/components/AdBanner";
+import { ShareBlogModal } from "@/components/ShareBlogModal";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ context, params }) => {
@@ -271,15 +272,28 @@ function BlogPostPage() {
         </header>
 
         <div className="mx-auto max-w-3xl px-4 py-10 lg:px-8">
-          <div className="flex items-center justify-between gap-4 mb-8">
+          <div className="flex items-center justify-between gap-3 mb-8 flex-wrap">
             <Link
               to="/blog"
               className="inline-flex items-center gap-2 text-sm font-semibold text-secondary hover:underline font-sans"
             >
               <ArrowLeft className="h-4 w-4" /> Back to all articles
             </Link>
-            <div className="text-xs text-muted-foreground font-sans">
-              Peer-reviewed academic guide
+            <div className="flex items-center gap-2">
+              <ShareBlogModal
+                post={{
+                  id: post.id,
+                  title: post.title,
+                  slug: post.slug,
+                  excerpt: post.excerpt,
+                  content: post.content,
+                  category: post.category,
+                  reading_minutes: readingTime,
+                }}
+                buttonVariant="outline"
+                buttonText="Share"
+                className="h-9 px-3.5 rounded-xl text-xs font-semibold text-navy border-border hover:bg-muted/50"
+              />
             </div>
           </div>
 
@@ -357,6 +371,37 @@ function BlogPostPage() {
                   </Link>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Share This Educational Guide Card */}
+          <div className="my-8 rounded-2xl border border-secondary/30 bg-emerald-50/40 p-4 sm:p-6 font-sans">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-secondary flex items-center gap-1.5 mb-1">
+                  <Share2 className="h-3.5 w-3.5" /> Spread Educational Knowledge
+                </span>
+                <h4 className="font-heading font-bold text-navy text-base sm:text-lg">
+                  Know someone who needs this guide?
+                </h4>
+                <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-xl leading-relaxed">
+                  Share this breakdown with fellow students, study groups, or on WhatsApp to help others navigate their academic journey.
+                </p>
+              </div>
+              <ShareBlogModal
+                post={{
+                  id: post.id,
+                  title: post.title,
+                  slug: post.slug,
+                  excerpt: post.excerpt,
+                  content: post.content,
+                  category: post.category,
+                  reading_minutes: readingTime,
+                }}
+                buttonVariant="default"
+                buttonText="Share Guide"
+                className="w-full sm:w-auto bg-[#1d6b20] hover:bg-[#154e17] text-white font-bold px-6 py-3 rounded-xl text-xs sm:text-sm shadow-sm shrink-0 cursor-pointer"
+              />
             </div>
           </div>
 
