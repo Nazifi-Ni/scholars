@@ -160,13 +160,13 @@ function DetailSection({
 }) {
   if (!content) return null;
   return (
-    <section className="mb-8">
+    <section className="mb-6 sm:mb-8">
       <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
-        <div className="bg-muted/30 border-b border-border px-6 py-4 flex items-center gap-2.5">
+        <div className="bg-muted/30 border-b border-border px-4 sm:px-6 py-3.5 sm:py-4 flex items-center gap-2.5">
           {icon}
-          <h2 className="text-xl font-bold text-navy font-heading">{title}</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-navy font-heading">{title}</h2>
         </div>
-        <div className="px-6 py-6 prose prose-slate max-w-none text-foreground/85 font-sans leading-relaxed">
+        <div className="px-4 sm:px-6 py-4 sm:py-6 prose prose-slate max-w-none text-foreground/85 font-sans leading-relaxed overflow-hidden break-words prose-pre:overflow-x-auto prose-table:overflow-x-auto">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
         </div>
       </div>
@@ -249,40 +249,40 @@ function OpportunityDetailPage() {
                 </div>
               )}
 
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight text-white font-heading mb-4 drop-shadow-sm">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight text-white font-heading mb-3 sm:mb-4 drop-shadow-sm break-words">
                 {o.title}
               </h1>
 
               {o.summary && (
-                <p className="text-sm sm:text-base text-white/80 font-sans mb-6 max-w-3xl leading-relaxed">
+                <p className="text-sm sm:text-base text-white/80 font-sans mb-4 sm:mb-6 max-w-3xl leading-relaxed break-words">
                   {o.summary}
                 </p>
               )}
 
-              <div className="flex flex-wrap items-center gap-2.5 font-sans">
-                <span className="rounded-full bg-secondary text-navy px-3.5 py-1 text-xs font-bold uppercase tracking-wider shadow-sm">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 font-sans">
+                <span className="rounded-full bg-secondary text-navy px-3 sm:px-3.5 py-1 text-[11px] sm:text-xs font-bold uppercase tracking-wider shadow-sm">
                   {typeLabel(o.opportunity_type)}
                 </span>
 
                 {fundingLabel(o.funding_type) && (
-                  <span className="rounded-full bg-white/10 border border-white/20 text-white px-3.5 py-1 text-xs font-bold uppercase tracking-wider">
+                  <span className="rounded-full bg-white/10 border border-white/20 text-white px-3 sm:px-3.5 py-1 text-[11px] sm:text-xs font-bold uppercase tracking-wider">
                     {fundingLabel(o.funding_type)}
                   </span>
                 )}
 
                 {o.is_sponsored && (
-                  <span className="rounded-full bg-amber-500 text-white px-3.5 py-1 text-xs font-bold uppercase tracking-wider">
+                  <span className="rounded-full bg-amber-500 text-white px-3 sm:px-3.5 py-1 text-[11px] sm:text-xs font-bold uppercase tracking-wider">
                     Sponsored
                   </span>
                 )}
 
                 {isClosed && (
-                  <span className="rounded-full bg-red-500/90 text-white px-3.5 py-1 text-xs font-bold uppercase tracking-wider flex items-center gap-1">
+                  <span className="rounded-full bg-red-500/90 text-white px-3 sm:px-3.5 py-1 text-[11px] sm:text-xs font-bold uppercase tracking-wider flex items-center gap-1">
                     <XCircle className="h-3.5 w-3.5" /> Closed
                   </span>
                 )}
 
-                <div className="ml-auto flex items-center gap-4 text-xs text-white/70 font-semibold bg-white/5 px-4 py-2 rounded-full border border-white/10 mt-3 sm:mt-0">
+                <div className="w-full sm:w-auto sm:ml-auto flex items-center justify-between sm:justify-start gap-4 text-xs text-white/70 font-semibold bg-white/5 px-3.5 sm:px-4 py-2 rounded-full border border-white/10 mt-2 sm:mt-0">
                   <span className="inline-flex items-center gap-1.5">
                     <Eye className="h-3.5 w-3.5 text-white/40" />
                     {o.views_count.toLocaleString()} Views
@@ -300,7 +300,7 @@ function OpportunityDetailPage() {
       </section>
 
       {/* Main Grid */}
-      <section className="mx-auto grid max-w-7xl gap-10 px-4 py-8 sm:py-12 pb-24 lg:pb-12 lg:grid-cols-12 lg:px-8">
+      <section className="mx-auto grid max-w-7xl gap-8 sm:gap-10 px-4 py-8 sm:py-12 pb-28 sm:pb-32 lg:pb-12 lg:grid-cols-12 lg:px-8">
         {/* Main Content Area (67%) */}
         <div className="lg:col-span-8">
           {/* Verification Badge */}
@@ -345,24 +345,26 @@ function OpportunityDetailPage() {
           )}
 
           {/* Opportunity Fact Sheet */}
-          <section className="mb-10 rounded-2xl border border-border bg-card p-6 shadow-sm">
-            <h2 className="text-xl font-bold text-navy font-heading mb-4">Opportunity Overview</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm font-sans">
+          <section className="mb-8 sm:mb-10 rounded-2xl border border-border bg-card p-4 sm:p-6 shadow-sm">
+            <h2 className="text-lg sm:text-xl font-bold text-navy font-heading mb-3 sm:mb-4">
+              Opportunity Overview
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-xs sm:text-sm font-sans">
               {providerName && (
                 <div className="p-3 rounded-xl bg-muted/40 border border-border/50">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
+                  <span className="text-[11px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
                     Awarding Body
                   </span>
-                  <span className="font-bold text-navy mt-0.5 block">{providerName}</span>
+                  <span className="font-bold text-navy mt-0.5 block break-words">{providerName}</span>
                 </div>
               )}
 
               {o.country && (
                 <div className="p-3 rounded-xl bg-muted/40 border border-border/50">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
+                  <span className="text-[11px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
                     Host Country
                   </span>
-                  <span className="font-bold text-navy mt-0.5 block">
+                  <span className="font-bold text-navy mt-0.5 block break-words">
                     {o.country.flag_emoji} {o.country.name}
                   </span>
                 </div>
@@ -370,39 +372,39 @@ function OpportunityDetailPage() {
 
               {o.category?.name && (
                 <div className="p-3 rounded-xl bg-muted/40 border border-border/50">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
+                  <span className="text-[11px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
                     Category
                   </span>
-                  <span className="font-bold text-navy mt-0.5 block">{o.category.name}</span>
+                  <span className="font-bold text-navy mt-0.5 block break-words">{o.category.name}</span>
                 </div>
               )}
 
               {fundingLabel(o.funding_type) && (
                 <div className="p-3 rounded-xl bg-muted/40 border border-border/50">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
+                  <span className="text-[11px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
                     Funding Category
                   </span>
-                  <span className="font-bold text-navy mt-0.5 block">
+                  <span className="font-bold text-navy mt-0.5 block break-words">
                     {fundingLabel(o.funding_type)}
                   </span>
                 </div>
               )}
 
               <div className="p-3 rounded-xl bg-muted/40 border border-border/50">
-                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
+                <span className="text-[11px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
                   Application Fee
                 </span>
-                <span className="font-bold text-navy mt-0.5 block">
+                <span className="font-bold text-navy mt-0.5 block break-words">
                   {o.application_fee || "Free / No Application Fee"}
                 </span>
               </div>
 
               {applicableDegrees.length > 0 && (
                 <div className="p-3 rounded-xl bg-muted/40 border border-border/50 sm:col-span-2">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
+                  <span className="text-[11px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
                     Eligible Academic Level
                   </span>
-                  <span className="font-bold text-navy mt-0.5 block">
+                  <span className="font-bold text-navy mt-0.5 block break-words">
                     {applicableDegrees.map((d: string) => degreeLabel(d)).join(" • ")}
                   </span>
                 </div>
@@ -410,10 +412,10 @@ function OpportunityDetailPage() {
 
               {o.deadline && (
                 <div className="p-3 rounded-xl bg-muted/40 border border-border/50 sm:col-span-2">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
+                  <span className="text-[11px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
                     Application Deadline
                   </span>
-                  <span className="font-bold text-navy mt-0.5 block">
+                  <span className="font-bold text-navy mt-0.5 block break-words">
                     {new Date(o.deadline).toLocaleDateString("en-GB", {
                       day: "numeric",
                       month: "long",
@@ -432,15 +434,15 @@ function OpportunityDetailPage() {
 
           {/* ScholarsConnect Eligibility Check & Difficulty */}
           {(o.application_difficulty || o.best_for || o.not_suitable_for) && (
-            <section className="mb-8 rounded-2xl border border-border bg-card p-6 sm:p-7 shadow-sm">
-              <div className="flex items-center justify-between gap-4 mb-5 pb-3 border-b border-border/60">
-                <h2 className="text-xl font-bold text-navy font-heading flex items-center gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-secondary" /> ScholarsConnect Eligibility
+            <section className="mb-6 sm:mb-8 rounded-2xl border border-border bg-card p-4 sm:p-7 shadow-sm">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 mb-4 sm:mb-5 pb-3 border-b border-border/60">
+                <h2 className="text-lg sm:text-xl font-bold text-navy font-heading flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-secondary shrink-0" /> ScholarsConnect Eligibility
                   Check
                 </h2>
                 {o.application_difficulty && (
                   <span
-                    className={`text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full ${
+                    className={`self-start sm:self-auto text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full ${
                       o.application_difficulty === "Easy"
                         ? "bg-green-100 text-green-800"
                         : o.application_difficulty === "Moderate"
@@ -455,24 +457,24 @@ function OpportunityDetailPage() {
                 )}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 font-sans">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 font-sans">
                 {o.best_for && (
-                  <div className="p-4 rounded-xl bg-emerald-50/60 border border-emerald-200/60">
-                    <h3 className="text-sm font-bold text-emerald-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                      <span className="text-emerald-700">✓</span> Best Suited For
+                  <div className="p-3.5 sm:p-4 rounded-xl bg-emerald-50/60 border border-emerald-200/60">
+                    <h3 className="text-xs sm:text-sm font-bold text-emerald-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                      <span className="text-emerald-700 font-bold">✓</span> Best Suited For
                     </h3>
-                    <div className="text-sm text-emerald-950/90 leading-relaxed whitespace-pre-line">
+                    <div className="text-xs sm:text-sm text-emerald-950/90 leading-relaxed whitespace-pre-line break-words">
                       {o.best_for}
                     </div>
                   </div>
                 )}
 
                 {o.not_suitable_for && (
-                  <div className="p-4 rounded-xl bg-rose-50/60 border border-rose-200/60">
-                    <h3 className="text-sm font-bold text-rose-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                      <span className="text-rose-700">✕</span> Not Suitable For
+                  <div className="p-3.5 sm:p-4 rounded-xl bg-rose-50/60 border border-rose-200/60">
+                    <h3 className="text-xs sm:text-sm font-bold text-rose-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                      <span className="text-rose-700 font-bold">✕</span> Not Suitable For
                     </h3>
-                    <div className="text-sm text-rose-950/90 leading-relaxed whitespace-pre-line">
+                    <div className="text-xs sm:text-sm text-rose-950/90 leading-relaxed whitespace-pre-line break-words">
                       {o.not_suitable_for}
                     </div>
                   </div>
@@ -510,16 +512,16 @@ function OpportunityDetailPage() {
 
           {/* ScholarsConnect Advice */}
           {o.scholarsconnect_advice && (
-            <div className="my-8 rounded-xl border border-secondary/30 bg-emerald-50/50 p-6 sm:p-7 shadow-sm relative overflow-hidden">
+            <div className="my-6 sm:my-8 rounded-2xl border border-secondary/30 bg-emerald-50/50 p-4 sm:p-7 shadow-sm relative overflow-hidden">
               <div className="flex items-center gap-2.5 mb-3">
                 <div className="h-8 w-8 rounded-lg bg-secondary/15 flex items-center justify-center text-secondary shrink-0">
                   <span className="text-lg">💡</span>
                 </div>
-                <h2 className="font-heading text-lg sm:text-xl font-bold text-navy">
+                <h2 className="font-heading text-base sm:text-xl font-bold text-navy">
                   ScholarsConnect Strategic Advice
                 </h2>
               </div>
-              <div className="prose prose-slate prose-sm sm:prose-base max-w-none text-slate-800 leading-relaxed font-sans pl-0 sm:pl-10">
+              <div className="prose prose-slate prose-sm sm:prose-base max-w-none text-slate-800 leading-relaxed font-sans pl-0 sm:pl-10 break-words overflow-hidden">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {o.scholarsconnect_advice}
                 </ReactMarkdown>
@@ -529,28 +531,28 @@ function OpportunityDetailPage() {
 
           {/* ScholarsConnect Verdict */}
           {o.editorial_verdict && (
-            <div className="my-8 rounded-2xl border border-indigo-200 bg-indigo-50/60 p-6 sm:p-7 shadow-sm">
-              <h2 className="text-lg font-bold text-indigo-950 font-heading mb-2 flex items-center gap-2">
-                <Award className="h-5 w-5 text-indigo-600" /> ScholarsConnect Editorial Verdict
+            <div className="my-6 sm:my-8 rounded-2xl border border-indigo-200 bg-indigo-50/60 p-4 sm:p-7 shadow-sm">
+              <h2 className="text-base sm:text-lg font-bold text-indigo-950 font-heading mb-2 flex items-center gap-2">
+                <Award className="h-5 w-5 text-indigo-600 shrink-0" /> ScholarsConnect Editorial Verdict
               </h2>
-              <div className="text-sm leading-relaxed text-indigo-950/90 font-sans whitespace-pre-line">
+              <div className="text-xs sm:text-sm leading-relaxed text-indigo-950/90 font-sans whitespace-pre-line break-words">
                 {o.editorial_verdict}
               </div>
             </div>
           )}
 
           {/* Official Source Attribution Box */}
-          <section className="my-8 rounded-2xl border border-border bg-muted/30 p-6 shadow-sm">
-            <h3 className="font-heading font-bold text-base text-navy mb-2 flex items-center gap-2">
-              <ShieldCheck className="h-5 w-5 text-secondary" /> Official Source & Verification
+          <section className="my-6 sm:my-8 rounded-2xl border border-border bg-muted/30 p-4 sm:p-6 shadow-sm">
+            <h3 className="font-heading font-bold text-sm sm:text-base text-navy mb-2 flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5 text-secondary shrink-0" /> Official Source & Verification
               Notice
             </h3>
-            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed font-sans mb-4">
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed font-sans mb-3 sm:mb-4">
               ScholarsConnect operates as an independent discovery platform. We summarize program
               guidelines to empower applicants. Never submit payment to unauthorized agents. Always
               verify current requirements on the official provider's portal.
             </p>
-            <div className="flex flex-wrap items-center gap-4 text-xs font-semibold">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs font-semibold">
               {(o.official_source_url ?? o.official_website) && (
                 <a
                   href={o.official_source_url ?? o.official_website}
@@ -571,41 +573,41 @@ function OpportunityDetailPage() {
           </section>
 
           {/* Ad Banner inside content */}
-          <AdBanner className="my-8" />
+          <AdBanner className="my-6 sm:my-8" />
 
           {/* WhatsApp Banner */}
-          <WhatsAppBanner className="mt-8 mb-4" />
+          <WhatsAppBanner className="mt-6 sm:mt-8 mb-4" />
 
           {/* Main Action Buttons */}
-          <div className="mt-10 flex flex-col sm:flex-row items-stretch sm:items-start gap-4">
+          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-stretch sm:items-start gap-3 sm:gap-4">
             {isClosed ? (
               <Button
                 disabled
-                className="w-full sm:w-auto rounded-xl px-8 py-6 text-sm font-bold uppercase tracking-wider bg-gray-400 text-white cursor-not-allowed"
+                className="w-full sm:w-auto rounded-xl px-6 sm:px-8 py-4 sm:py-6 text-xs sm:text-sm font-bold uppercase tracking-wider bg-gray-400 text-white cursor-not-allowed"
               >
                 Applications Closed
               </Button>
             ) : o.application_link ? (
               <Button
                 asChild
-                className="w-full sm:w-auto rounded-xl bg-[#1d6b20] hover:bg-[#154e17] px-8 py-6 text-sm font-bold shadow-md transition-all text-white uppercase tracking-wider"
+                className="w-full sm:w-auto rounded-xl bg-[#1d6b20] hover:bg-[#154e17] px-6 sm:px-8 py-4 sm:py-6 text-xs sm:text-sm font-bold shadow-md transition-all text-white uppercase tracking-wider"
               >
-                <a href={o.application_link} target="_blank" rel="noopener noreferrer nofollow">
-                  Apply on Official Portal <ExternalLink className="ml-2 h-4 w-4" />
+                <a href={o.application_link} target="_blank" rel="noopener noreferrer nofollow" className="flex items-center justify-center gap-2">
+                  <span>Apply on Official Portal</span> <ExternalLink className="h-4 w-4 shrink-0" />
                 </a>
               </Button>
             ) : o.official_website ? (
               <Button
                 asChild
-                className="w-full sm:w-auto rounded-xl bg-[#1d6b20] hover:bg-[#154e17] px-8 py-6 text-sm font-bold shadow-md transition-all text-white uppercase tracking-wider"
+                className="w-full sm:w-auto rounded-xl bg-[#1d6b20] hover:bg-[#154e17] px-6 sm:px-8 py-4 sm:py-6 text-xs sm:text-sm font-bold shadow-md transition-all text-white uppercase tracking-wider"
               >
-                <a href={o.official_website} target="_blank" rel="noopener noreferrer nofollow">
-                  Visit Official Website <ExternalLink className="ml-2 h-4 w-4" />
+                <a href={o.official_website} target="_blank" rel="noopener noreferrer nofollow" className="flex items-center justify-center gap-2">
+                  <span>Visit Official Website</span> <ExternalLink className="h-4 w-4 shrink-0" />
                 </a>
               </Button>
             ) : null}
 
-            <ShareOpportunityModal opportunity={o} />
+            <ShareOpportunityModal opportunity={o} className="w-full sm:w-auto py-4 sm:py-6" />
           </div>
         </div>
 
@@ -723,13 +725,13 @@ function OpportunityDetailPage() {
       </section>
 
       {/* Mobile Sticky Floating Action Bar */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-border px-3 sm:px-4 py-3 shadow-lg flex items-center gap-2 sm:gap-3">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-border px-3 sm:px-4 pt-2.5 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-lg flex items-center gap-2 sm:gap-3">
         <Button
           type="button"
           variant="outline"
           onClick={() => toggleBookmark(o)}
           className={cn(
-            "rounded-xl h-11 px-3 sm:px-3.5 border-border shrink-0 transition-colors",
+            "rounded-xl h-11 w-11 p-0 border-border shrink-0 transition-colors flex items-center justify-center",
             bookmarked && "bg-secondary/10 text-secondary border-secondary/30",
           )}
           aria-label={bookmarked ? "Bookmarked" : "Save bookmark"}
@@ -742,7 +744,7 @@ function OpportunityDetailPage() {
             <Button
               type="button"
               variant="outline"
-              className="rounded-xl h-11 px-3 sm:px-3.5 border-border shrink-0 transition-colors text-muted-foreground hover:text-emerald-600"
+              className="rounded-xl h-11 w-11 p-0 border-border shrink-0 transition-colors text-muted-foreground hover:text-emerald-600 flex items-center justify-center"
               aria-label="Share opportunity"
             >
               <Share2 className="h-5 w-5" />
@@ -752,7 +754,7 @@ function OpportunityDetailPage() {
         {isClosed ? (
           <Button
             disabled
-            className="flex-1 rounded-xl h-11 font-bold text-xs uppercase bg-gray-300 text-gray-600 truncate"
+            className="flex-1 rounded-xl h-11 font-bold text-xs uppercase bg-gray-300 text-gray-600 truncate min-w-0"
           >
             Applications Closed
           </Button>
@@ -765,7 +767,7 @@ function OpportunityDetailPage() {
               href={o.application_link}
               target="_blank"
               rel="noopener noreferrer nofollow"
-              className="flex items-center justify-center gap-1.5 px-2"
+              className="flex items-center justify-center gap-1.5 px-2 min-w-0"
             >
               <span className="truncate">Apply on Official Portal</span>
               <ExternalLink className="h-4 w-4 shrink-0" />
@@ -780,7 +782,7 @@ function OpportunityDetailPage() {
               href={o.official_website}
               target="_blank"
               rel="noopener noreferrer nofollow"
-              className="flex items-center justify-center gap-1.5 px-2"
+              className="flex items-center justify-center gap-1.5 px-2 min-w-0"
             >
               <span className="truncate">Visit Official Website</span>
               <ExternalLink className="h-4 w-4 shrink-0" />
@@ -789,7 +791,7 @@ function OpportunityDetailPage() {
         ) : (
           <Button
             disabled
-            className="flex-1 rounded-xl h-11 font-bold text-xs uppercase bg-gray-200 text-gray-500 truncate"
+            className="flex-1 rounded-xl h-11 font-bold text-xs uppercase bg-gray-200 text-gray-500 truncate min-w-0"
           >
             Details Above
           </Button>

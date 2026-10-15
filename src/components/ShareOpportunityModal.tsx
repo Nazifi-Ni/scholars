@@ -117,7 +117,7 @@ export function ShareOpportunityModal({
             type="button"
             variant={buttonVariant}
             size="icon"
-            className={cn("h-9 w-9 rounded-lg", className)}
+            className={cn("h-9 w-9 rounded-lg shrink-0", className)}
             aria-label={defaultLabel}
           >
             <Share2 className="h-4 w-4" />
@@ -127,31 +127,31 @@ export function ShareOpportunityModal({
             type="button"
             variant={buttonVariant}
             className={cn(
-              "rounded-xl px-7 py-6 text-sm font-semibold shadow-xs transition-all",
+              "w-full sm:w-auto rounded-xl px-5 sm:px-7 py-3 sm:py-6 text-xs sm:text-sm font-semibold shadow-xs transition-all",
               className,
             )}
             aria-label={defaultLabel}
           >
-            <Share2 className="mr-2 h-4 w-4" />
-            {defaultLabel}
+            <Share2 className="mr-2 h-4 w-4 shrink-0" />
+            <span>{defaultLabel}</span>
           </Button>
         )}
       </DialogTrigger>
 
-      <DialogContent className="w-[calc(100vw-2rem)] max-w-md rounded-2xl p-4 sm:p-7 shadow-xl border border-border">
-        <DialogHeader className="text-left space-y-1.5 pb-2">
-          <DialogTitle className="text-xl font-bold font-heading text-navy flex items-center gap-2">
-            <Share2 className="h-5 w-5 text-secondary" />
-            Share Opportunity
+      <DialogContent className="w-[calc(100vw-1.5rem)] sm:w-full max-w-md rounded-2xl p-4 sm:p-6 shadow-xl border border-border max-h-[calc(100dvh-2rem)] overflow-y-auto">
+        <DialogHeader className="text-left space-y-1 pb-1 pr-9">
+          <DialogTitle className="text-lg sm:text-xl font-bold font-heading text-navy flex items-center gap-2">
+            <Share2 className="h-5 w-5 text-secondary shrink-0" />
+            <span>Share Opportunity</span>
           </DialogTitle>
-          <p className="text-xs sm:text-sm text-muted-foreground font-sans">
+          <p className="text-xs text-muted-foreground font-sans">
             Spread the word to fellow students and academic networks.
           </p>
         </DialogHeader>
 
         {/* Opportunity Card Preview Header */}
-        <div className="rounded-xl border border-border/80 bg-muted/30 p-3.5 my-1">
-          <p className="text-xs font-bold text-navy font-heading line-clamp-2 leading-snug">
+        <div className="rounded-xl border border-border/80 bg-muted/30 p-3 my-0.5">
+          <p className="text-xs font-bold text-navy font-heading line-clamp-2 leading-snug break-words">
             {opportunity.title}
           </p>
           <p className="text-[11px] text-muted-foreground mt-1 truncate">
@@ -160,22 +160,22 @@ export function ShareOpportunityModal({
         </div>
 
         {/* Actions Stack */}
-        <div className="space-y-3 pt-2">
+        <div className="space-y-2.5 pt-1">
           {/* Primary: Share via WhatsApp */}
           <Button
             type="button"
             onClick={handleWhatsAppShare}
-            className="w-full h-12 rounded-xl bg-[#25D366] hover:bg-[#1faa53] text-white font-bold text-sm shadow-sm flex items-center justify-center gap-2.5 transition-all"
+            className="w-full h-11 sm:h-12 rounded-xl bg-[#25D366] hover:bg-[#1faa53] text-white font-bold text-xs sm:text-sm shadow-sm flex items-center justify-center gap-2 transition-all"
             aria-label="Share opportunity via WhatsApp"
           >
             <svg
-              className="h-5 w-5 fill-current"
+              className="h-4 w-4 sm:h-5 sm:w-5 fill-current shrink-0"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.587 1.761.88 2.79.88h.001c3.181 0 5.767-2.586 5.768-5.766 0-3.18-2.587-5.766-5.768-5.766zm9.969 5.766c0 5.518-4.482 10-10 10-1.748 0-3.385-.45-4.819-1.24l-5.181 1.356 1.378-5.039c-.896-1.488-1.378-3.21-1.378-5.077 0-5.518 4.482-10 10-10s10 4.482 10 10z" />
             </svg>
-            Share on WhatsApp
+            <span>Share on WhatsApp</span>
           </Button>
 
           {/* Secondary: Copy Link */}
@@ -183,17 +183,17 @@ export function ShareOpportunityModal({
             type="button"
             variant="outline"
             onClick={handleCopyLink}
-            className="w-full h-11 rounded-xl font-semibold text-sm border-border flex items-center justify-center gap-2 hover:bg-muted/50"
+            className="w-full h-10 sm:h-11 rounded-xl font-semibold text-xs sm:text-sm border-border flex items-center justify-center gap-2 hover:bg-muted/50"
             aria-label="Copy opportunity link"
           >
             {copiedLink ? (
               <>
-                <Check className="h-4 w-4 text-emerald-600" />
-                <span className="text-emerald-700">Link Copied!</span>
+                <Check className="h-4 w-4 text-emerald-600 shrink-0" />
+                <span className="text-emerald-700 font-bold">Link Copied!</span>
               </>
             ) : (
               <>
-                <Copy className="h-4 w-4 text-muted-foreground" />
+                <Copy className="h-4 w-4 text-muted-foreground shrink-0" />
                 <span>Copy Opportunity Link</span>
               </>
             )}
@@ -205,37 +205,37 @@ export function ShareOpportunityModal({
               type="button"
               variant="outline"
               onClick={handleNativeShare}
-              className="w-full h-11 rounded-xl font-semibold text-sm border-border flex items-center justify-center gap-2 hover:bg-muted/50"
+              className="w-full h-10 sm:h-11 rounded-xl font-semibold text-xs sm:text-sm border-border flex items-center justify-center gap-2 hover:bg-muted/50"
               aria-label="Share via device options"
             >
-              <Smartphone className="h-4 w-4 text-muted-foreground" />
+              <Smartphone className="h-4 w-4 text-muted-foreground shrink-0" />
               <span>More Share Options...</span>
             </Button>
           )}
         </div>
 
         {/* Message Preview Accordion */}
-        <div className="pt-2 border-t border-border/60 mt-2">
+        <div className="pt-2 border-t border-border/60 mt-1">
           <button
             type="button"
             onClick={() => setShowPreview(!showPreview)}
-            className="w-full flex items-center justify-between text-xs font-semibold text-muted-foreground hover:text-navy transition-colors py-1"
+            className="w-full flex items-center justify-between text-xs font-semibold text-muted-foreground hover:text-navy transition-colors py-1 cursor-pointer"
             aria-expanded={showPreview}
           >
             <span className="flex items-center gap-1.5">
-              <MessageCircle className="h-3.5 w-3.5 text-secondary" />
-              Preview WhatsApp Message Text
+              <MessageCircle className="h-3.5 w-3.5 text-secondary shrink-0" />
+              <span>Preview WhatsApp Message</span>
             </span>
             {showPreview ? (
-              <ChevronUp className="h-3.5 w-3.5" />
+              <ChevronUp className="h-3.5 w-3.5 shrink-0" />
             ) : (
-              <ChevronDown className="h-3.5 w-3.5" />
+              <ChevronDown className="h-3.5 w-3.5 shrink-0" />
             )}
           </button>
 
           {showPreview && (
-            <div className="mt-3 space-y-2 animate-in fade-in-50 duration-200">
-              <div className="rounded-xl bg-slate-900 text-slate-100 p-3 sm:p-3.5 text-xs font-mono whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto border border-slate-800 break-words">
+            <div className="mt-2.5 space-y-2 animate-in fade-in-50 duration-200">
+              <div className="rounded-xl bg-slate-900 text-slate-100 p-2.5 sm:p-3 text-[11px] sm:text-xs font-mono whitespace-pre-wrap leading-relaxed max-h-36 sm:max-h-44 overflow-y-auto border border-slate-800 break-words">
                 {message}
               </div>
               <Button
@@ -243,14 +243,14 @@ export function ShareOpportunityModal({
                 variant="ghost"
                 size="sm"
                 onClick={handleCopyMessage}
-                className="w-full text-xs font-semibold h-8 text-muted-foreground hover:text-navy"
+                className="w-full text-xs font-semibold h-8 text-muted-foreground hover:text-navy cursor-pointer"
               >
                 {copiedMessage ? (
-                  <Check className="h-3.5 w-3.5 mr-1 text-emerald-600" />
+                  <Check className="h-3.5 w-3.5 mr-1 text-emerald-600 shrink-0" />
                 ) : (
-                  <Copy className="h-3.5 w-3.5 mr-1" />
+                  <Copy className="h-3.5 w-3.5 mr-1 shrink-0" />
                 )}
-                {copiedMessage ? "Message Text Copied" : "Copy Formatted Message"}
+                <span>{copiedMessage ? "Message Text Copied" : "Copy Formatted Message"}</span>
               </Button>
             </div>
           )}

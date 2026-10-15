@@ -21,7 +21,7 @@ export function VerifiedBadge({
 
   return (
     <div
-      className={`rounded-2xl border p-5 sm:p-6 transition-all ${
+      className={`rounded-2xl border p-4 sm:p-6 transition-all ${
         isVerified
           ? "bg-emerald-50/70 border-emerald-200/80 text-emerald-950"
           : isNeedsReview
@@ -29,10 +29,10 @@ export function VerifiedBadge({
             : "bg-muted/40 border-border text-foreground"
       } ${className}`}
     >
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-start gap-3.5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+        <div className="flex items-start gap-3 sm:gap-3.5">
           <div
-            className={`p-2.5 rounded-xl shrink-0 ${
+            className={`p-2 sm:p-2.5 rounded-xl shrink-0 ${
               isVerified
                 ? "bg-emerald-600 text-white shadow-sm"
                 : isNeedsReview
@@ -41,16 +41,16 @@ export function VerifiedBadge({
             }`}
           >
             {isVerified ? (
-              <BadgeCheck className="h-6 w-6" />
+              <BadgeCheck className="h-5 w-5 sm:h-6 sm:w-6" />
             ) : isNeedsReview ? (
-              <AlertTriangle className="h-6 w-6" />
+              <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6" />
             ) : (
-              <Shield className="h-6 w-6" />
+              <Shield className="h-5 w-5 sm:h-6 sm:w-6" />
             )}
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="font-heading font-bold text-base sm:text-lg">
+              <h3 className="font-heading font-bold text-sm sm:text-lg leading-snug">
                 {isVerified
                   ? "Verified by ScholarsConnect"
                   : isNeedsReview
@@ -58,7 +58,7 @@ export function VerifiedBadge({
                     : "Listing Verification Pending"}
               </h3>
               <span
-                className={`text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                className={`text-[10px] sm:text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
                   isVerified
                     ? "bg-emerald-100 text-emerald-800"
                     : isNeedsReview
@@ -73,7 +73,7 @@ export function VerifiedBadge({
                     : "Editorial Intake"}
               </span>
             </div>
-            <p className="text-xs sm:text-sm text-foreground/80 mt-1 leading-relaxed">
+            <p className="text-xs sm:text-sm text-foreground/80 mt-1 leading-relaxed break-words">
               Reviewed by{" "}
               <strong className="font-semibold">
                 {verifiedBy || "ScholarsConnect Editorial Team"}
@@ -95,7 +95,7 @@ export function VerifiedBadge({
           </div>
         </div>
 
-        <div className="flex items-center gap-3 self-start sm:self-center shrink-0 text-xs sm:text-sm">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 pt-2 sm:pt-0 border-t border-border/40 sm:border-0 w-full sm:w-auto text-xs sm:text-sm">
           {officialSourceUrl && (
             <a
               href={officialSourceUrl}

@@ -431,10 +431,10 @@ function FilterSelect({
 }) {
   return (
     <Select value={value ?? "__all"} onValueChange={(v) => onChange(v === "__all" ? undefined : v)}>
-      <SelectTrigger className="h-9 w-full rounded-full border-border bg-card text-xs font-medium lg:w-auto lg:min-w-36">
+      <SelectTrigger className="h-10 w-full rounded-xl border-border bg-card text-xs font-medium">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
-      <SelectContent className="bg-popover">
+      <SelectContent className="bg-popover max-h-60">
         <SelectItem value="__all">{placeholder}</SelectItem>
         {items.map((item) => (
           <SelectItem key={item.value} value={item.value}>
