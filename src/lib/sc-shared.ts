@@ -221,3 +221,225 @@ export function calculateReadingTime(text: string | null | undefined): number {
   const words = clean.split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.ceil(words / 220));
 }
+
+/**
+ * Automatically cleans, normalizes, and structures opportunity content into clean GitHub-flavored Markdown.
+ * - Converts raw emoji/bullet symbols (✅, ✔️, •, 💰, etc.) into clean Markdown list items (- ).
+ * - Converts unspaced dashes/asterisks (-Item) into Markdown list items (- Item).
+ * - Converts step headers (Step 1:, Step 1 -) into markdown headings (#### Step 1:).
+ * - Auto-detects unbulleted lists following colons (e.g. "Applicants must:\nBe a student\nHave JAMB")
+ *   and formats each into a list item (- Be a student).
+ * - Normalizes Windows CRLF to standard newlines.
+ * - Ensures proper paragraph breaks so CommonMark doesn't collapse lines into a run-on block.
+ */
+export function formatOpportunityMarkdown(raw: string | null | undefined): string {
+  if (!raw || typeof raw !== "string") return "";
+
+  // 1. Normalize line breaks
+  let text = raw.replace(/\r\n/g, "\n").replace(/\r/g, "\n").trim();
+  if (!text) return "";
+
+  // 2. Convert emoji bullets and custom symbols at line start to standard markdown '- '
+  text = text.replace(/^[ \t]*[✅✔️☑️💰📌👉🔹🔸▪▫•●★*–—]\s*/gm, "- ");
+
+  // 3. Fix unspaced dashes or asterisks: e.g. "-Requirement" -> "- Requirement"
+  text = text.replace(/^[ \t]*[-*](?!\s)/gm, "- ");
+
+  // 4. Format Step headers: e.g. "Step 1: ..." or "Step 1 -" -> "#### Step 1: ..."
+  text = text.replace(/^[ \t]*(Step\s+\d+[:\-\s]+.*)$/gmi, "#### $1");
+
+  // 5. Convert common inline section headers ending with a colon on their own line into subheadings
+  text = text.replace(
+    /^[ \t]*(Eligible Institutions|Eligible Universities|Selection Process|Application\/Registration Procedure|Application Procedure|Important Notes?|Official Application|Key Documents?|Eligibility Requirements?|Benefits & Coverage|Additional Support)[:\s]*$/gmi,
+    "### $1"
+  );
+
+  // 6. Handle lists following lead-in phrases ending in colon (e.g. "Applicants must:", "Provide your:")
+  const lines = text.split("\n");
+  const result: string[] = [];
+  let inListContext = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      inListContext = false;
+      result.push("");
+      continue;
+    }
+
+    // Check if line is a header like "Applicants must:" or "Provide your:"
+    if (
+      /^(Applicants must|Requirements include|Applicants should prepare|Eligible institutions include|Provide your|Support includes|Documents required|Selection criteria)[:\s]*$/i.test(
+        trimmed
+      )
+    ) {
+      inListContext = true;
+      result.push(trimmed.endsWith(":") ? trimmed : trimmed + ":");
+      continue;
+    }
+
+    // Check if line ends with a colon and is short (likely a list prompt)
+    if (/^[A-Za-z0-9\s,\(\)\/\-]{3,50}:$/.test(trimmed) && !trimmed.startsWith("#")) {
+      inListContext = true;
+      result.push(trimmed);
+      continue;
+    }
+
+    if (inListContext) {
+      if (/^[-*#\d]/.test(trimmed)) {
+        // already has a markdown marker
+        result.push(line);
+      } else if (trimmed.length < 300 && !trimmed.endsWith(":")) {
+        // format as list item
+        result.push(`- ${trimmed}`);
+      } else {
+        inListContext = false;
+        result.push(line);
+      }
+    } else {
+      result.push(line);
+    }
+  }
+
+  // 7. Ensure proper paragraph spacing where needed
+  const formattedLines = result;
+  const finalLines: string[] = [];
+
+  for (let i = 0; i < formattedLines.length; i++) {
+    const cur = formattedLines[i];
+    const next = formattedLines[i + 1];
+
+    finalLines.push(cur);
+
+    if (
+      cur &&
+      next &&
+      !cur.startsWith("-") &&
+      !cur.startsWith("*") &&
+      !cur.startsWith("#") &&
+      !next.startsWith("-") &&
+      !next.startsWith("*") &&
+      !next.startsWith("#") &&
+      !cur.endsWith(":") &&
+      !next.endsWith(":")
+    ) {
+      finalLines.push("");
+    }
+  }
+
+  return finalLines.join("\n");
+}
+
+export interface ParsedOpportunityDraft {
+  title?: string;
+  provider?: string;
+  summary?: string;
+  eligibility?: string;
+  benefits?: string;
+  required_documents?: string;
+  application_procedure?: string;
+  scholarsconnect_advice?: string;
+  best_for?: string;
+  not_suitable_for?: string;
+  common_mistakes?: string;
+  editorial_verdict?: string;
+  application_fee?: string;
+  deadline?: string;
+  official_website?: string;
+  application_link?: string;
+}
+
+/**
+ * Smartly parses a full opportunity text or Markdown draft (such as an announcement or guide)
+ * and extracts individual structured fields for the ScholarsConnect opportunity schema.
+ */
+export function parseOpportunityMarkdownDraft(draft: string): ParsedOpportunityDraft {
+  if (!draft || typeof draft !== "string") return {};
+
+  const clean = draft.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  const parsed: ParsedOpportunityDraft = {};
+
+  // Extract title if starts with # Title
+  const titleMatch = clean.match(/^#\s+(.+)$/m);
+  if (titleMatch) {
+    parsed.title = titleMatch[1].trim();
+  }
+
+  // Split into sections by Markdown headings (## or ###) or ALL-CAPS/Header lines ending in colon
+  const sectionRegex = /(?:^|\n)(#{2,3}\s+[^\n]+|[A-Z][A-Za-z0-9\s&/\-]{2,40}:)/g;
+  const sections: { title: string; content: string }[] = [];
+
+  let match: RegExpExecArray | null;
+  let lastIndex = 0;
+  let lastHeader = "";
+
+  while ((match = sectionRegex.exec(clean)) !== null) {
+    if (lastHeader) {
+      const sectionText = clean.substring(lastIndex, match.index).trim();
+      sections.push({ title: lastHeader, content: sectionText });
+    }
+    lastHeader = match[1].replace(/^#{2,3}\s*/, "").replace(/:$/, "").trim();
+    lastIndex = match.index + match[0].length;
+  }
+
+  if (lastHeader && lastIndex < clean.length) {
+    sections.push({ title: lastHeader, content: clean.substring(lastIndex).trim() });
+  }
+
+  // Map extracted sections to fields
+  for (const s of sections) {
+    const t = s.title.toLowerCase();
+    const formattedContent = formatOpportunityMarkdown(s.content);
+
+    if (t.includes("eligib") || t.includes("who can apply") || t.includes("qualification")) {
+      parsed.eligibility = formattedContent;
+    } else if (t.includes("benefit") || t.includes("cover") || t.includes("funding") || t.includes("allowance")) {
+      parsed.benefits = formattedContent;
+    } else if (t.includes("document") || t.includes("requirement") || t.includes("checklist")) {
+      parsed.required_documents = formattedContent;
+    } else if (t.includes("how to apply") || t.includes("procedure") || t.includes("step") || t.includes("application process")) {
+      parsed.application_procedure = formattedContent;
+    } else if (t.includes("advice") || t.includes("tip") || t.includes("scholarsconnect advice") || t.includes("strategy")) {
+      parsed.scholarsconnect_advice = formattedContent;
+    } else if (t.includes("best for") || t.includes("best suited")) {
+      parsed.best_for = formattedContent;
+    } else if (t.includes("not suitable") || t.includes("unsuitable") || t.includes("who should not apply")) {
+      parsed.not_suitable_for = formattedContent;
+    } else if (t.includes("mistake") || t.includes("pitfall") || t.includes("avoid")) {
+      parsed.common_mistakes = formattedContent;
+    } else if (t.includes("verdict") || t.includes("editorial")) {
+      parsed.editorial_verdict = formattedContent;
+    } else if (t.includes("overview") || t.includes("summary") || t.includes("about this")) {
+      parsed.summary = s.content.trim();
+    } else if (t.includes("provider") || t.includes("host") || t.includes("organizer") || t.includes("organization")) {
+      parsed.provider = s.content.split("\n")[0].trim();
+    } else if (t.includes("fee") || t.includes("cost")) {
+      parsed.application_fee = s.content.split("\n")[0].trim();
+    } else if (t.includes("deadline") || t.includes("closing date")) {
+      parsed.deadline = s.content.split("\n")[0].trim();
+    }
+  }
+
+  // Check inline quick keys if not matched by section headings
+  if (!parsed.official_website) {
+    const siteMatch = clean.match(/(?:Official Website|Website|Portal):\s*(https?:\/\/[^\s]+)/i);
+    if (siteMatch) parsed.official_website = siteMatch[1].trim();
+  }
+  if (!parsed.application_link) {
+    const appMatch = clean.match(/(?:Application Link|Apply Link|Apply URL):\s*(https?:\/\/[^\s]+)/i);
+    if (appMatch) parsed.application_link = appMatch[1].trim();
+  }
+  if (!parsed.provider) {
+    const provMatch = clean.match(/(?:Provider|Awarding Body|Organization|University):\s*([^\n]+)/i);
+    if (provMatch) parsed.provider = provMatch[1].trim();
+  }
+  if (!parsed.deadline) {
+    const deadMatch = clean.match(/(?:Deadline|Closing Date):\s*([^\n]+)/i);
+    if (deadMatch) parsed.deadline = deadMatch[1].trim();
+  }
+
+  return parsed;
+}
+

@@ -56,6 +56,8 @@ import {
   Send,
   RotateCcw,
 } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import {
   OPPORTUNITY_TYPES,
   FUNDING_TYPES,
@@ -64,6 +66,8 @@ import {
   VERIFICATION_STATUSES,
   getImageUrl,
   daysUntil,
+  formatOpportunityMarkdown,
+  parseOpportunityMarkdownDraft,
 } from "@/lib/sc-shared";
 
 export const Route = createFileRoute("/admin/opportunities")({
@@ -143,6 +147,132 @@ const COMMON_FEE_PRESETS = [
   "₦10,000",
 ];
 
+function MarkdownEditorBox({
+  label,
+  value,
+  onChange,
+  placeholder,
+  rows = 4,
+  onAutoFormat,
+  onInsertTemplate,
+  templateLabel,
+}: {
+  label: string;
+  value: string;
+  onChange: (val: string) => void;
+  placeholder?: string;
+  rows?: number;
+  onAutoFormat: () => void;
+  onInsertTemplate?: () => void;
+  templateLabel?: string;
+}) {
+  const [isPreview, setIsPreview] = useState(false);
+
+  const insertBullet = () => {
+    const addition = value ? `${value.trimEnd()}\n- ` : "- ";
+    onChange(addition);
+  };
+
+  const insertBold = () => {
+    const addition = value ? `${value} **bold text**` : "**bold text**";
+    onChange(addition);
+  };
+
+  return (
+    <div className="space-y-1.5">
+      <div className="flex flex-wrap items-center justify-between gap-1.5">
+        <div className="flex items-center gap-2">
+          <Label className="font-semibold text-gray-800 text-xs sm:text-sm">{label}</Label>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+            Markdown
+          </span>
+        </div>
+        <div className="flex items-center gap-1.5 flex-wrap">
+          {onInsertTemplate && templateLabel && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={onInsertTemplate}
+              className="h-6 text-[11px] text-emerald-700 hover:bg-emerald-50 px-2"
+            >
+              + {templateLabel}
+            </Button>
+          )}
+
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={insertBullet}
+            className="h-6 text-[11px] text-gray-600 hover:bg-gray-100 px-2"
+            title="Add a bullet point"
+          >
+            + Bullet
+          </Button>
+
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={insertBold}
+            className="h-6 text-[11px] text-gray-600 hover:bg-gray-100 px-2 font-bold"
+            title="Add bold text"
+          >
+            B
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={onAutoFormat}
+            className="h-6 text-[11px] text-emerald-800 bg-emerald-50/80 hover:bg-emerald-100 border-emerald-200 px-2 gap-1"
+            title="Auto-format and sort into clean Markdown"
+          >
+            <Sparkles size={11} className="text-emerald-600" />
+            <span>Format</span>
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => setIsPreview(!isPreview)}
+            className={`h-6 text-[11px] px-2.5 rounded-lg transition-colors ${
+              isPreview
+                ? "bg-[#0a1128] text-white hover:bg-[#142148] border-[#0a1128]"
+                : "bg-white text-gray-700 hover:bg-gray-50 border-gray-200"
+            }`}
+          >
+            {isPreview ? "Edit" : "Preview"}
+          </Button>
+        </div>
+      </div>
+
+      {isPreview ? (
+        <div className="bg-slate-50/80 border border-gray-200 rounded-xl p-3.5 min-h-[96px] text-xs sm:text-sm prose prose-slate max-w-none text-slate-800 overflow-x-auto">
+          {value?.trim() ? (
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {formatOpportunityMarkdown(value)}
+            </ReactMarkdown>
+          ) : (
+            <p className="text-gray-400 italic text-xs">Nothing to preview yet. Switch back to Edit to write Markdown.</p>
+          )}
+        </div>
+      ) : (
+        <Textarea
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          rows={rows}
+          className="bg-white font-sans text-sm focus-visible:ring-emerald-500"
+        />
+      )}
+    </div>
+  );
+}
+
 export function AdminOpportunities() {
   const { token } = useAuth();
   const [opportunities, setOpportunities] = useState<any[]>([]);
@@ -162,6 +292,42 @@ export function AdminOpportunities() {
   const [activeTab, setActiveTab] = useState<string>("basic");
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDraftParserOpen, setIsDraftParserOpen] = useState(false);
+  const [rawDraftText, setRawDraftText] = useState("");
+
+  const handleAutoFormatField = (field: string) => {
+    const current = formData[field];
+    if (!current?.trim()) {
+      toast.info("This field is currently empty.");
+      return;
+    }
+    const formatted = formatOpportunityMarkdown(current);
+    handleFieldChange(field, formatted);
+    toast.success("Structured into clean Markdown!");
+  };
+
+  const handleApplyDraft = () => {
+    if (!rawDraftText.trim()) {
+      toast.error("Please paste an opportunity draft or markdown text first.");
+      return;
+    }
+
+    const parsed = parseOpportunityMarkdownDraft(rawDraftText);
+    const updated = { ...formData };
+    let filledCount = 0;
+
+    for (const [key, val] of Object.entries(parsed)) {
+      if (val && typeof val === "string" && val.trim()) {
+        updated[key] = val.trim();
+        filledCount++;
+      }
+    }
+
+    setFormData(updated);
+    setIsDraftParserOpen(false);
+    setRawDraftText("");
+    toast.success(`Smart Auto-Structure complete! Populated ${filledCount} fields.`);
+  };
 
   const fetchData = async () => {
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000/api";
@@ -875,6 +1041,90 @@ export function AdminOpportunities() {
         </AlertDialogContent>
       </AlertDialog>
 
+      {/* SMART MARKDOWN AUTO-STRUCTURE MODAL */}
+      <Dialog open={isDraftParserOpen} onOpenChange={setIsDraftParserOpen}>
+        <DialogContent className="w-[94vw] max-w-2xl max-h-[90vh] overflow-hidden flex flex-col p-0 gap-0 bg-white rounded-2xl shadow-2xl border border-border">
+          <DialogHeader className="px-6 py-4 bg-muted/20 border-b border-border">
+            <div className="flex items-center gap-2">
+              <Wand2 className="h-5 w-5 text-emerald-600" />
+              <DialogTitle className="text-base sm:text-lg font-bold font-heading text-navy">
+                Auto-Structure Opportunity from Markdown Draft
+              </DialogTitle>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+              Paste a full announcement, article, or raw Markdown draft. Our parser automatically sorts and distributes headings (## Eligibility, ## Benefits, ## Documents, ## How to Apply, ## Advice, etc.) into the structured fields.
+            </p>
+          </DialogHeader>
+
+          <div className="p-6 overflow-y-auto space-y-4">
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <Label className="text-xs font-bold uppercase tracking-wider text-navy">
+                  Paste Full Draft Content (Markdown or Plain Text)
+                </Label>
+                <span className="text-[11px] text-muted-foreground">
+                  Supports ## Headings, bullet lists, bold text
+                </span>
+              </div>
+              <Textarea
+                rows={12}
+                value={rawDraftText}
+                onChange={(e) => setRawDraftText(e.target.value)}
+                placeholder={`# University of Oxford Rhodes Scholarship 2027
+
+Overview:
+Full funding for graduate studies at Oxford.
+
+## Eligibility
+- Hold an undergraduate degree with First Class or 2:1
+- Age between 18 and 25
+- Citizen of an eligible country
+
+## Benefits
+- Full university tuition and college fees
+- Monthly living stipend of £1,500
+- Economy airfare to and from the UK
+
+## Required Documents
+- Academic transcripts
+- 4 to 6 reference letters
+- Personal statement and CV
+
+## How to Apply
+1. Register on the official Rhodes Trust portal
+2. Submit required essays and references
+3. Shortlisted candidates attend interview
+
+Deadline: 2 October 2026
+Official Website: https://www.rhodeshouse.ox.ac.uk`}
+                className="font-mono text-xs sm:text-sm bg-slate-50 border-border"
+              />
+            </div>
+          </div>
+
+          <div className="px-6 py-3.5 bg-muted/30 border-t border-border flex items-center justify-between gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setIsDraftParserOpen(false)}
+              className="text-xs rounded-xl"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              onClick={handleApplyDraft}
+              className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl px-5 gap-1.5"
+            >
+              <Wand2 size={13} />
+              <span>Parse & Populate All Fields</span>
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* STREAMLINED 5-STEP CREATE / EDIT MODAL */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="w-[96vw] max-w-5xl max-h-[95vh] overflow-hidden flex flex-col p-0 gap-0 bg-[#F8FAFC] rounded-2xl shadow-2xl border-0">
@@ -899,13 +1149,24 @@ export function AdminOpportunities() {
               </p>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setIsDraftParserOpen(true)}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border-emerald-300 rounded-xl h-9 px-3"
+              >
+                <Wand2 size={13} className="text-emerald-600" />
+                <span className="hidden sm:inline">Auto-Structure from</span> Draft
+              </Button>
+
               {editingId && formData.slug && (
                 <a
                   href={`/opportunities/${formData.slug}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600 hover:text-emerald-700 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200"
+                  className="hidden md:inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600 hover:text-emerald-700 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200 h-9"
                 >
                   <span>Preview Live</span>
                   <ExternalLink size={12} />
@@ -967,6 +1228,33 @@ export function AdminOpportunities() {
               {/* STEP 1: Basic Info & Provider */}
               {activeTab === "basic" && (
                 <div className="space-y-6 max-w-4xl mx-auto animate-in fade-in duration-200">
+                  {/* Smart Auto-Structure Callout */}
+                  <div className="p-4 bg-emerald-50/80 border border-emerald-200/80 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                        <Wand2 size={16} />
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-bold text-emerald-950 uppercase tracking-wider">
+                          Smart Markdown Auto-Structure
+                        </h4>
+                        <p className="text-xs text-emerald-900 mt-0.5 leading-relaxed">
+                          Have an announcement or full draft? Paste it once to auto-extract Title, Eligibility, Benefits, Steps, Advice, and Deadlines into structured fields automatically.
+                        </p>
+                      </div>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setIsDraftParserOpen(true)}
+                      className="bg-white hover:bg-emerald-50 text-emerald-800 border-emerald-300 text-xs font-semibold rounded-xl h-8 px-3 shrink-0 gap-1.5"
+                    >
+                      <Wand2 size={13} className="text-emerald-600" />
+                      <span>Open Auto-Parser</span>
+                    </Button>
+                  </div>
+
                   <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-5">
                     <h3 className="text-sm font-bold uppercase tracking-wider text-gray-800 flex items-center gap-2">
                       <Layers size={16} className="text-emerald-600" />
@@ -1282,61 +1570,37 @@ export function AdminOpportunities() {
                       Detailed Eligibility & Benefits Markdown
                     </h3>
 
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <Label className="font-semibold text-gray-800">
-                          Eligibility Requirements (Markdown)
-                        </Label>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          onClick={() =>
-                            appendTemplate(
-                              "eligibility",
-                              "- **Citizenship**: Must be a citizen of eligible country\n- **Academic Record**: Minimum Second Class Upper (2:1) or equivalent\n- **Work Experience**: Minimum 2 years of relevant experience\n- **Language**: English proficiency (IELTS 6.5+ or proof of instruction)",
-                            )
-                          }
-                          className="h-6 text-[11px] text-emerald-700 hover:bg-emerald-50"
-                        >
-                          + Insert Criteria Template
-                        </Button>
-                      </div>
-                      <Textarea
-                        value={formData.eligibility}
-                        onChange={(e) => handleFieldChange("eligibility", e.target.value)}
-                        placeholder="Detail minimum GPA, nationality requirements, age limits, academic background..."
-                        className="bg-white h-36 font-sans text-sm"
-                      />
-                    </div>
+                    <MarkdownEditorBox
+                      label="Eligibility Requirements"
+                      value={formData.eligibility}
+                      onChange={(v) => handleFieldChange("eligibility", v)}
+                      onAutoFormat={() => handleAutoFormatField("eligibility")}
+                      onInsertTemplate={() =>
+                        appendTemplate(
+                          "eligibility",
+                          "- **Citizenship**: Must be a citizen of eligible country\n- **Academic Record**: Minimum Second Class Upper (2:1) or equivalent\n- **Work Experience**: Minimum 2 years of relevant experience\n- **Language**: English proficiency (IELTS 6.5+ or proof of instruction)",
+                        )
+                      }
+                      templateLabel="Criteria Template"
+                      placeholder="Detail minimum GPA, nationality requirements, age limits, academic background..."
+                      rows={5}
+                    />
 
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <Label className="font-semibold text-gray-800">
-                          Benefits & Coverage (Markdown)
-                        </Label>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          onClick={() =>
-                            appendTemplate(
-                              "benefits",
-                              "- **Tuition**: 100% full university tuition fees\n- **Stipend**: Monthly living allowance covering housing and food\n- **Travel**: Return economy flight tickets\n- **Health**: Comprehensive health insurance coverage",
-                            )
-                          }
-                          className="h-6 text-[11px] text-emerald-700 hover:bg-emerald-50"
-                        >
-                          + Insert Full Funding Template
-                        </Button>
-                      </div>
-                      <Textarea
-                        value={formData.benefits}
-                        onChange={(e) => handleFieldChange("benefits", e.target.value)}
-                        placeholder="Detail tuition coverage, monthly stipends, flight tickets, health insurance..."
-                        className="bg-white h-36 font-sans text-sm"
-                      />
-                    </div>
+                    <MarkdownEditorBox
+                      label="Benefits & Coverage"
+                      value={formData.benefits}
+                      onChange={(v) => handleFieldChange("benefits", v)}
+                      onAutoFormat={() => handleAutoFormatField("benefits")}
+                      onInsertTemplate={() =>
+                        appendTemplate(
+                          "benefits",
+                          "- **Tuition**: 100% full university tuition fees\n- **Stipend**: Monthly living allowance covering housing and food\n- **Travel**: Return economy flight tickets\n- **Health**: Comprehensive health insurance coverage",
+                        )
+                      }
+                      templateLabel="Funding Template"
+                      placeholder="Detail tuition coverage, monthly stipends, flight tickets, health insurance..."
+                      rows={5}
+                    />
                   </div>
                 </div>
               )}
@@ -1462,61 +1726,37 @@ export function AdminOpportunities() {
                       Documents & Step-by-Step Procedure
                     </h3>
 
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <Label className="font-semibold text-gray-800">
-                          Required Documents Checklist
-                        </Label>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          onClick={() =>
-                            appendTemplate(
-                              "required_documents",
-                              "- **Academic Transcripts**: Certified copies of degree and high school records\n- **Letters of Recommendation**: 2 academic or professional references\n- **Personal Statement / Motivation Letter**: 500-1000 words\n- **Curriculum Vitae (CV)**: Highlighting leadership and achievements\n- **Valid International Passport**: Data page copy",
-                            )
-                          }
-                          className="h-6 text-[11px] text-emerald-700 hover:bg-emerald-50"
-                        >
-                          + Standard Docs Template
-                        </Button>
-                      </div>
-                      <Textarea
-                        value={formData.required_documents}
-                        onChange={(e) => handleFieldChange("required_documents", e.target.value)}
-                        placeholder="List academic transcripts, recommendation letters, personal statement guidelines..."
-                        className="bg-white h-32 text-sm"
-                      />
-                    </div>
+                    <MarkdownEditorBox
+                      label="Required Documents Checklist"
+                      value={formData.required_documents}
+                      onChange={(v) => handleFieldChange("required_documents", v)}
+                      onAutoFormat={() => handleAutoFormatField("required_documents")}
+                      onInsertTemplate={() =>
+                        appendTemplate(
+                          "required_documents",
+                          "- **Academic Transcripts**: Certified copies of degree and high school records\n- **Letters of Recommendation**: 2 academic or professional references\n- **Personal Statement / Motivation Letter**: 500-1000 words\n- **Curriculum Vitae (CV)**: Highlighting leadership and achievements\n- **Valid International Passport**: Data page copy",
+                        )
+                      }
+                      templateLabel="Docs Checklist Template"
+                      placeholder="List academic transcripts, recommendation letters, personal statement guidelines..."
+                      rows={5}
+                    />
 
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <Label className="font-semibold text-gray-800">
-                          Step-by-Step Application Procedure
-                        </Label>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          onClick={() =>
-                            appendTemplate(
-                              "application_procedure",
-                              "1. **Register**: Create an applicant profile on the official university/scholarship portal.\n2. **Upload Documents**: Submit certified transcripts, reference letters, and statement of purpose.\n3. **Submit Application**: Complete all questionnaire sections before the official closing date.\n4. **Interview Stage**: Shortlisted candidates will be invited for video or panel interviews.",
-                            )
-                          }
-                          className="h-6 text-[11px] text-emerald-700 hover:bg-emerald-50"
-                        >
-                          + Step-by-Step Template
-                        </Button>
-                      </div>
-                      <Textarea
-                        value={formData.application_procedure}
-                        onChange={(e) => handleFieldChange("application_procedure", e.target.value)}
-                        placeholder="Step 1: Check eligibility. Step 2: Prepare references. Step 3: Complete portal..."
-                        className="bg-white h-32 text-sm"
-                      />
-                    </div>
+                    <MarkdownEditorBox
+                      label="Step-by-Step Application Procedure"
+                      value={formData.application_procedure}
+                      onChange={(v) => handleFieldChange("application_procedure", v)}
+                      onAutoFormat={() => handleAutoFormatField("application_procedure")}
+                      onInsertTemplate={() =>
+                        appendTemplate(
+                          "application_procedure",
+                          "1. **Register**: Create an applicant profile on the official university/scholarship portal.\n2. **Upload Documents**: Submit certified transcripts, reference letters, and statement of purpose.\n3. **Submit Application**: Complete all questionnaire sections before the official closing date.\n4. **Interview Stage**: Shortlisted candidates will be invited for video or panel interviews.",
+                        )
+                      }
+                      templateLabel="Steps Template"
+                      placeholder="Step 1: Check eligibility. Step 2: Prepare references. Step 3: Complete portal..."
+                      rows={5}
+                    />
                   </div>
                 </div>
               )}
@@ -1637,64 +1877,66 @@ export function AdminOpportunities() {
                       ScholarsConnect Advice & Editorial Intelligence
                     </h3>
 
-                    <div className="space-y-2">
-                      <Label className="font-semibold text-amber-900 flex items-center gap-1.5">
-                        <Sparkles size={14} className="text-amber-600" />
-                        ScholarsConnect Advice (Insider Guidance)
-                      </Label>
-                      <Textarea
-                        value={formData.scholarsconnect_advice}
-                        onChange={(e) =>
-                          handleFieldChange("scholarsconnect_advice", e.target.value)
-                        }
-                        placeholder="Key insider strategies on drafting the personal statement, securing top references, and highlighting leadership impact..."
-                        className="bg-white h-32 border-amber-200 text-sm focus-visible:ring-amber-500"
-                      />
-                    </div>
+                    <MarkdownEditorBox
+                      label="ScholarsConnect Advice (Insider Guidance)"
+                      value={formData.scholarsconnect_advice}
+                      onChange={(v) => handleFieldChange("scholarsconnect_advice", v)}
+                      onAutoFormat={() => handleAutoFormatField("scholarsconnect_advice")}
+                      onInsertTemplate={() =>
+                        appendTemplate(
+                          "scholarsconnect_advice",
+                          "- **Leadership Focus**: Frame essays around concrete community problems you solved.\n- **Referee Selection**: Choose mentors who can cite specific achievements over prestigious names.\n- **Submission Timing**: Submit at least 72 hours before the deadline to prevent portal crashes.",
+                        )
+                      }
+                      templateLabel="Advice Template"
+                      placeholder="Key insider strategies on drafting the personal statement, securing top references, and highlighting leadership impact..."
+                      rows={4}
+                    />
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                      <div className="space-y-1.5">
-                        <Label className="font-semibold text-gray-800">Best Suited For</Label>
-                        <Textarea
-                          value={formData.best_for}
-                          onChange={(e) => handleFieldChange("best_for", e.target.value)}
-                          placeholder="e.g. High-achieving STEM graduates with demonstrated community leadership."
-                          className="bg-white h-24 text-sm"
-                        />
-                      </div>
+                      <MarkdownEditorBox
+                        label="Best Suited For"
+                        value={formData.best_for}
+                        onChange={(v) => handleFieldChange("best_for", v)}
+                        onAutoFormat={() => handleAutoFormatField("best_for")}
+                        placeholder="e.g. High-achieving STEM graduates with demonstrated community leadership."
+                        rows={3}
+                      />
 
-                      <div className="space-y-1.5">
-                        <Label className="font-semibold text-gray-800">Not Suitable For</Label>
-                        <Textarea
-                          value={formData.not_suitable_for}
-                          onChange={(e) => handleFieldChange("not_suitable_for", e.target.value)}
-                          placeholder="e.g. Applicants seeking distance-learning degrees or post-baccalaureate diplomas."
-                          className="bg-white h-24 text-sm"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <Label className="font-semibold text-gray-800">
-                        Common Mistakes to Avoid
-                      </Label>
-                      <Textarea
-                        value={formData.common_mistakes}
-                        onChange={(e) => handleFieldChange("common_mistakes", e.target.value)}
-                        placeholder="e.g. Submitting unauthenticated copies of transcripts; using generic recommendation letters; submitting within the final 2 hours."
-                        className="bg-white h-24 text-sm"
+                      <MarkdownEditorBox
+                        label="Not Suitable For"
+                        value={formData.not_suitable_for}
+                        onChange={(v) => handleFieldChange("not_suitable_for", v)}
+                        onAutoFormat={() => handleAutoFormatField("not_suitable_for")}
+                        placeholder="e.g. Applicants seeking distance-learning degrees or post-baccalaureate diplomas."
+                        rows={3}
                       />
                     </div>
 
-                    <div className="space-y-1.5">
-                      <Label className="font-semibold text-gray-800">Editorial Verdict</Label>
-                      <Textarea
-                        value={formData.editorial_verdict}
-                        onChange={(e) => handleFieldChange("editorial_verdict", e.target.value)}
-                        placeholder="e.g. Highly prestigious full award with transformative career trajectory. Application effort is substantial but return on investment is unmatched."
-                        className="bg-white h-24 text-sm"
-                      />
-                    </div>
+                    <MarkdownEditorBox
+                      label="Common Mistakes to Avoid"
+                      value={formData.common_mistakes}
+                      onChange={(v) => handleFieldChange("common_mistakes", v)}
+                      onAutoFormat={() => handleAutoFormatField("common_mistakes")}
+                      onInsertTemplate={() =>
+                        appendTemplate(
+                          "common_mistakes",
+                          "- Submitting uncertified or incomplete academic transcripts.\n- Using generic recommendation letters not customized to this program.\n- Missing mandatory essay word counts or answering off-topic prompts.",
+                        )
+                      }
+                      templateLabel="Mistakes Template"
+                      placeholder="e.g. Submitting unauthenticated copies of transcripts; using generic recommendation letters; submitting within the final 2 hours."
+                      rows={3}
+                    />
+
+                    <MarkdownEditorBox
+                      label="Editorial Verdict"
+                      value={formData.editorial_verdict}
+                      onChange={(v) => handleFieldChange("editorial_verdict", v)}
+                      onAutoFormat={() => handleAutoFormatField("editorial_verdict")}
+                      placeholder="e.g. Highly prestigious full award with transformative career trajectory. Application effort is substantial but return on investment is unmatched."
+                      rows={3}
+                    />
                   </div>
                 </div>
               )}

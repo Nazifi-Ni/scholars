@@ -27,6 +27,9 @@ import {
   ChevronRight,
   Share2,
   Award,
+  Clock,
+  ListOrdered,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SiteLayout } from "@/components/layout/SiteLayout";
@@ -40,6 +43,8 @@ import {
   getImageUrl,
   DEGREE_LEVELS,
   type OpportunityCardData,
+  formatOpportunityMarkdown,
+  calculateReadingTime,
 } from "@/lib/sc-shared";
 import { useBookmarks } from "@/hooks/use-bookmarks";
 import { cn } from "@/lib/utils";
@@ -149,25 +154,82 @@ export const Route = createFileRoute("/opportunities/$slug")({
   component: OpportunityDetailPage,
 });
 
+const markdownComponents = {
+  p: ({ children }: any) => (
+    <p className="mb-3.5 leading-relaxed text-slate-800 last:mb-0 text-sm sm:text-base">
+      {children}
+    </p>
+  ),
+  ul: ({ children }: any) => (
+    <ul className="my-3 space-y-2 list-disc pl-5 marker:text-emerald-600 text-sm sm:text-base">
+      {children}
+    </ul>
+  ),
+  ol: ({ children }: any) => (
+    <ol className="my-3 space-y-2 list-decimal pl-5 marker:text-emerald-700 font-medium text-sm sm:text-base">
+      {children}
+    </ol>
+  ),
+  li: ({ children }: any) => (
+    <li className="leading-relaxed text-slate-800 pl-1">{children}</li>
+  ),
+  h3: ({ children }: any) => (
+    <h3 className="font-heading font-bold text-navy text-base sm:text-lg mt-6 mb-2.5 pb-1 border-b border-border/40">
+      {children}
+    </h3>
+  ),
+  h4: ({ children }: any) => (
+    <h4 className="font-heading font-bold text-navy text-sm sm:text-base mt-4 mb-2">
+      {children}
+    </h4>
+  ),
+  strong: ({ children }: any) => (
+    <strong className="font-bold text-navy">{children}</strong>
+  ),
+  a: ({ href, children }: any) => (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer nofollow"
+      className="text-secondary font-semibold hover:underline inline-flex items-center gap-1"
+    >
+      {children}
+      <ExternalLink className="inline h-3 w-3" />
+    </a>
+  ),
+  blockquote: ({ children }: any) => (
+    <blockquote className="my-4 border-l-4 border-secondary/60 bg-emerald-50/50 py-3 px-4 italic rounded-r-xl text-slate-700 text-sm sm:text-base">
+      {children}
+    </blockquote>
+  ),
+};
+
 function DetailSection({
+  id,
   title,
   content,
   icon,
 }: {
+  id?: string;
   title: string;
   content: string | null | undefined;
   icon?: React.ReactNode;
 }) {
   if (!content) return null;
+  const formatted = formatOpportunityMarkdown(content);
+  if (!formatted) return null;
+
   return (
-    <section className="mb-6 sm:mb-8">
+    <section id={id} className="mb-6 sm:mb-8 scroll-mt-24">
       <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
         <div className="bg-muted/30 border-b border-border px-4 sm:px-6 py-3.5 sm:py-4 flex items-center gap-2.5">
           {icon}
           <h2 className="text-lg sm:text-xl font-bold text-navy font-heading">{title}</h2>
         </div>
         <div className="px-4 sm:px-6 py-4 sm:py-6 prose prose-slate max-w-none text-foreground/85 font-sans leading-relaxed overflow-hidden break-words prose-pre:overflow-x-auto prose-table:overflow-x-auto">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+          <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+            {formatted}
+          </ReactMarkdown>
         </div>
       </div>
     </section>
@@ -187,6 +249,81 @@ function OpportunityDetailPage() {
   const applicableDegrees = (o.degree_levels || []).filter(
     (lvl: string) => lvl && lvl.toLowerCase() !== "not_applicable" && lvl !== "Not Applicable",
   );
+
+  const totalContent = [
+    o.summary,
+    o.eligibility,
+    o.benefits,
+    o.required_documents,
+    o.application_procedure,
+    o.scholarsconnect_advice,
+    o.best_for,
+    o.not_suitable_for,
+    o.common_mistakes,
+    o.editorial_verdict,
+  ]
+    .filter(Boolean)
+    .join("\n\n");
+
+  const readingTime = calculateReadingTime(totalContent);
+
+  const contentSections = [
+    { id: "overview", label: "Overview & Fact Sheet", icon: FileText, present: true },
+    {
+      id: "eligibility-check",
+      label: "Eligibility Check & Fit",
+      icon: CheckCircle2,
+      present: Boolean(o.application_difficulty || o.best_for || o.not_suitable_for),
+    },
+    {
+      id: "eligibility",
+      label: "Eligibility Criteria",
+      icon: GraduationCap,
+      present: Boolean(o.eligibility?.trim()),
+    },
+    {
+      id: "benefits",
+      label: "Benefits & Coverage",
+      icon: DollarSign,
+      present: Boolean(o.benefits?.trim()),
+    },
+    {
+      id: "documents",
+      label: "Required Documents",
+      icon: FileText,
+      present: Boolean(o.required_documents?.trim()),
+    },
+    {
+      id: "mistakes",
+      label: "Common Mistakes",
+      icon: AlertTriangle,
+      present: Boolean(o.common_mistakes?.trim()),
+    },
+    {
+      id: "procedure",
+      label: "Application Steps",
+      icon: ArrowRight,
+      present: Boolean(o.application_procedure?.trim()),
+    },
+    {
+      id: "advice",
+      label: "ScholarsConnect Advice",
+      icon: Sparkles,
+      present: Boolean(o.scholarsconnect_advice?.trim()),
+    },
+    {
+      id: "verdict",
+      label: "Editorial Verdict",
+      icon: Award,
+      present: Boolean(o.editorial_verdict?.trim()),
+    },
+    {
+      id: "official-source",
+      label: "Official Source Proof",
+      icon: ShieldCheck,
+      present: true,
+    },
+  ].filter((s) => s.present);
 
   return (
     <SiteLayout>
@@ -344,8 +481,47 @@ function OpportunityDetailPage() {
             </div>
           )}
 
+          {/* Structured Table of Contents / Outline */}
+          {contentSections.length >= 3 && (
+            <nav
+              aria-label="Table of contents"
+              className="mb-8 rounded-2xl border border-border/80 bg-muted/25 p-4 sm:p-5 font-sans shadow-xs"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 mb-3 border-b border-border/50">
+                <div className="flex items-center gap-2">
+                  <ListOrdered className="h-4 w-4 text-secondary" />
+                  <h2 className="text-sm font-bold text-navy font-heading uppercase tracking-wider">
+                    Contents & Section Jump
+                  </h2>
+                </div>
+                <div className="flex items-center gap-3 text-xs text-muted-foreground font-medium">
+                  <span className="flex items-center gap-1.5">
+                    <Clock className="h-3.5 w-3.5 text-secondary" /> {readingTime} min read
+                  </span>
+                  <span>•</span>
+                  <span>{contentSections.length} sections organized</span>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                {contentSections.map((sec) => {
+                  const SecIcon = sec.icon;
+                  return (
+                    <a
+                      key={sec.id}
+                      href={`#${sec.id}`}
+                      className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-navy hover:text-secondary hover:bg-white border border-transparent hover:border-border transition-all group"
+                    >
+                      <SecIcon className="h-3.5 w-3.5 text-muted-foreground group-hover:text-secondary transition-colors shrink-0" />
+                      <span className="truncate">{sec.label}</span>
+                    </a>
+                  );
+                })}
+              </div>
+            </nav>
+          )}
+
           {/* Opportunity Fact Sheet */}
-          <section className="mb-8 sm:mb-10 rounded-2xl border border-border bg-card p-4 sm:p-6 shadow-sm">
+          <section id="overview" className="mb-8 sm:mb-10 rounded-2xl border border-border bg-card p-4 sm:p-6 shadow-sm scroll-mt-24">
             <h2 className="text-lg sm:text-xl font-bold text-navy font-heading mb-3 sm:mb-4">
               Opportunity Overview
             </h2>
@@ -434,7 +610,7 @@ function OpportunityDetailPage() {
 
           {/* ScholarsConnect Eligibility Check & Difficulty */}
           {(o.application_difficulty || o.best_for || o.not_suitable_for) && (
-            <section className="mb-6 sm:mb-8 rounded-2xl border border-border bg-card p-4 sm:p-7 shadow-sm">
+            <section id="eligibility-check" className="mb-6 sm:mb-8 rounded-2xl border border-border bg-card p-4 sm:p-7 shadow-sm scroll-mt-24">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 mb-4 sm:mb-5 pb-3 border-b border-border/60">
                 <h2 className="text-lg sm:text-xl font-bold text-navy font-heading flex items-center gap-2">
                   <CheckCircle2 className="h-5 w-5 text-secondary shrink-0" /> ScholarsConnect Eligibility
@@ -463,8 +639,10 @@ function OpportunityDetailPage() {
                     <h3 className="text-xs sm:text-sm font-bold text-emerald-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                       <span className="text-emerald-700 font-bold">✓</span> Best Suited For
                     </h3>
-                    <div className="text-xs sm:text-sm text-emerald-950/90 leading-relaxed whitespace-pre-line break-words">
-                      {o.best_for}
+                    <div className="text-xs sm:text-sm text-emerald-950/90 leading-relaxed break-words prose prose-emerald prose-sm max-w-none">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                        {formatOpportunityMarkdown(o.best_for)}
+                      </ReactMarkdown>
                     </div>
                   </div>
                 )}
@@ -474,8 +652,10 @@ function OpportunityDetailPage() {
                     <h3 className="text-xs sm:text-sm font-bold text-rose-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                       <span className="text-rose-700 font-bold">✕</span> Not Suitable For
                     </h3>
-                    <div className="text-xs sm:text-sm text-rose-950/90 leading-relaxed whitespace-pre-line break-words">
-                      {o.not_suitable_for}
+                    <div className="text-xs sm:text-sm text-rose-950/90 leading-relaxed break-words prose prose-rose prose-sm max-w-none">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                        {formatOpportunityMarkdown(o.not_suitable_for)}
+                      </ReactMarkdown>
                     </div>
                   </div>
                 )}
@@ -485,26 +665,31 @@ function OpportunityDetailPage() {
 
           {/* Detailed Editorial Sections */}
           <DetailSection
+            id="eligibility"
             title="Eligibility Requirements"
             content={o.eligibility}
             icon={<GraduationCap className="h-5 w-5 text-primary" />}
           />
           <DetailSection
+            id="benefits"
             title="Benefits & Financial Coverage"
             content={o.benefits}
             icon={<DollarSign className="h-5 w-5 text-primary" />}
           />
           <DetailSection
+            id="documents"
             title="Required Documents Checklist"
             content={o.required_documents}
             icon={<FileText className="h-5 w-5 text-primary" />}
           />
           <DetailSection
+            id="mistakes"
             title="Common Mistakes to Avoid"
             content={o.common_mistakes}
             icon={<AlertTriangle className="h-5 w-5 text-amber-600" />}
           />
           <DetailSection
+            id="procedure"
             title="Application Steps (Step-by-Step)"
             content={o.application_procedure}
             icon={<CheckCircle2 className="h-5 w-5 text-primary" />}
@@ -512,7 +697,7 @@ function OpportunityDetailPage() {
 
           {/* ScholarsConnect Advice */}
           {o.scholarsconnect_advice && (
-            <div className="my-6 sm:my-8 rounded-2xl border border-secondary/30 bg-emerald-50/50 p-4 sm:p-7 shadow-sm relative overflow-hidden">
+            <div id="advice" className="my-6 sm:my-8 rounded-2xl border border-secondary/30 bg-emerald-50/50 p-4 sm:p-7 shadow-sm relative overflow-hidden scroll-mt-24">
               <div className="flex items-center gap-2.5 mb-3">
                 <div className="h-8 w-8 rounded-lg bg-secondary/15 flex items-center justify-center text-secondary shrink-0">
                   <span className="text-lg">💡</span>
@@ -522,8 +707,8 @@ function OpportunityDetailPage() {
                 </h2>
               </div>
               <div className="prose prose-slate prose-sm sm:prose-base max-w-none text-slate-800 leading-relaxed font-sans pl-0 sm:pl-10 break-words overflow-hidden">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {o.scholarsconnect_advice}
+                <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                  {formatOpportunityMarkdown(o.scholarsconnect_advice)}
                 </ReactMarkdown>
               </div>
             </div>
@@ -531,18 +716,20 @@ function OpportunityDetailPage() {
 
           {/* ScholarsConnect Verdict */}
           {o.editorial_verdict && (
-            <div className="my-6 sm:my-8 rounded-2xl border border-indigo-200 bg-indigo-50/60 p-4 sm:p-7 shadow-sm">
+            <div id="verdict" className="my-6 sm:my-8 rounded-2xl border border-indigo-200 bg-indigo-50/60 p-4 sm:p-7 shadow-sm scroll-mt-24">
               <h2 className="text-base sm:text-lg font-bold text-indigo-950 font-heading mb-2 flex items-center gap-2">
                 <Award className="h-5 w-5 text-indigo-600 shrink-0" /> ScholarsConnect Editorial Verdict
               </h2>
-              <div className="text-xs sm:text-sm leading-relaxed text-indigo-950/90 font-sans whitespace-pre-line break-words">
-                {o.editorial_verdict}
+              <div className="prose prose-indigo prose-sm sm:prose-base max-w-none text-indigo-950/90 font-sans leading-relaxed break-words overflow-hidden">
+                <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                  {formatOpportunityMarkdown(o.editorial_verdict)}
+                </ReactMarkdown>
               </div>
             </div>
           )}
 
           {/* Official Source Attribution Box */}
-          <section className="my-6 sm:my-8 rounded-2xl border border-border bg-muted/30 p-4 sm:p-6 shadow-sm">
+          <section id="official-source" className="my-6 sm:my-8 rounded-2xl border border-border bg-muted/30 p-4 sm:p-6 shadow-sm scroll-mt-24">
             <h3 className="font-heading font-bold text-sm sm:text-base text-navy mb-2 flex items-center gap-2">
               <ShieldCheck className="h-5 w-5 text-secondary shrink-0" /> Official Source & Verification
               Notice
