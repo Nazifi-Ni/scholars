@@ -2,6 +2,23 @@ import fs from 'fs';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
+async function fetchWithRetry(url, options = {}, retries = 3, delay = 5000) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const res = await fetch(url, options);
+      if (res.ok) return res;
+      console.warn(`[Sitemap] Attempt ${i + 1}/${retries} returned HTTP ${res.status} for ${url}`);
+    } catch (err) {
+      console.warn(`[Sitemap] Attempt ${i + 1}/${retries} failed for ${url}: ${err.message}`);
+    }
+    if (i < retries - 1) {
+      console.log(`[Sitemap] Server may be sleeping, waiting ${delay / 1000}s before retry...`);
+      await new Promise(r => setTimeout(r, delay));
+    }
+  }
+  return null;
+}
+
 async function generate() {
   console.log("Generating dynamic sitemap...");
   const API = "https://scholars-api.onrender.com/api";
@@ -34,14 +51,14 @@ async function generate() {
   });
 
   // Fetch All Opportunities across all pages
+  let totalFetched = 0;
   try {
     let page = 0;
-    let totalFetched = 0;
     let hasMore = true;
 
     while (hasMore) {
-      const res = await fetch(`${API}/opportunities/search?page=${page}`);
-      if (!res.ok) {
+      const res = await fetchWithRetry(`${API}/opportunities/search?page=${page}`);
+      if (!res || !res.ok) {
         console.warn(`Failed to fetch opportunities page ${page}`);
         break;
       }
@@ -71,8 +88,8 @@ async function generate() {
 
   // Fetch All Blog Posts
   try {
-    const blogRes = await fetch(`${API}/blog`);
-    if (blogRes.ok) {
+    const blogRes = await fetchWithRetry(`${API}/blog`);
+    if (blogRes && blogRes.ok) {
       const blogData = await blogRes.json();
       const posts = blogData.posts || [];
       posts.forEach(post => {
@@ -87,6 +104,15 @@ async function generate() {
   }
 
   sitemap += `</urlset>\n`;
+
+  // Safety guard: Never overwrite an existing sitemap with empty opportunities if API had an outage
+  if (totalFetched === 0 && fs.existsSync('./public/sitemap.xml')) {
+    const existing = fs.readFileSync('./public/sitemap.xml', 'utf-8');
+    if (existing.includes('/opportunities/')) {
+      console.warn("Safety Check: API returned 0 opportunities. Retaining existing sitemap to protect SEO indexing.");
+      return;
+    }
+  }
 
   fs.writeFileSync('./public/sitemap.xml', sitemap);
   console.log("public/sitemap.xml written successfully!");

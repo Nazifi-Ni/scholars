@@ -1,0 +1,42 @@
+name: Auto-Update Sitemap
+
+on:
+  schedule:
+    # Run twice daily at 02:00 UTC and 14:00 UTC
+    - cron: '0 2,14 * * *'
+  workflow_dispatch: # Allows manual one-click trigger anytime from GitHub Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  update-sitemap:
+    name: Generate & Sync Sitemap
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Regenerate Sitemap
+        env:
+          NODE_TLS_REJECT_UNAUTHORIZED: "0"
+        run: node scripts/generate-sitemap.js
+
+      - name: Check for changes and deploy
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/sitemap.xml
+          if git diff --staged --quiet; then
+            echo "No new opportunities or blog posts. Sitemap is already up-to-date."
+          else
+            echo "New content detected! Committing and pushing updated sitemap..."
+            git commit -m "chore(seo): auto-update sitemap.xml with latest opportunities"
+            git push
+          fi
