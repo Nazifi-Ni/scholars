@@ -4,6 +4,19 @@
       "DANGEROUSLY_DEPLOY_VULNERABLE_TANSTACK_START_XSS": "1"
     }
   },
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "scholarsconnect.com.ng"
+        }
+      ],
+      "destination": "https://www.scholarsconnect.com.ng/:path*",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/ads.txt",

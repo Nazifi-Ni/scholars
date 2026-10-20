@@ -34,13 +34,13 @@ export const Route = createFileRoute("/")({
     const homeData = loaderData?.[0]; // from Promise.all array
     const s = homeData?.settings || {};
     const siteTitle = s.site_name
-      ? `${s.site_name} | ${s.site_tagline || "Find Scholarships"}`
-      : "ScholarsConnect — Find Verified Scholarships & Internships";
+      ? `${s.site_name} — ${s.site_tagline || "Connecting Dreams to Opportunities"}`
+      : "ScholarsConnect — Connecting Dreams to Opportunities | Verified Scholarships & Student Opportunities";
     const siteDesc =
       s.meta_description ||
-      "Discover verified scholarships, internships, grants, and academic opportunities for ambitious students across Africa.";
+      "ScholarsConnect (scholarsconnect.com.ng) connects African students and ambitious youth with verified scholarships, international internships, study abroad grants, and career opportunities.";
     const siteKeywords =
-      s.meta_keywords || "scholarships, internships, jobs, study abroad, fully funded";
+      s.meta_keywords || "ScholarsConnect, Scholars Connect, scholarships, internships, grants, study abroad, fully funded scholarships Nigeria";
 
     return {
       meta: [
